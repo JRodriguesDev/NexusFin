@@ -22,6 +22,10 @@ export const transactionCategoryConfig = {
     label: 'Renda',
     badgeStyle: 'bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20',
   },
+  OTHER_INCOME: {
+    label: 'Outros Ganhos',
+    badgeStyle: 'bg-teal-500/10 text-teal-500 hover:bg-teal-500/20',
+  },
   FOOD: {
     label: 'Alimentação',
     badgeStyle: 'bg-amber-500/10 text-amber-500 hover:bg-amber-500/20',

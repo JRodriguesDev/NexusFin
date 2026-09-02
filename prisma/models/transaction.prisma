@@ -27,4 +27,5 @@ enum TransactionCategory {
   HEALTH
   TRANSPORT
   OTHER
+  OTHER_INCOME
 }
