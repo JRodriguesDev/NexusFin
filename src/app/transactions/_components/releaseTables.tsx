@@ -15,7 +15,6 @@ export const ReleaseTables = () => {
       </thead>
       <tbody className="divide-y divide-border">
         {/* LINHA 1: Salário Fixo (Automação Mensal) */}
-        <Tables />
       </tbody>
     </table>
   );

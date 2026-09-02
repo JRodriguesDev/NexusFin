@@ -9,8 +9,8 @@ model Transaction {
   recurringDay Int? @map("recurring_day")
   amount Decimal @db.Decimal(10,2)
 
-  createdAt   DateTime            @default(now()) @map("created_at")
-  updatedAt   DateTime            @updatedAt @map("updated_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
   @@map("transactions")
 }
 
