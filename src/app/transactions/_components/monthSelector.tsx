@@ -7,7 +7,7 @@ export const MonthSelector = () => {
   const currentMonth = 'Setembro 2026';
 
   return (
-    <div className="flex items-center rounded-lg border border-border bg-card p-1 shadow-sm">
+    <div className="flex items-center rounded-lg border border-border bg-card shadow-sm">
       <Button variant="ghost" size="icon" className="h-8 w-8 cursor-pointer">
         <TbChevronLeft className="h-4 w-4" />
       </Button>

@@ -1,4 +1,4 @@
-import { Tables } from './tables';
+import { EmptyTable } from './emptyTable';
 
 export const ReleaseTables = () => {
   return (
@@ -13,8 +13,9 @@ export const ReleaseTables = () => {
           <th className="px-4 py-3 text-right">Ações</th>
         </tr>
       </thead>
-      <tbody className="divide-y divide-border">
+      <tbody className="divide-y divide-border h-80">
         {/* LINHA 1: Salário Fixo (Automação Mensal) */}
+        <EmptyTable />
       </tbody>
     </table>
   );

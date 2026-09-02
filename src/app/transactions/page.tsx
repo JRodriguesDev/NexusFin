@@ -6,40 +6,46 @@ import { ReleaseTables } from './_components/releaseTables';
 
 const Page = () => {
   return (
-    <div className="flex flex-col gap-6">
-      {/* 1. CABEÇALHO E AÇÕES RÁPIDAS */}
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Lançamentos & Fluxo de Caixa</h1>
-          <p className="text-sm text-muted-foreground">
-            Gerencie entradas, saídas e automações mensais de saldo.
-          </p>
-        </div>
+    <main className="w-full py-6 sm:py-8">
+      <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
+        <div className="flex flex-col gap-5">
+          {/* 1. CABEÇALHO E AÇÕES RÁPIDAS */}
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="space-y-1">
+              <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                Lançamentos & Fluxo de Caixa
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                Gerencie entradas, saídas e automações mensais de saldo.
+              </p>
+            </div>
 
-        {/* Grupo de Ações Principais */}
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Seletor de Mês */}
-          <MonthSelector />
+            {/* Grupo de Ações Principais */}
+            <div className="flex flex-wrap items-center gap-2.5">
+              {/* Seletor de Mês */}
+              <MonthSelector />
 
-          {/* Botão de Salário / Renda Fixa */}
-          <FixedIncome />
+              {/* Botão de Salário / Renda Fixa */}
+              <FixedIncome />
 
-          {/* Botão Retirar / Despesa */}
-          <ManageMoney />
+              {/* Botão Retirar / Despesa */}
+              <ManageMoney />
+            </div>
+          </div>
+
+          {/* 2. ÁREA DA TABELA E FILTROS */}
+          <div className="rounded-xl border border-border bg-card p-4 sm:p-2 shadow-sm space-y-4">
+            {/* Barra de Busca e Filtros */}
+            <SearchFilters />
+
+            {/* Tabela de Lançamentos */}
+            <div className="overflow-x-auto">
+              <ReleaseTables />
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* 2. ÁREA DA TABELA E FILTROS */}
-      <div className="rounded-xl border border-border bg-card shadow-sm">
-        {/* Barra de Busca e Filtros */}
-        <SearchFilters />
-
-        {/* Tabela de Lançamentos */}
-        <div className="overflow-x-auto">
-          <ReleaseTables />
-        </div>
-      </div>
-    </div>
+    </main>
   );
 };
 
