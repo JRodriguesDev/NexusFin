@@ -20,7 +20,7 @@ export const NavLink = () => {
             <Button
               variant="ghost"
               className={cn(
-                'flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium transition-all duration-400',
+                'flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium transition-all duration-400 cursor-pointer',
                 isActive
                   ? 'bg-background text-foreground shadow-sm'
                   : 'text-muted-foreground hover:bg-background/50 hover:text-foreground'
