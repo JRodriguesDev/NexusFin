@@ -6,6 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "compose:up": "docker compose --env-file .env -f docker/compose.yaml up --build",
+    "compose:start": "docker compose --env-file .env -f docker/compose.yaml up",
+    "compose:down": "docker compose --env-file .env -f docker/compose.yaml down",
     "lint": "eslint",
     "format": "prettier src --write"
   },
