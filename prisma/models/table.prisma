@@ -1,0 +1,30 @@
+model Transaction {
+  id String @id @default(cuid())
+
+  type TransactionType
+  date DateTime @default(now())
+  description String
+  category TransactionCategory
+  isRecurrence Boolean @default(false) @map("is_recurrence")
+  recurringDay Int? @map("recurring_day")
+  amount Decimal @db.Decimal(10,2)
+
+  createdAt   DateTime            @default(now()) @map("created_at")
+  updatedAt   DateTime            @updatedAt @map("updated_at")
+  @@map("transactions")
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum TransactionCategory {
+  SALARY
+  FOOD
+  UTILITIES
+  ENTERTAINMENT
+  HEALTH
+  TRANSPORT
+  OTHER
+}
