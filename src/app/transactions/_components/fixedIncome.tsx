@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useActionState } from 'react';
 import { TbReceiptTax, TbPlus } from 'react-icons/tb';
 
 import {
@@ -13,7 +13,6 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -21,9 +20,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Spinner } from '@/components/ui/spinner';
+import { Field, FieldGroup, FieldLabel, FieldError } from '@/components/ui/field';
+import { createFixedIncomeAction } from '../actions';
+import { formFixedIncome } from '@/constants/form';
 
 export const FixedIncome = () => {
   const [open, setOpen] = useState(false);
+  const [category, setCategory] = useState('SALARY');
+  const [state, formAction, pending] = useActionState(createFixedIncomeAction, formFixedIncome);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -48,51 +53,93 @@ export const FixedIncome = () => {
         </DialogHeader>
 
         {/* Formulário Visual */}
-        <div className="space-y-4 pt-2">
-          {/* Campo: Descrição */}
-          <div className="space-y-2">
-            <Label htmlFor="description">Descrição do Ganho</Label>
-            <Input id="description" placeholder="Ex: Salário Empresa X, Pro-labore..." />
-          </div>
+        <FieldGroup>
+          <form className="space-y-4 pt-2" action={formAction}>
+            {/* Campo: Descrição */}
+            <Field className="space-y-2">
+              <FieldLabel>Descrição do Ganho</FieldLabel>
+              <Input
+                type="text"
+                name="description"
+                disabled={pending}
+                placeholder="Ex: Salário Empresa X, Pro-labore..."
+              />
+              {!state.success && <FieldError>{state.errors!.description}</FieldError>}
+            </Field>
 
-          {/* Grid: Valor e Dia do Recebimento */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-2">
-              <Label htmlFor="amount">Valor Mensal (R$)</Label>
-              <Input id="amount" type="number" step="0.01" placeholder="0,00" />
+            {/* Grid: Valor e Dia do Recebimento */}
+            <div className="grid grid-cols-2 gap-3">
+              <Field className="space-y-2">
+                <FieldLabel>Valor Mensal (R$)</FieldLabel>
+                <Input
+                  name="amount"
+                  type="number"
+                  step="0.01"
+                  placeholder="0,00"
+                  disabled={pending}
+                />
+                {!state.success && <FieldError>{state.errors!.amount}</FieldError>}
+              </Field>
+
+              <Field className="space-y-2">
+                <FieldLabel>Dia do Crédito</FieldLabel>
+                <Input
+                  name="day"
+                  type="number"
+                  min={1}
+                  max={31}
+                  placeholder="Ex: 5"
+                  disabled={pending}
+                />
+                {!state.success && <FieldError>{state.errors!.day}</FieldError>}
+              </Field>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="day">Dia do Crédito</Label>
-              <Input id="day" type="number" min={1} max={31} placeholder="Ex: 5" />
+            {/* Campo: Categoria */}
+            <Field className="space-y-2">
+              <FieldLabel>Categoria</FieldLabel>
+              <Select
+                value={category}
+                onValueChange={(value) => setCategory(value)}
+                disabled={pending}
+              >
+                <SelectTrigger id="category" className="cursor-pointer">
+                  <SelectValue placeholder="Selecione a categoria" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="SALARY" className="cursor-pointer">
+                    Salário
+                  </SelectItem>
+                  <SelectItem value="OTHER_INCOME" className="cursor-pointer">
+                    Outros Ganhos
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <input type="hidden" name="category" value={category} />
+              {!state.success && <FieldError>{state.errors!.category}</FieldError>}
+            </Field>
+
+            {/* Ações do Rodapé */}
+            <div className="flex items-center justify-end gap-2 pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setOpen(false)}
+                disabled={pending}
+              >
+                Cancelar
+              </Button>
+              <Button
+                type="submit"
+                className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white"
+                disabled={pending}
+              >
+                <TbPlus className="h-4 w-4" />
+                {pending ? <Spinner /> : 'Salvar Renda'}
+              </Button>
             </div>
-          </div>
-
-          {/* Campo: Categoria */}
-          <div className="space-y-2">
-            <Label htmlFor="category">Categoria</Label>
-            <Select defaultValue="Salário">
-              <SelectTrigger id="category">
-                <SelectValue placeholder="Selecione a categoria" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Salário">Salário</SelectItem>
-                <SelectItem value="Outros">Outros Ganhos</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Ações do Rodapé */}
-          <div className="flex items-center justify-end gap-2 pt-4">
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
-              Cancelar
-            </Button>
-            <Button type="button" className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white">
-              <TbPlus className="h-4 w-4" />
-              Salvar Renda Fixa
-            </Button>
-          </div>
-        </div>
+          </form>
+        </FieldGroup>
       </DialogContent>
     </Dialog>
   );

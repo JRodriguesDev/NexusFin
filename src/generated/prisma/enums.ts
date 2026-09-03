@@ -23,6 +23,7 @@ export const TransactionCategory = {
   HEALTH: 'HEALTH',
   TRANSPORT: 'TRANSPORT',
   OTHER: 'OTHER',
+  OTHER_INCOME: 'OTHER_INCOME',
 } as const;
 
 export type TransactionCategory = (typeof TransactionCategory)[keyof typeof TransactionCategory];
