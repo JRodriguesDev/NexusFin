@@ -1,6 +1,6 @@
 import { TbArrowDownLeft, TbArrowUpRight } from 'react-icons/tb';
 
-export const transactionConfigStyles = {
+export const transactionConfig = {
   INCOME: {
     icon: TbArrowDownLeft,
     iconBgColor: 'bg-emerald-500/10',
@@ -49,5 +49,26 @@ export const transactionCategoryConfig = {
   OTHER: {
     label: 'Outros',
     badgeStyle: 'bg-slate-500/10 text-slate-500 hover:bg-slate-500/20',
+  },
+};
+
+export const transactionDialogConfig = {
+  INCOME: {
+    title: 'Nova Receita',
+    description: 'Cadastre seu salário ou ganhos que entram na sua conta.',
+    descriptionLabel: 'Descrição do Ganho',
+    amountLabel: 'Valor Recebido (R$)',
+    dayLabel: 'Dia do Crédito',
+    iconColor: 'text-emerald-500',
+    placeholder: 'Ex: Salário, Freelance, Pro-labore...',
+  },
+  EXPENSE: {
+    title: 'Nova Despesa',
+    description: 'Cadastre suas contas, compras ou gastos do mês.',
+    descriptionLabel: 'Descrição da Despesa',
+    amountLabel: 'Valor do Gasto (R$)',
+    dayLabel: 'Dia do Vencimento',
+    iconColor: 'text-rose-500',
+    placeholder: 'Ex: Aluguel, Supermercado, Luz...',
   },
 };

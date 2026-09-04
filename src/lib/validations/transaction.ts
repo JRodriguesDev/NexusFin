@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { TransactionCategory } from '@/generated/prisma/client';
 
 export const fixedIncomeSchema = z.object({
   description: z
@@ -6,12 +7,12 @@ export const fixedIncomeSchema = z.object({
     .trim()
     .min(3, 'Descrição deve ter no mínimo 3 caracteres')
     .max(255, 'Descrição muito longa'),
-
   amount: z.coerce.number().positive('O valor deve ser maior que zero'),
-
   day: z.coerce.number().int().min(1, 'Dia inválido').max(31, 'Dia inválido'),
-
-  category: z.enum(['SALARY', 'OTHER_INCOME'], { message: 'Categoria Invalida' }),
+  category: z.nativeEnum(TransactionCategory, { message: 'Categoria Invalida' }),
+  isRecurrence: z
+    .enum(['true', 'false'], { message: 'Valor de recorrência inválido' })
+    .transform((val) => val === 'true'),
 });
 
 export type FixedIncomeInput = z.infer<typeof fixedIncomeSchema>;

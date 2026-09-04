@@ -3,12 +3,12 @@ import { Badge } from '@/components/ui/badge';
 import { TableActions } from './tableActions';
 import { Transaction } from '@/types/transactions';
 import { cn, dateFormat, formatCurrency } from '@/lib/utils';
-import { transactionConfigStyles, transactionCategoryConfig } from '@/constants/transaction';
+import { transactionConfig, transactionCategoryConfig } from '@/constants/transaction';
 
 export const Tables = ({ transaction }: { transaction: Transaction }) => {
   const dateFormatted = dateFormat(transaction.date);
   const amountFormatted = formatCurrency(transaction.amount);
-  const Icon = transactionConfigStyles[transaction.type].icon;
+  const Icon = transactionConfig[transaction.type].icon;
 
   return (
     <>
@@ -18,8 +18,8 @@ export const Tables = ({ transaction }: { transaction: Transaction }) => {
             <div
               className={cn(
                 'flex h-7 w-7 items-center justify-center rounded-full',
-                transactionConfigStyles[transaction.type].iconBgColor,
-                transactionConfigStyles[transaction.type].iconTextColor
+                transactionConfig[transaction.type].iconBgColor,
+                transactionConfig[transaction.type].iconTextColor
               )}
             >
               <Icon className="h-4 w-4" />
@@ -52,10 +52,10 @@ export const Tables = ({ transaction }: { transaction: Transaction }) => {
         <td
           className={cn(
             'whitespace-nowrap px-4 py-3.5 text-right font-semibold',
-            transactionConfigStyles[transaction.type].amountColor
+            transactionConfig[transaction.type].amountColor
           )}
         >
-          {transactionConfigStyles[transaction.type].prefix} {amountFormatted}
+          {transactionConfig[transaction.type].prefix} {amountFormatted}
         </td>
         <td className="px-4 py-3.5 text-right">
           <TableActions />

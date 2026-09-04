@@ -8,6 +8,7 @@ export type FixedIncomeType = FormType & {
     description?: string;
     amount?: string;
     day?: string;
+    isRecurrence?: string;
     category?: string;
   };
 };

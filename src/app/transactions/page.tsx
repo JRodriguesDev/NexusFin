@@ -1,5 +1,4 @@
 import { MonthSelector } from './_components/monthSelector';
-import { FixedIncome } from './_components/fixedIncome';
 import { ManageMoney } from './_components/manageMoney';
 import { SearchFilters } from './_components/searchFilters';
 import { ReleaseTables } from './_components/releaseTables';
@@ -24,9 +23,6 @@ const Page = () => {
             <div className="flex flex-wrap items-center gap-2.5">
               {/* Seletor de Mês */}
               <MonthSelector />
-
-              {/* Botão de Salário / Renda Fixa */}
-              <FixedIncome />
 
               {/* Botão Retirar / Despesa */}
               <ManageMoney />
