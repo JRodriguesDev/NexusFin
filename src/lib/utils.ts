@@ -1,6 +1,5 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { Decimal } from '@prisma/client/runtime/client';
 
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
@@ -17,9 +16,9 @@ export const dateFormat = (date: Date) => {
   return formatted;
 };
 
-export const formatCurrency = (value: Decimal) => {
+export const formatCurrency = (value: number) => {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
-  }).format(value.toNumber());
+  }).format(value);
 };

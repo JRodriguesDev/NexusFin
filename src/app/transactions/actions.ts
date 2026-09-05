@@ -2,14 +2,16 @@
 
 import { FixedIncomeType } from '@/types/form';
 import { fixedIncomeSchema } from '@/lib/validations/transaction';
-import { createTransaction } from '@/services/DAL/transaction';
+import { createTransaction, getTransactions } from '@/services/DAL/transaction';
 import { prismaErrors } from '@/lib/prisma/error';
+import { ResponseAction } from '@/types/response';
+import { Transaction } from '@/types/transactions';
+import { updateTag } from 'next/cache';
 
 export const createTransactionAction = async (
   _prevState: FixedIncomeType,
   form: FormData
 ): Promise<FixedIncomeType> => {
-  await new Promise((r) => setTimeout(r, 1000));
   const validationFields = fixedIncomeSchema.safeParse({
     type: form.get('type'),
     description: form.get('description'),
@@ -33,15 +35,23 @@ export const createTransactionAction = async (
     };
   }
 
-  console.log(validationFields.data);
-
   try {
     await createTransaction(validationFields.data);
   } catch (error) {
     return { success: false, message: prismaErrors(error) ?? 'Error Interno' };
   }
 
+  updateTag('transactions');
   return {
     success: true,
   };
+};
+
+export const getTransactionsAction = async (): Promise<ResponseAction<Transaction[]>> => {
+  try {
+    const transactions = await getTransactions();
+    return { success: true, data: transactions };
+  } catch (error) {
+    return { success: false, message: prismaErrors(error) ?? 'Error Interno' };
+  }
 };

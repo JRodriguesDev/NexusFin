@@ -3,7 +3,7 @@ import { TbReceiptOff } from 'react-icons/tb';
 export const EmptyTable = () => {
   return (
     <tr className="h-full">
-      <td colSpan={6} className="h-full px-4 py-8 text-center align-middle">
+      <td colSpan={6} className="h-full px-4 py-20 text-center align-middle">
         <div className="flex h-full w-full min-h-full flex-col items-center justify-center gap-3">
           {/* Ícone com destaque visual suave */}
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted/60 text-muted-foreground">
