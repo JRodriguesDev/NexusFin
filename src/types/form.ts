@@ -3,7 +3,7 @@ type FormType = {
   message?: string;
 };
 
-export type FixedIncomeType = FormType & {
+export type TransactionType = FormType & {
   errors?: {
     description?: string;
     amount?: string;

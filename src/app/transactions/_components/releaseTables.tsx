@@ -4,10 +4,11 @@ import { Suspense } from 'react';
 
 export const ReleaseTables = () => {
   return (
-    // 1. A div externa segura a altura mínima de 320px (h-80) e o scroll se passar disso
-    <div className="min-h-95 w-full overflow-x-auto">
+    // Definimos max-h-[400px] (ou a altura limite que preferir) e overflow-y-auto
+    <div className="max-h-[400px] w-full overflow-y-auto overflow-x-auto rounded-md border border-border">
       <table className="w-full text-left text-sm table-fixed">
-        <thead className="bg-muted/40 text-xs uppercase text-muted-foreground">
+        {/* sticky top-0 faz o cabeçalho ficar fixo enquanto o tbody rola */}
+        <thead className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm text-xs uppercase text-muted-foreground border-b border-border">
           <tr>
             <th className="w-[18%] px-4 py-3">Tipo / Data</th>
             <th className="w-[30%] px-4 py-3">Descrição</th>
@@ -18,7 +19,6 @@ export const ReleaseTables = () => {
           </tr>
         </thead>
 
-        {/* 2. Removemos o h-80 daqui. As linhas vão renderizar coladas no topo! */}
         <tbody className="divide-y divide-border">
           <Suspense fallback={<TableSkeleton />}>
             <Tables />

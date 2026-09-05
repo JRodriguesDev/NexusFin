@@ -1,6 +1,6 @@
-import { FixedIncomeType } from '@/types/form';
+import { TransactionType } from '@/types/form';
 
-export const formFixedIncome: FixedIncomeType = {
+export const TransactionResponse: TransactionType = {
   success: false,
   errors: {
     description: undefined,

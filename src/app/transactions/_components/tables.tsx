@@ -66,7 +66,7 @@ export const Tables = async () => {
               {transactionConfig[transaction.type].prefix} {amountFormatted}
             </td>
             <td className="px-4 py-3.5 text-right">
-              <TableActions />
+              <TableActions transaction={transaction} />
             </td>
           </tr>
         );

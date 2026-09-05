@@ -1,15 +1,14 @@
 'use client';
 
 import { useState, useActionState, useEffect } from 'react';
-import { TbReceiptTax, TbPlus } from 'react-icons/tb';
-
+import { TbPencil, TbReceiptTax } from 'react-icons/tb';
 import {
   Dialog,
   DialogContent,
+  DialogTrigger,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -21,34 +20,38 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Spinner } from '@/components/ui/spinner';
 import { Field, FieldGroup, FieldLabel, FieldError } from '@/components/ui/field';
 import { cn } from '@/lib/utils';
-import { createTransactionAction } from '../actions';
-import { TransactionResponse } from '@/constants/form';
-import { TransactionType } from '@/types/transactions';
 import { transactionDialogConfig } from '@/constants/transaction';
+import { Transaction } from '@/types/transactions';
+import { TransactionResponse } from '@/constants/form';
+import { updateTransactionAction } from '../actions';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-export const TransationDialog = ({
-  type,
+export const EditTransactionDialog = ({
+  transaction,
   trigger,
 }: {
-  type: TransactionType;
+  transaction: Transaction;
   trigger: React.ReactNode;
 }) => {
   const [open, setOpen] = useState(false);
-  const [category, setCategory] = useState('SALARY');
-  const [isRecurrence, setIsRecurrence] = useState(false);
-  const [state, formAction, pending] = useActionState(createTransactionAction, TransactionResponse);
-  const currentDialogType = transactionDialogConfig[type];
+  const [category, setCategory] = useState(transaction.category);
+  const [isRecurrence, setIsRecurrence] = useState(transaction.isRecurrence);
+  const currentDialogType = transactionDialogConfig[transaction.type];
+  const [state, formAction, pending] = useActionState(updateTransactionAction, TransactionResponse);
   const router = useRouter();
 
   useEffect(() => {
-    if (state.success) {
-      toast.success(`${currentDialogType.title} Adicionada`);
+    if (state) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setCategory(transaction.category);
+      setIsRecurrence(transaction.isRecurrence);
+    }
 
+    if (state.success) {
+      toast.success('Transação Editada com sucesso');
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setOpen(false);
       router.refresh();
@@ -57,17 +60,14 @@ export const TransationDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      {/* Botão Gatilho no Cabeçalho */}
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-
-      {/* Conteúdo do Modal */}
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-lg font-bold">
             <TbReceiptTax className={cn('h-5 w-5', currentDialogType.iconColor)} />
-            {currentDialogType.title}
+            Editar {currentDialogType.title}
           </DialogTitle>
-          <DialogDescription>{currentDialogType.description}</DialogDescription>
+          <DialogDescription>Altere os detalhes da transação selecionada abaixo.</DialogDescription>
         </DialogHeader>
 
         {/* Formulário Visual */}
@@ -80,8 +80,10 @@ export const TransationDialog = ({
                 type="text"
                 name="description"
                 disabled={pending}
+                defaultValue={transaction.description}
                 placeholder={currentDialogType.placeholder}
               />
+              <input type="hidden" name="id" value={transaction.id} />
               {!state.success && state.errors?.description && (
                 <FieldError>{state.errors!.description}</FieldError>
               )}
@@ -92,13 +94,13 @@ export const TransationDialog = ({
               <Field className="space-y-2">
                 <FieldLabel>{currentDialogType.amountLabel}</FieldLabel>
                 <Input
+                  disabled={pending}
                   name="amount"
                   type="number"
                   step="0.01"
+                  defaultValue={transaction.amount}
                   placeholder="0,00"
-                  disabled={pending}
                 />
-                <input type="hidden" name="type" value={type} />
                 {!state.success && state.errors?.amount && (
                   <FieldError>{state.errors!.amount}</FieldError>
                 )}
@@ -107,12 +109,13 @@ export const TransationDialog = ({
               <Field className="space-y-2">
                 <FieldLabel>{currentDialogType.dayLabel}</FieldLabel>
                 <Input
+                  disabled={pending}
                   name="recurringDay"
                   type="number"
                   min={1}
                   max={31}
+                  defaultValue={transaction.recurringDay ?? ''}
                   placeholder="Ex: 5"
-                  disabled={pending}
                 />
                 {!state.success && state.errors?.recurringDay && (
                   <FieldError>{state.errors!.recurringDay}</FieldError>
@@ -125,7 +128,7 @@ export const TransationDialog = ({
               <FieldLabel>Categoria</FieldLabel>
               <Select
                 value={category}
-                onValueChange={(value) => setCategory(value)}
+                onValueChange={(value) => setCategory(value as typeof transaction.category)}
                 disabled={pending}
               >
                 <SelectTrigger id="category" className="cursor-pointer">
@@ -200,8 +203,8 @@ export const TransationDialog = ({
                 className={cn('gap-2 cursor-pointer', currentDialogType.buttonClass)}
                 disabled={pending}
               >
-                <TbPlus className="h-4 w-4" />
-                {pending ? <Spinner /> : currentDialogType.buttonText}
+                <TbPencil className="h-4 w-4" />
+                Salvar Alterações
               </Button>
             </div>
           </form>
