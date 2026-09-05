@@ -7,7 +7,7 @@ export type FixedIncomeType = FormType & {
   errors?: {
     description?: string;
     amount?: string;
-    day?: string;
+    recurringDay?: string;
     isRecurrence?: string;
     category?: string;
   };

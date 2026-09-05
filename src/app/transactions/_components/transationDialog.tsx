@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useActionState } from 'react';
+import { useState, useActionState, useEffect } from 'react';
 import { TbReceiptTax, TbPlus } from 'react-icons/tb';
 
 import {
@@ -28,6 +28,8 @@ import { createTransactionAction } from '../actions';
 import { formFixedIncome } from '@/constants/form';
 import { TransactionType } from '@/types/transactions';
 import { transactionDialogConfig } from '@/constants/transaction';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 export const TransationDialog = ({
   type,
@@ -41,6 +43,17 @@ export const TransationDialog = ({
   const [isRecurrence, setIsRecurrence] = useState(false);
   const [state, formAction, pending] = useActionState(createTransactionAction, formFixedIncome);
   const currentDialogType = transactionDialogConfig[type];
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state.success) {
+      toast.success(`${currentDialogType.title} Adicionada`);
+
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setOpen(false);
+      router.refresh();
+    }
+  }, [state]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -69,7 +82,9 @@ export const TransationDialog = ({
                 disabled={pending}
                 placeholder={currentDialogType.placeholder}
               />
-              {!state.success && <FieldError>{state.errors!.description}</FieldError>}
+              {!state.success && state.errors?.description && (
+                <FieldError>{state.errors!.description}</FieldError>
+              )}
             </Field>
 
             {/* Grid: Valor e Dia */}
@@ -83,20 +98,25 @@ export const TransationDialog = ({
                   placeholder="0,00"
                   disabled={pending}
                 />
-                {!state.success && <FieldError>{state.errors!.amount}</FieldError>}
+                <input type="hidden" name="type" value={type} />
+                {!state.success && state.errors?.amount && (
+                  <FieldError>{state.errors!.amount}</FieldError>
+                )}
               </Field>
 
               <Field className="space-y-2">
                 <FieldLabel>{currentDialogType.dayLabel}</FieldLabel>
                 <Input
-                  name="day"
+                  name="recurringDay"
                   type="number"
                   min={1}
                   max={31}
                   placeholder="Ex: 5"
                   disabled={pending}
                 />
-                {!state.success && <FieldError>{state.errors!.day}</FieldError>}
+                {!state.success && state.errors?.recurringDay && (
+                  <FieldError>{state.errors!.recurringDay}</FieldError>
+                )}
               </Field>
             </div>
 
@@ -139,7 +159,9 @@ export const TransationDialog = ({
                 </SelectContent>
               </Select>
               <input type="hidden" name="category" value={category} />
-              {!state.success && <FieldError>{state.errors!.category}</FieldError>}
+              {!state.success && state.errors?.category && (
+                <FieldError>{state.errors!.category}</FieldError>
+              )}
             </Field>
 
             {/* Campo: Transação Recorrente */}
@@ -155,8 +177,12 @@ export const TransationDialog = ({
                 </FieldLabel>
                 <input type="hidden" name="isRecurrence" value={isRecurrence ? 'true' : 'false'} />
               </div>
-              {!state.success && <FieldError>{state.errors!.isRecurrence}</FieldError>}
+              {!state.success && state.errors?.isRecurrence && (
+                <FieldError>{state.errors!.isRecurrence}</FieldError>
+              )}
             </Field>
+
+            {!state.success && state.message && <FieldError>{state.message}</FieldError>}
 
             {/* Ações do Rodapé */}
             <div className="flex items-center justify-end gap-2 pt-4">
@@ -170,11 +196,11 @@ export const TransationDialog = ({
               </Button>
               <Button
                 type="submit"
-                className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white"
+                className={cn('gap-2', currentDialogType.buttonClass)}
                 disabled={pending}
               >
                 <TbPlus className="h-4 w-4" />
-                {pending ? <Spinner /> : 'Salvar Renda'}
+                {pending ? <Spinner /> : currentDialogType.buttonText}
               </Button>
             </div>
           </form>

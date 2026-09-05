@@ -10,5 +10,3 @@ export type Transaction = Pick<
   PrismaTransaction,
   'id' | 'type' | 'date' | 'description' | 'category' | 'isRecurrence' | 'recurringDay' | 'amount'
 >;
-
-export type ManageTransactionType = 'INCOME' | 'EXPENSE';

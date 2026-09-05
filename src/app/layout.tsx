@@ -4,6 +4,7 @@ import { Geist } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { Header } from './_components/header';
 import { MobileNavLink } from './_components/mobileNavLink';
+import { Toaster } from '@/components/ui/sonner';
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -19,6 +20,7 @@ export const RootLayout = ({ children }: LayoutProps<'/'>) => {
         <Header />
         {children}
         <MobileNavLink />
+        <Toaster />
       </body>
     </html>
   );

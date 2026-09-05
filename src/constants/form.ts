@@ -5,7 +5,7 @@ export const formFixedIncome: FixedIncomeType = {
   errors: {
     description: undefined,
     amount: undefined,
-    day: undefined,
+    recurringDay: undefined,
     isRecurrence: undefined,
     category: undefined,
   },
