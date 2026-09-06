@@ -12,6 +12,7 @@ import { prismaErrors } from '@/lib/prisma/error';
 import { ResponseAction } from '@/types/response';
 import { Transaction } from '@/types/transactions';
 import { updateTag } from 'next/cache';
+import { TransactionSearchParams } from '@/types/transactions';
 
 export const createTransactionAction = async (
   _prevState: TransactionType,
@@ -52,11 +53,20 @@ export const createTransactionAction = async (
   };
 };
 
-export const getTransactionsAction = async (): Promise<ResponseAction<Transaction[]>> => {
+export const getTransactionsAction = async (
+  params: TransactionSearchParams
+): Promise<ResponseAction<Transaction[]>> => {
+  const safeParams = params ?? ({} as TransactionSearchParams);
+  const filters: TransactionSearchParams = {
+    ...safeParams,
+    search: safeParams.search?.trim() || undefined,
+    category: safeParams.category || undefined,
+  };
   try {
-    const transactions = await getTransactions();
+    const transactions = await getTransactions(filters);
     return { success: true, data: transactions };
   } catch (error) {
+    console.log(error);
     return { success: false, message: prismaErrors(error) ?? 'Error Interno' };
   }
 };

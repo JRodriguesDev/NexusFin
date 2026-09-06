@@ -6,9 +6,10 @@ import { ErrorTable } from './errorTable';
 import { cn, dateFormat, formatCurrency } from '@/lib/utils';
 import { transactionConfig, transactionCategoryConfig } from '@/constants/transaction';
 import { getTransactionsAction } from '../actions';
+import { TransactionSearchParams } from '@/types/transactions';
 
-export const Tables = async () => {
-  const response = await getTransactionsAction();
+export const Tables = async ({ params }: { params: TransactionSearchParams }) => {
+  const response = await getTransactionsAction(params);
   if (!response.success) return <ErrorTable error={response.message} />;
   if (response.data?.length === 0) return <EmptyTable />;
   const transactions = response.data;

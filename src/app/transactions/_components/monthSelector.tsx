@@ -26,17 +26,33 @@ export const MonthSelector = () => {
   useEffect(() => {
     const stateMonth = (date.getMonth() + 1).toString();
     const stateYear = date.getFullYear().toString();
-    const timeout = setTimeout(() => {
-      const params = new URLSearchParams(searchParams);
+
+    const currentMonthInUrl = searchParams.get('month');
+    const currentYearInUrl = searchParams.get('year');
+
+    if (currentMonthInUrl === stateMonth && currentYearInUrl === stateYear) {
+      return;
+    }
+
+    const updateUrl = () => {
+      const params = new URLSearchParams(searchParams.toString());
       params.set('month', stateMonth);
       params.set('year', stateYear);
 
       startTransition(() => {
         router.replace(`${pathName}?${params.toString()}`);
       });
-    }, 500);
+    };
+
+    if (!currentMonthInUrl || !currentYearInUrl) {
+      updateUrl();
+      return;
+    }
+
+    const timeout = setTimeout(updateUrl, 500);
+
     return () => clearTimeout(timeout);
-  }, [date]);
+  }, [date, pathName, router, searchParams]);
 
   const currentMonth = formattedMonth.charAt(0).toUpperCase() + formattedMonth.slice(1);
 

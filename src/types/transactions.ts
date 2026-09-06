@@ -15,3 +15,10 @@ export type Transaction = Omit<
 > & {
   amount: number;
 };
+
+export type TransactionSearchParams = {
+  search?: string;
+  category?: TransactionCategory;
+  month: number;
+  year: number;
+};

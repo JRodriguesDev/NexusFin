@@ -2,8 +2,11 @@ import { MonthSelector } from './_components/monthSelector';
 import { ManageMoney } from './_components/manageMoney';
 import { SearchFilters } from './_components/searchFilters';
 import { ReleaseTables } from './_components/releaseTables';
+import { TransactionSearchParams } from '@/types/transactions';
 
-const Page = () => {
+const Page = async ({ searchParams }: { searchParams: Promise<TransactionSearchParams> }) => {
+  const params = await searchParams;
+
   return (
     <main className="w-full py-6 sm:py-8">
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
@@ -36,7 +39,7 @@ const Page = () => {
 
             {/* Tabela de Lançamentos */}
             <div className="overflow-x-auto">
-              <ReleaseTables />
+              <ReleaseTables params={params} />
             </div>
           </div>
         </div>

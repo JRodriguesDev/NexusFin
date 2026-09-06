@@ -1,8 +1,9 @@
 import { Tables } from './tables';
 import { TableSkeleton } from './tableSkeleton';
 import { Suspense } from 'react';
+import { TransactionSearchParams } from '@/types/transactions';
 
-export const ReleaseTables = () => {
+export const ReleaseTables = ({ params }: { params: TransactionSearchParams }) => {
   return (
     // Definimos max-h-[400px] (ou a altura limite que preferir) e overflow-y-auto
     <div className="max-h-[400px] w-full overflow-y-auto overflow-x-auto rounded-md border border-border">
@@ -21,7 +22,7 @@ export const ReleaseTables = () => {
 
         <tbody className="divide-y divide-border">
           <Suspense fallback={<TableSkeleton />}>
-            <Tables />
+            <Tables params={params} />
           </Suspense>
         </tbody>
       </table>
