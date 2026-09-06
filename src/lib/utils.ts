@@ -5,6 +5,13 @@ export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
 
+export const dateFilterFormat = () => {
+  const now = new Date();
+  const month = now.getMonth();
+  const year = now.getFullYear();
+  return new Date(year, month, 1);
+};
+
 export const dateFormat = (date: Date) => {
   const d = new Date(date);
   const formatted = new Intl.DateTimeFormat('pt-BR', {
