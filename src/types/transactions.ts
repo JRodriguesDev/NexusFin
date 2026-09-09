@@ -1,4 +1,4 @@
-import {
+import type {
   Transaction as PrismaTransaction,
   TransactionCategory as PrismaTransactionCategory,
   TransactionType as PrismaTransactionType,

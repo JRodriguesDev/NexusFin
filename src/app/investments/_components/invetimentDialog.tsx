@@ -11,7 +11,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -21,11 +20,11 @@ import {
 } from '@/components/ui/select';
 import { TbPlus, TbLoader2, TbCheck } from 'react-icons/tb';
 import { Field, FieldLabel, FieldError } from '@/components/ui/field';
-import { useState } from 'react';
+import { useState } from 'react';rom '@/types/investiments'
 
-export const AddInvestmentButton = () => {
+export const InvestimentDialog = () => {
   const [open, setOpen] = useState(false);
-  const [category, setCategory] = useState('ACOES');
+  const [category, setCategory] = useState('STOCK');
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -52,15 +51,15 @@ export const AddInvestmentButton = () => {
                   <SelectValue placeholder="Selecione a categoria" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ACOES">Ações (B3)</SelectItem>
+                  <SelectItem value="STOCK">Ações (B3)</SelectItem>
                   <SelectItem value="FIIS">Fundos Imobiliários (FIIs)</SelectItem>
                   <SelectItem value="CRIPTO">Criptomoedas</SelectItem>
-                  <SelectItem value="RENDA_FIXA">Renda Fixa / Caixinhas</SelectItem>
+                  <SelectItem value="FIXED_INCOME">Renda Fixa / Caixinhas</SelectItem>
                 </SelectContent>
               </Select>
               <input type="hidden" name="category" value={category} />
             </Field>
-            {category !== 'RENDA_FIXA' ? (
+            {category !== 'FIXED_INCOME' ? (
               <Field className="grid gap-2 relative">
                 <FieldLabel htmlFor="ticker">Buscar Ativo</FieldLabel>
                 <div className="relative">

@@ -1,0 +1,38 @@
+model Asset {
+  id String @id @default(cuid())
+  ticker String?
+  name String
+  category AssetCategory
+  quantity Decimal @default(0) @db.Decimal(18, 8)
+  averagePrice Decimal @default(0) @db.Decimal(12, 2) @map("average_price")
+  transactions AssetTransaction[]
+
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@unique([ticker, name])
+  @@map("assets")
+}
+
+model AssetTransaction {
+  id String @id @default(cuid())
+  assetId String @map("asset_id")
+  asset Asset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  dateOperation DateTime
+  quantity Decimal @default(0) @db.Decimal(18, 8)
+  price Decimal @default(0) @db.Decimal(12, 2)
+
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@map("asset_transactions")
+}
+
+enum AssetCategory {
+  STOCK
+  FIIS
+  CRIPTO
+  FIXED_INCOME
+}
+

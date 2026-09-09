@@ -7,5 +7,7 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/Asset';
+export type * from './models/AssetTransaction';
 export type * from './models/Transaction';
 export type * from './commonInputTypes';

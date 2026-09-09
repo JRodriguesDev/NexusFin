@@ -30,8 +30,8 @@ export * from './enums';
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more Transactions
- * const transactions = await prisma.transaction.findMany()
+ * // Fetch zero or more Assets
+ * const assets = await prisma.asset.findMany()
  * ```
  *
  * Read more in our [docs](https://pris.ly/d/client).
@@ -44,6 +44,16 @@ export type PrismaClient<
 > = $Class.PrismaClient<LogOpts, OmitOpts, ExtArgs>;
 export { Prisma };
 
+/**
+ * Model Asset
+ *
+ */
+export type Asset = Prisma.AssetModel;
+/**
+ * Model AssetTransaction
+ *
+ */
+export type AssetTransaction = Prisma.AssetTransactionModel;
 /**
  * Model Transaction
  *

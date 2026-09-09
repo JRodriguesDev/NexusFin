@@ -390,6 +390,8 @@ export type FieldRef<Model, FieldType> = runtime.FieldRef<Model, FieldType>;
 type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRef<Model, FieldType>;
 
 export const ModelName = {
+  Asset: 'Asset',
+  AssetTransaction: 'AssetTransaction',
   Transaction: 'Transaction',
 } as const;
 
@@ -410,10 +412,159 @@ export type TypeMap<
     omit: GlobalOmitOptions;
   };
   meta: {
-    modelProps: 'transaction';
+    modelProps: 'asset' | 'assetTransaction' | 'transaction';
     txIsolationLevel: TransactionIsolationLevel;
   };
   model: {
+    Asset: {
+      payload: Prisma.$AssetPayload<ExtArgs>;
+      fields: Prisma.AssetFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.AssetFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetPayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.AssetFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetPayload>;
+        };
+        findFirst: {
+          args: Prisma.AssetFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetPayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.AssetFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetPayload>;
+        };
+        findMany: {
+          args: Prisma.AssetFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetPayload>[];
+        };
+        create: {
+          args: Prisma.AssetCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetPayload>;
+        };
+        createMany: {
+          args: Prisma.AssetCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.AssetCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetPayload>[];
+        };
+        delete: {
+          args: Prisma.AssetDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetPayload>;
+        };
+        update: {
+          args: Prisma.AssetUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetPayload>;
+        };
+        deleteMany: {
+          args: Prisma.AssetDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.AssetUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.AssetUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetPayload>[];
+        };
+        upsert: {
+          args: Prisma.AssetUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetPayload>;
+        };
+        aggregate: {
+          args: Prisma.AssetAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAsset>;
+        };
+        groupBy: {
+          args: Prisma.AssetGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AssetGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.AssetCountArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AssetCountAggregateOutputType> | number;
+        };
+      };
+    };
+    AssetTransaction: {
+      payload: Prisma.$AssetTransactionPayload<ExtArgs>;
+      fields: Prisma.AssetTransactionFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.AssetTransactionFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetTransactionPayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.AssetTransactionFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetTransactionPayload>;
+        };
+        findFirst: {
+          args: Prisma.AssetTransactionFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetTransactionPayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.AssetTransactionFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetTransactionPayload>;
+        };
+        findMany: {
+          args: Prisma.AssetTransactionFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetTransactionPayload>[];
+        };
+        create: {
+          args: Prisma.AssetTransactionCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetTransactionPayload>;
+        };
+        createMany: {
+          args: Prisma.AssetTransactionCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.AssetTransactionCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetTransactionPayload>[];
+        };
+        delete: {
+          args: Prisma.AssetTransactionDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetTransactionPayload>;
+        };
+        update: {
+          args: Prisma.AssetTransactionUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetTransactionPayload>;
+        };
+        deleteMany: {
+          args: Prisma.AssetTransactionDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.AssetTransactionUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.AssetTransactionUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetTransactionPayload>[];
+        };
+        upsert: {
+          args: Prisma.AssetTransactionUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AssetTransactionPayload>;
+        };
+        aggregate: {
+          args: Prisma.AssetTransactionAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAssetTransaction>;
+        };
+        groupBy: {
+          args: Prisma.AssetTransactionGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AssetTransactionGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.AssetTransactionCountArgs<ExtArgs>;
+          result:
+            runtime.Types.Utils.Optional<Prisma.AssetTransactionCountAggregateOutputType> | number;
+        };
+      };
+    };
     Transaction: {
       payload: Prisma.$TransactionPayload<ExtArgs>;
       fields: Prisma.TransactionFieldRefs;
@@ -527,6 +678,32 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel =
   (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
 
+export const AssetScalarFieldEnum = {
+  id: 'id',
+  ticker: 'ticker',
+  name: 'name',
+  category: 'category',
+  quantity: 'quantity',
+  averagePrice: 'averagePrice',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type AssetScalarFieldEnum = (typeof AssetScalarFieldEnum)[keyof typeof AssetScalarFieldEnum];
+
+export const AssetTransactionScalarFieldEnum = {
+  id: 'id',
+  assetId: 'assetId',
+  dateOperation: 'dateOperation',
+  quantity: 'quantity',
+  price: 'price',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type AssetTransactionScalarFieldEnum =
+  (typeof AssetTransactionScalarFieldEnum)[keyof typeof AssetTransactionScalarFieldEnum];
+
 export const TransactionScalarFieldEnum = {
   id: 'id',
   type: 'type',
@@ -579,6 +756,42 @@ export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 
 export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>;
 
 /**
+ * Reference to a field of type 'AssetCategory'
+ */
+export type EnumAssetCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<
+  $PrismaModel,
+  'AssetCategory'
+>;
+
+/**
+ * Reference to a field of type 'AssetCategory[]'
+ */
+export type ListEnumAssetCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<
+  $PrismaModel,
+  'AssetCategory[]'
+>;
+
+/**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>;
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>;
+
+/**
+ * Reference to a field of type 'DateTime'
+ */
+export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>;
+
+/**
+ * Reference to a field of type 'DateTime[]'
+ */
+export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>;
+
+/**
  * Reference to a field of type 'TransactionType'
  */
 export type EnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
@@ -593,16 +806,6 @@ export type ListEnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputTy
   $PrismaModel,
   'TransactionType[]'
 >;
-
-/**
- * Reference to a field of type 'DateTime'
- */
-export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>;
-
-/**
- * Reference to a field of type 'DateTime[]'
- */
-export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>;
 
 /**
  * Reference to a field of type 'TransactionCategory'
@@ -634,16 +837,6 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>;
-
-/**
- * Reference to a field of type 'Decimal'
- */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>;
-
-/**
- * Reference to a field of type 'Decimal[]'
- */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>;
 
 /**
  * Reference to a field of type 'Float'
@@ -812,6 +1005,8 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
 export type PrismaClientOptions =
   PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter;
 export type GlobalOmitConfig = {
+  asset?: Prisma.AssetOmit;
+  assetTransaction?: Prisma.AssetTransactionOmit;
   transaction?: Prisma.TransactionOmit;
 };
 

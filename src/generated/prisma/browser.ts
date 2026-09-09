@@ -17,6 +17,16 @@ export { Prisma };
 export * as $Enums from './enums';
 export * from './enums';
 /**
+ * Model Asset
+ *
+ */
+export type Asset = Prisma.AssetModel;
+/**
+ * Model AssetTransaction
+ *
+ */
+export type AssetTransaction = Prisma.AssetTransactionModel;
+/**
  * Model Transaction
  *
  */

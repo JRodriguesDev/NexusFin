@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { AddInvestmentButton } from './_components/addInvestmentButton';
+import { InvestimentDialog } from './_components/invetimentDialog';
 import { InvestimentStatus } from './_components/investimentStatus';
 import { Table } from './_components/table';
 
@@ -14,7 +14,7 @@ export default function InvestmentsPage() {
             Acompanhe a consolidação dos seus ativos e histórico de aportes.
           </p>
         </div>
-        <AddInvestmentButton />
+        <InvestimentDialog />
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">

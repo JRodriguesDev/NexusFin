@@ -48,6 +48,8 @@ export const JsonNull = runtime.JsonNull;
 export const AnyNull = runtime.AnyNull;
 
 export const ModelName = {
+  Asset: 'Asset',
+  AssetTransaction: 'AssetTransaction',
   Transaction: 'Transaction',
 } as const;
 
@@ -66,6 +68,32 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 
 export type TransactionIsolationLevel =
   (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
+
+export const AssetScalarFieldEnum = {
+  id: 'id',
+  ticker: 'ticker',
+  name: 'name',
+  category: 'category',
+  quantity: 'quantity',
+  averagePrice: 'averagePrice',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type AssetScalarFieldEnum = (typeof AssetScalarFieldEnum)[keyof typeof AssetScalarFieldEnum];
+
+export const AssetTransactionScalarFieldEnum = {
+  id: 'id',
+  assetId: 'assetId',
+  dateOperation: 'dateOperation',
+  quantity: 'quantity',
+  price: 'price',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type AssetTransactionScalarFieldEnum =
+  (typeof AssetTransactionScalarFieldEnum)[keyof typeof AssetTransactionScalarFieldEnum];
 
 export const TransactionScalarFieldEnum = {
   id: 'id',

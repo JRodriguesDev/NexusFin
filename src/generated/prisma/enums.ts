@@ -8,6 +8,15 @@
  * 🟢 You can import this file directly.
  */
 
+export const AssetCategory = {
+  STOCK: 'STOCK',
+  FIIS: 'FIIS',
+  CRIPTO: 'CRIPTO',
+  FIXED_INCOME: 'FIXED_INCOME',
+} as const;
+
+export type AssetCategory = (typeof AssetCategory)[keyof typeof AssetCategory];
+
 export const TransactionType = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE',
