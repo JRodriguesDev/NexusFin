@@ -71,6 +71,7 @@ export type TransactionIsolationLevel =
 
 export const AssetScalarFieldEnum = {
   id: 'id',
+  logo: 'logo',
   ticker: 'ticker',
   name: 'name',
   category: 'category',

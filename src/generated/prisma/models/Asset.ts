@@ -37,6 +37,7 @@ export type AssetSumAggregateOutputType = {
 
 export type AssetMinAggregateOutputType = {
   id: string | null;
+  logo: string | null;
   ticker: string | null;
   name: string | null;
   category: $Enums.AssetCategory | null;
@@ -48,6 +49,7 @@ export type AssetMinAggregateOutputType = {
 
 export type AssetMaxAggregateOutputType = {
   id: string | null;
+  logo: string | null;
   ticker: string | null;
   name: string | null;
   category: $Enums.AssetCategory | null;
@@ -59,6 +61,7 @@ export type AssetMaxAggregateOutputType = {
 
 export type AssetCountAggregateOutputType = {
   id: number;
+  logo: number;
   ticker: number;
   name: number;
   category: number;
@@ -81,6 +84,7 @@ export type AssetSumAggregateInputType = {
 
 export type AssetMinAggregateInputType = {
   id?: true;
+  logo?: true;
   ticker?: true;
   name?: true;
   category?: true;
@@ -92,6 +96,7 @@ export type AssetMinAggregateInputType = {
 
 export type AssetMaxAggregateInputType = {
   id?: true;
+  logo?: true;
   ticker?: true;
   name?: true;
   category?: true;
@@ -103,6 +108,7 @@ export type AssetMaxAggregateInputType = {
 
 export type AssetCountAggregateInputType = {
   id?: true;
+  logo?: true;
   ticker?: true;
   name?: true;
   category?: true;
@@ -202,8 +208,9 @@ export type AssetGroupByArgs<
 
 export type AssetGroupByOutputType = {
   id: string;
+  logo: string | null;
   ticker: string | null;
-  name: string;
+  name: string | null;
   category: $Enums.AssetCategory;
   quantity: runtime.Decimal;
   averagePrice: runtime.Decimal;
@@ -233,8 +240,9 @@ export type AssetWhereInput = {
   OR?: Prisma.AssetWhereInput[];
   NOT?: Prisma.AssetWhereInput | Prisma.AssetWhereInput[];
   id?: Prisma.StringFilter<'Asset'> | string;
+  logo?: Prisma.StringNullableFilter<'Asset'> | string | null;
   ticker?: Prisma.StringNullableFilter<'Asset'> | string | null;
-  name?: Prisma.StringFilter<'Asset'> | string;
+  name?: Prisma.StringNullableFilter<'Asset'> | string | null;
   category?: Prisma.EnumAssetCategoryFilter<'Asset'> | $Enums.AssetCategory;
   quantity?:
     Prisma.DecimalFilter<'Asset'> | runtime.Decimal | runtime.DecimalJsLike | number | string;
@@ -247,8 +255,9 @@ export type AssetWhereInput = {
 
 export type AssetOrderByWithRelationInput = {
   id?: Prisma.SortOrder;
+  logo?: Prisma.SortOrderInput | Prisma.SortOrder;
   ticker?: Prisma.SortOrderInput | Prisma.SortOrder;
-  name?: Prisma.SortOrder;
+  name?: Prisma.SortOrderInput | Prisma.SortOrder;
   category?: Prisma.SortOrder;
   quantity?: Prisma.SortOrder;
   averagePrice?: Prisma.SortOrder;
@@ -264,8 +273,9 @@ export type AssetWhereUniqueInput = Prisma.AtLeast<
     AND?: Prisma.AssetWhereInput | Prisma.AssetWhereInput[];
     OR?: Prisma.AssetWhereInput[];
     NOT?: Prisma.AssetWhereInput | Prisma.AssetWhereInput[];
+    logo?: Prisma.StringNullableFilter<'Asset'> | string | null;
     ticker?: Prisma.StringNullableFilter<'Asset'> | string | null;
-    name?: Prisma.StringFilter<'Asset'> | string;
+    name?: Prisma.StringNullableFilter<'Asset'> | string | null;
     category?: Prisma.EnumAssetCategoryFilter<'Asset'> | $Enums.AssetCategory;
     quantity?:
       Prisma.DecimalFilter<'Asset'> | runtime.Decimal | runtime.DecimalJsLike | number | string;
@@ -280,8 +290,9 @@ export type AssetWhereUniqueInput = Prisma.AtLeast<
 
 export type AssetOrderByWithAggregationInput = {
   id?: Prisma.SortOrder;
+  logo?: Prisma.SortOrderInput | Prisma.SortOrder;
   ticker?: Prisma.SortOrderInput | Prisma.SortOrder;
-  name?: Prisma.SortOrder;
+  name?: Prisma.SortOrderInput | Prisma.SortOrder;
   category?: Prisma.SortOrder;
   quantity?: Prisma.SortOrder;
   averagePrice?: Prisma.SortOrder;
@@ -299,8 +310,9 @@ export type AssetScalarWhereWithAggregatesInput = {
   OR?: Prisma.AssetScalarWhereWithAggregatesInput[];
   NOT?: Prisma.AssetScalarWhereWithAggregatesInput | Prisma.AssetScalarWhereWithAggregatesInput[];
   id?: Prisma.StringWithAggregatesFilter<'Asset'> | string;
+  logo?: Prisma.StringNullableWithAggregatesFilter<'Asset'> | string | null;
   ticker?: Prisma.StringNullableWithAggregatesFilter<'Asset'> | string | null;
-  name?: Prisma.StringWithAggregatesFilter<'Asset'> | string;
+  name?: Prisma.StringNullableWithAggregatesFilter<'Asset'> | string | null;
   category?: Prisma.EnumAssetCategoryWithAggregatesFilter<'Asset'> | $Enums.AssetCategory;
   quantity?:
     | Prisma.DecimalWithAggregatesFilter<'Asset'>
@@ -320,8 +332,9 @@ export type AssetScalarWhereWithAggregatesInput = {
 
 export type AssetCreateInput = {
   id?: string;
+  logo?: string | null;
   ticker?: string | null;
-  name: string;
+  name?: string | null;
   category: $Enums.AssetCategory;
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string;
   averagePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string;
@@ -332,8 +345,9 @@ export type AssetCreateInput = {
 
 export type AssetUncheckedCreateInput = {
   id?: string;
+  logo?: string | null;
   ticker?: string | null;
-  name: string;
+  name?: string | null;
   category: $Enums.AssetCategory;
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string;
   averagePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string;
@@ -344,8 +358,9 @@ export type AssetUncheckedCreateInput = {
 
 export type AssetUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   ticker?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-  name?: Prisma.StringFieldUpdateOperationsInput | string;
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   category?: Prisma.EnumAssetCategoryFieldUpdateOperationsInput | $Enums.AssetCategory;
   quantity?:
     | Prisma.DecimalFieldUpdateOperationsInput
@@ -366,8 +381,9 @@ export type AssetUpdateInput = {
 
 export type AssetUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   ticker?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-  name?: Prisma.StringFieldUpdateOperationsInput | string;
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   category?: Prisma.EnumAssetCategoryFieldUpdateOperationsInput | $Enums.AssetCategory;
   quantity?:
     | Prisma.DecimalFieldUpdateOperationsInput
@@ -388,8 +404,9 @@ export type AssetUncheckedUpdateInput = {
 
 export type AssetCreateManyInput = {
   id?: string;
+  logo?: string | null;
   ticker?: string | null;
-  name: string;
+  name?: string | null;
   category: $Enums.AssetCategory;
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string;
   averagePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string;
@@ -399,8 +416,9 @@ export type AssetCreateManyInput = {
 
 export type AssetUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   ticker?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-  name?: Prisma.StringFieldUpdateOperationsInput | string;
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   category?: Prisma.EnumAssetCategoryFieldUpdateOperationsInput | $Enums.AssetCategory;
   quantity?:
     | Prisma.DecimalFieldUpdateOperationsInput
@@ -420,8 +438,9 @@ export type AssetUpdateManyMutationInput = {
 
 export type AssetUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   ticker?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-  name?: Prisma.StringFieldUpdateOperationsInput | string;
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   category?: Prisma.EnumAssetCategoryFieldUpdateOperationsInput | $Enums.AssetCategory;
   quantity?:
     | Prisma.DecimalFieldUpdateOperationsInput
@@ -446,6 +465,7 @@ export type AssetTickerNameCompoundUniqueInput = {
 
 export type AssetCountOrderByAggregateInput = {
   id?: Prisma.SortOrder;
+  logo?: Prisma.SortOrder;
   ticker?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
   category?: Prisma.SortOrder;
@@ -462,6 +482,7 @@ export type AssetAvgOrderByAggregateInput = {
 
 export type AssetMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder;
+  logo?: Prisma.SortOrder;
   ticker?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
   category?: Prisma.SortOrder;
@@ -473,6 +494,7 @@ export type AssetMaxOrderByAggregateInput = {
 
 export type AssetMinOrderByAggregateInput = {
   id?: Prisma.SortOrder;
+  logo?: Prisma.SortOrder;
   ticker?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
   category?: Prisma.SortOrder;
@@ -544,8 +566,9 @@ export type AssetUpdateOneRequiredWithoutTransactionsNestedInput = {
 
 export type AssetCreateWithoutTransactionsInput = {
   id?: string;
+  logo?: string | null;
   ticker?: string | null;
-  name: string;
+  name?: string | null;
   category: $Enums.AssetCategory;
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string;
   averagePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string;
@@ -555,8 +578,9 @@ export type AssetCreateWithoutTransactionsInput = {
 
 export type AssetUncheckedCreateWithoutTransactionsInput = {
   id?: string;
+  logo?: string | null;
   ticker?: string | null;
-  name: string;
+  name?: string | null;
   category: $Enums.AssetCategory;
   quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string;
   averagePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string;
@@ -594,8 +618,9 @@ export type AssetUpdateToOneWithWhereWithoutTransactionsInput = {
 
 export type AssetUpdateWithoutTransactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   ticker?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-  name?: Prisma.StringFieldUpdateOperationsInput | string;
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   category?: Prisma.EnumAssetCategoryFieldUpdateOperationsInput | $Enums.AssetCategory;
   quantity?:
     | Prisma.DecimalFieldUpdateOperationsInput
@@ -615,8 +640,9 @@ export type AssetUpdateWithoutTransactionsInput = {
 
 export type AssetUncheckedUpdateWithoutTransactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   ticker?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-  name?: Prisma.StringFieldUpdateOperationsInput | string;
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   category?: Prisma.EnumAssetCategoryFieldUpdateOperationsInput | $Enums.AssetCategory;
   quantity?:
     | Prisma.DecimalFieldUpdateOperationsInput
@@ -674,6 +700,7 @@ export type AssetSelect<
 > = runtime.Types.Extensions.GetSelect<
   {
     id?: boolean;
+    logo?: boolean;
     ticker?: boolean;
     name?: boolean;
     category?: boolean;
@@ -692,6 +719,7 @@ export type AssetSelectCreateManyAndReturn<
 > = runtime.Types.Extensions.GetSelect<
   {
     id?: boolean;
+    logo?: boolean;
     ticker?: boolean;
     name?: boolean;
     category?: boolean;
@@ -708,6 +736,7 @@ export type AssetSelectUpdateManyAndReturn<
 > = runtime.Types.Extensions.GetSelect<
   {
     id?: boolean;
+    logo?: boolean;
     ticker?: boolean;
     name?: boolean;
     category?: boolean;
@@ -721,6 +750,7 @@ export type AssetSelectUpdateManyAndReturn<
 
 export type AssetSelectScalar = {
   id?: boolean;
+  logo?: boolean;
   ticker?: boolean;
   name?: boolean;
   category?: boolean;
@@ -733,7 +763,15 @@ export type AssetSelectScalar = {
 export type AssetOmit<
   ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetOmit<
-  'id' | 'ticker' | 'name' | 'category' | 'quantity' | 'averagePrice' | 'createdAt' | 'updatedAt',
+  | 'id'
+  | 'logo'
+  | 'ticker'
+  | 'name'
+  | 'category'
+  | 'quantity'
+  | 'averagePrice'
+  | 'createdAt'
+  | 'updatedAt',
   ExtArgs['result']['asset']
 >;
 export type AssetInclude<
@@ -759,8 +797,9 @@ export type $AssetPayload<
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
       id: string;
+      logo: string | null;
       ticker: string | null;
-      name: string;
+      name: string | null;
       category: $Enums.AssetCategory;
       quantity: runtime.Decimal;
       averagePrice: runtime.Decimal;
@@ -1319,6 +1358,7 @@ export interface Prisma__AssetClient<
  */
 export interface AssetFieldRefs {
   readonly id: Prisma.FieldRef<'Asset', 'String'>;
+  readonly logo: Prisma.FieldRef<'Asset', 'String'>;
   readonly ticker: Prisma.FieldRef<'Asset', 'String'>;
   readonly name: Prisma.FieldRef<'Asset', 'String'>;
   readonly category: Prisma.FieldRef<'Asset', 'AssetCategory'>;
