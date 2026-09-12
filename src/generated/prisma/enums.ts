@@ -9,10 +9,11 @@
  */
 
 export const AssetCategory = {
-  STOCK: 'STOCK',
-  FIIS: 'FIIS',
-  CRIPTO: 'CRIPTO',
-  FIXED_INCOME: 'FIXED_INCOME',
+  stock: 'stock',
+  fund: 'fund',
+  cripto: 'cripto',
+  bdr: 'bdr',
+  fixed_income: 'fixed_income',
 } as const;
 
 export type AssetCategory = (typeof AssetCategory)[keyof typeof AssetCategory];

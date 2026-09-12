@@ -24,12 +24,15 @@ import { useState, useEffect, useTransition, useRef } from 'react';
 import { searchStockAction } from '../actions';
 import { ResponseAction } from '@/types/response';
 import { BrapiStockListResponse } from '@/types/brapi';
+import { InvestimentCategoryType } from '@/types/investiments';
 
 export const InvestimentDialog = () => {
   const [open, setOpen] = useState(false);
-  const [category, setCategory] = useState('STOCK');
+  const [category, setCategory] = useState<InvestimentCategoryType>('stock');
   const [ticker, setTicker] = useState('');
+  const [name, setName] = useState('');
   const [price, setPrice] = useState('');
+  const [logo, setLogo] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const isSelectRef = useRef(false);
 
@@ -49,7 +52,7 @@ export const InvestimentDialog = () => {
 
     const timeout = setTimeout(() => {
       startTransition(async () => {
-        const data = await searchStockAction(ticker);
+        const data = await searchStockAction(ticker, category);
         setResponse(data);
         setShowDropdown(true);
       });
@@ -59,12 +62,12 @@ export const InvestimentDialog = () => {
   }, [ticker]);
 
   // Função disparada ao clicar no item do autocomplete
-  const handleSelectStock = (stock: string, closePrice?: number) => {
+  const handleSelectStock = (logo?: string, stock?: string, name?: string, closePrice?: number) => {
     isSelectRef.current = true;
-    setTicker(stock);
-    if (closePrice) {
-      setPrice(closePrice.toString());
-    }
+    if (logo) setLogo(logo);
+    if (stock) setTicker(stock);
+    if (name) setName(name);
+    if (closePrice) setPrice(closePrice.toString());
     setShowDropdown(false);
   };
 
@@ -88,79 +91,92 @@ export const InvestimentDialog = () => {
             {/* 1. Categoria */}
             <Field className="grid gap-2">
               <FieldLabel htmlFor="category">Categoria do Investimento</FieldLabel>
-              <Select value={category} onValueChange={(value) => setCategory(value)}>
+              <Select
+                value={category}
+                onValueChange={(value) => setCategory(value as InvestimentCategoryType)}
+              >
                 <SelectTrigger id="category">
                   <SelectValue placeholder="Selecione a categoria" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="STOCK">Ações (B3)</SelectItem>
-                  <SelectItem value="FIIS">Fundos Imobiliários (FIIs)</SelectItem>
-                  <SelectItem value="CRIPTO">Criptomoedas</SelectItem>
-                  <SelectItem value="FIXED_INCOME">Renda Fixa / Caixinhas</SelectItem>
+                  <SelectItem value="stock">Ações (B3)</SelectItem>
+                  <SelectItem value="fund">Fundos Imobiliários (FIIs)</SelectItem>
+                  <SelectItem value="cripto">Criptomoedas</SelectItem>
+                  <SelectItem value="bdr">BDRs (Ações Internacionais)</SelectItem>
+                  <SelectItem value="fixed_income">Renda Fixa / Caixinhas</SelectItem>
                 </SelectContent>
               </Select>
               <input type="hidden" name="category" value={category} />
             </Field>
 
             {/* 2. Campo de Busca com Dropdown */}
-            {category !== 'FIXED_INCOME' ? (
-              <Field className="grid gap-2 relative">
-                <FieldLabel htmlFor="ticker">Buscar Ativo</FieldLabel>
-                <div className="relative">
-                  <Input
-                    name="ticker"
-                    type="text"
-                    value={ticker}
-                    placeholder="Digite o código (Ex: ITUB4, PETR4, BTC)..."
-                    disabled={isPending}
-                    onChange={(e) => {
-                      const ticker = e.target.value;
-                      setTicker(ticker);
-                      if (!ticker.trim()) setShowDropdown(false);
-                    }}
-                    onFocus={() => ticker && setShowDropdown(true)}
-                  />
-                  {isPending && (
-                    <TbLoader2 className="absolute right-3 top-2.5 h-4 w-4 animate-spin text-muted-foreground" />
-                  )}
-                </div>
+            <Field className="grid gap-2 relative">
+              <FieldLabel htmlFor="ticker">Buscar Ativo</FieldLabel>
+              <div className="relative">
+                <Input
+                  name="ticker"
+                  type="text"
+                  value={ticker}
+                  placeholder="Digite o código (Ex: ITUB4, PETR4, BTC)..."
+                  disabled={isPending}
+                  onChange={(e) => {
+                    const ticker = e.target.value;
+                    setTicker(ticker);
+                    if (!ticker.trim()) setShowDropdown(false);
+                  }}
+                  onFocus={() => ticker && setShowDropdown(true)}
+                />
+                {isPending && (
+                  <TbLoader2 className="absolute right-3 top-2.5 h-4 w-4 animate-spin text-muted-foreground" />
+                )}
+              </div>
 
-                {/* Autocomplete List */}
-                {showDropdown &&
-                  response.success &&
-                  (() => {
-                    const data = response.data;
-                    if (!data || data.length === 0) return null;
+              {/* Autocomplete List */}
+              {showDropdown &&
+                response.success &&
+                (() => {
+                  const data = response.data;
+                  if (!data || data.length === 0) return null;
 
-                    return (
-                      <div className="absolute top-[72px] z-50 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none">
-                        <div className="p-1 max-h-48 overflow-y-auto">
-                          {data.map((el) => (
-                            <button
-                              key={el.stock}
-                              type="button"
-                              // eslint-disable-next-line react-hooks/refs
-                              onClick={() => handleSelectStock(el.stock!, el.close)}
-                              className="flex w-full items-center justify-between px-3 py-2 text-sm rounded-sm hover:bg-accent cursor-pointer transition-colors"
-                            >
-                              <div className="flex flex-col items-start text-left">
-                                <span className="font-semibold">{el.stock}</span>
-                                <span className="text-xs text-muted-foreground">{el.name}</span>
-                              </div>
-                              <span className="font-medium text-xs">R$ {el.close}</span>
-                            </button>
-                          ))}
-                        </div>
+                  return (
+                    <div className="absolute top-[72px] z-50 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none">
+                      <div className="p-1 max-h-48 overflow-y-auto">
+                        {data.map((el) => (
+                          <button
+                            key={el.stock}
+                            type="button"
+                            // eslint-disable-next-line react-hooks/refs
+                            onClick={() => handleSelectStock(el.logo, el.stock, el.name, el.close)}
+                            className="flex w-full items-center justify-between px-3 py-2 text-sm rounded-sm hover:bg-accent cursor-pointer transition-colors"
+                          >
+                            <div className="flex flex-col items-start text-left">
+                              <span className="font-semibold">{el.stock}</span>
+                              <span className="text-xs text-muted-foreground">{el.name}</span>
+                            </div>
+                            <span className="font-medium text-xs">R$ {el.close}</span>
+                          </button>
+                        ))}
                       </div>
-                    );
-                  })()}
-              </Field>
-            ) : (
-              <Field className="grid gap-2">
-                <FieldLabel htmlFor="customName">Nome do Título / Aplicação</FieldLabel>
-                <Input name="customName" placeholder="Ex: CDB NuBank 100% CDI, Tesouro Selic..." />
-              </Field>
-            )}
+                    </div>
+                  );
+                })()}
+            </Field>
+
+            <Field className="grid gap-2">
+              <FieldLabel htmlFor="customName">Nome do Título / Aplicação</FieldLabel>
+              <Input
+                name="name"
+                type="text"
+                placeholder="Ex: CDB NuBank 100% CDI, Tesouro Selic..."
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                disabled={isPending}
+              />
+              {isPending && (
+                <TbLoader2 className="absolute right-3 top-2.5 h-4 w-4 animate-spin text-muted-foreground" />
+              )}
+              <input name="logo" type="hidden" value={logo} />
+            </Field>
 
             {/* 3. Quantidade e Preço Unitário */}
             <div className="grid grid-cols-2 gap-4">

@@ -2,7 +2,7 @@ model Asset {
   id String @id @default(cuid())
   logo String?
   ticker String?
-  name String?
+  name String
   category AssetCategory
   quantity Decimal @default(0) @db.Decimal(18, 8)
   averagePrice Decimal @default(0) @db.Decimal(12, 2) @map("average_price")
@@ -31,9 +31,10 @@ model AssetTransaction {
 }
 
 enum AssetCategory {
-  STOCK
-  FIIS
-  CRIPTO
-  FIXED_INCOME
+  stock
+  fund
+  cripto
+  bdr
+  fixed_income
 }
 
