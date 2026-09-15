@@ -11,7 +11,6 @@
 export const AssetCategory = {
   stock: 'stock',
   fund: 'fund',
-  cripto: 'cripto',
   bdr: 'bdr',
   fixed_income: 'fixed_income',
 } as const;

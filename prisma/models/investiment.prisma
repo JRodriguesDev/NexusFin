@@ -33,7 +33,6 @@ model AssetTransaction {
 enum AssetCategory {
   stock
   fund
-  cripto
   bdr
   fixed_income
 }
