@@ -6,6 +6,7 @@ import { ResponseAction } from '@/types/response';
 import { BrapiStockListResponse } from '@/types/brapi';
 import { SearchInvestimentCategory } from '@/types/investiments';
 import { InvestimentType } from '@/types/form';
+import { createInvestimentSchema } from '@/lib/validations/investiment';
 
 export const searchStockAction = async (
   query: string,
@@ -30,4 +31,30 @@ export const searchStockAction = async (
 export const addInvestimentAction = async (
   _prevState: InvestimentType,
   form: FormData
-): Promise<InvestimentType> => {};
+): Promise<InvestimentType> => {
+  const validationFields = createInvestimentSchema.safeParse({
+    category: form.get('category'),
+    ticker: form.get('ticker'),
+    logo: form.get('logo'),
+    name: form.get('name'),
+    quantity: form.get('quantity'),
+    price: form.get('price'),
+    date: form.get('date'),
+  });
+
+  if (!validationFields.success) {
+    const errors = validationFields.error.flatten().fieldErrors;
+    return {
+      success: false,
+      errors: {
+        ticker: errors.ticker?.[0],
+        name: errors.name?.[0],
+        quantity: errors.quantity?.[0],
+        price: errors.price?.[0],
+        date: errors.date?.[0],
+      },
+    };
+  }
+  console.log(validationFields.data);
+  return { success: false };
+};

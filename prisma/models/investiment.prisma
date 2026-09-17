@@ -22,18 +22,13 @@ model AssetTransaction {
 
   type TransactionType
   dateOperation DateTime
-  quantity Decimal @default(0) @db.Decimal(18, 8)
+  quantity Int
   price Decimal @default(0) @db.Decimal(12, 2)
 
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
 
   @@map("asset_transactions")
-}
-
-enum TransactionType {
-  BUY
-  SELL
 }
 
 enum AssetCategory {

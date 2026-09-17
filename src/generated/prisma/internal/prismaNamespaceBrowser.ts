@@ -86,6 +86,7 @@ export type AssetScalarFieldEnum = (typeof AssetScalarFieldEnum)[keyof typeof As
 export const AssetTransactionScalarFieldEnum = {
   id: 'id',
   assetId: 'assetId',
+  type: 'type',
   dateOperation: 'dateOperation',
   quantity: 'quantity',
   price: 'price',

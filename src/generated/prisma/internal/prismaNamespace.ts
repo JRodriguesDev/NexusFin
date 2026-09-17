@@ -695,6 +695,7 @@ export type AssetScalarFieldEnum = (typeof AssetScalarFieldEnum)[keyof typeof As
 export const AssetTransactionScalarFieldEnum = {
   id: 'id',
   assetId: 'assetId',
+  type: 'type',
   dateOperation: 'dateOperation',
   quantity: 'quantity',
   price: 'price',
@@ -809,6 +810,16 @@ export type ListEnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputTy
 >;
 
 /**
+ * Reference to a field of type 'Int'
+ */
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>;
+
+/**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>;
+
+/**
  * Reference to a field of type 'TransactionCategory'
  */
 export type EnumTransactionCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<
@@ -828,16 +839,6 @@ export type ListEnumTransactionCategoryFieldRefInput<$PrismaModel> = FieldRefInp
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>;
-
-/**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>;
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>;
 
 /**
  * Reference to a field of type 'Float'

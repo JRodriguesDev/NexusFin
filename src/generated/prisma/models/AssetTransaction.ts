@@ -27,20 +27,21 @@ export type AggregateAssetTransaction = {
 };
 
 export type AssetTransactionAvgAggregateOutputType = {
-  quantity: runtime.Decimal | null;
+  quantity: number | null;
   price: runtime.Decimal | null;
 };
 
 export type AssetTransactionSumAggregateOutputType = {
-  quantity: runtime.Decimal | null;
+  quantity: number | null;
   price: runtime.Decimal | null;
 };
 
 export type AssetTransactionMinAggregateOutputType = {
   id: string | null;
   assetId: string | null;
+  type: $Enums.TransactionType | null;
   dateOperation: Date | null;
-  quantity: runtime.Decimal | null;
+  quantity: number | null;
   price: runtime.Decimal | null;
   createdAt: Date | null;
   updatedAt: Date | null;
@@ -49,8 +50,9 @@ export type AssetTransactionMinAggregateOutputType = {
 export type AssetTransactionMaxAggregateOutputType = {
   id: string | null;
   assetId: string | null;
+  type: $Enums.TransactionType | null;
   dateOperation: Date | null;
-  quantity: runtime.Decimal | null;
+  quantity: number | null;
   price: runtime.Decimal | null;
   createdAt: Date | null;
   updatedAt: Date | null;
@@ -59,6 +61,7 @@ export type AssetTransactionMaxAggregateOutputType = {
 export type AssetTransactionCountAggregateOutputType = {
   id: number;
   assetId: number;
+  type: number;
   dateOperation: number;
   quantity: number;
   price: number;
@@ -80,6 +83,7 @@ export type AssetTransactionSumAggregateInputType = {
 export type AssetTransactionMinAggregateInputType = {
   id?: true;
   assetId?: true;
+  type?: true;
   dateOperation?: true;
   quantity?: true;
   price?: true;
@@ -90,6 +94,7 @@ export type AssetTransactionMinAggregateInputType = {
 export type AssetTransactionMaxAggregateInputType = {
   id?: true;
   assetId?: true;
+  type?: true;
   dateOperation?: true;
   quantity?: true;
   price?: true;
@@ -100,6 +105,7 @@ export type AssetTransactionMaxAggregateInputType = {
 export type AssetTransactionCountAggregateInputType = {
   id?: true;
   assetId?: true;
+  type?: true;
   dateOperation?: true;
   quantity?: true;
   price?: true;
@@ -202,8 +208,9 @@ export type AssetTransactionGroupByArgs<
 export type AssetTransactionGroupByOutputType = {
   id: string;
   assetId: string;
+  type: $Enums.TransactionType;
   dateOperation: Date;
-  quantity: runtime.Decimal;
+  quantity: number;
   price: runtime.Decimal;
   createdAt: Date;
   updatedAt: Date;
@@ -233,13 +240,9 @@ export type AssetTransactionWhereInput = {
   NOT?: Prisma.AssetTransactionWhereInput | Prisma.AssetTransactionWhereInput[];
   id?: Prisma.StringFilter<'AssetTransaction'> | string;
   assetId?: Prisma.StringFilter<'AssetTransaction'> | string;
+  type?: Prisma.EnumTransactionTypeFilter<'AssetTransaction'> | $Enums.TransactionType;
   dateOperation?: Prisma.DateTimeFilter<'AssetTransaction'> | Date | string;
-  quantity?:
-    | Prisma.DecimalFilter<'AssetTransaction'>
-    | runtime.Decimal
-    | runtime.DecimalJsLike
-    | number
-    | string;
+  quantity?: Prisma.IntFilter<'AssetTransaction'> | number;
   price?:
     | Prisma.DecimalFilter<'AssetTransaction'>
     | runtime.Decimal
@@ -254,6 +257,7 @@ export type AssetTransactionWhereInput = {
 export type AssetTransactionOrderByWithRelationInput = {
   id?: Prisma.SortOrder;
   assetId?: Prisma.SortOrder;
+  type?: Prisma.SortOrder;
   dateOperation?: Prisma.SortOrder;
   quantity?: Prisma.SortOrder;
   price?: Prisma.SortOrder;
@@ -269,13 +273,9 @@ export type AssetTransactionWhereUniqueInput = Prisma.AtLeast<
     OR?: Prisma.AssetTransactionWhereInput[];
     NOT?: Prisma.AssetTransactionWhereInput | Prisma.AssetTransactionWhereInput[];
     assetId?: Prisma.StringFilter<'AssetTransaction'> | string;
+    type?: Prisma.EnumTransactionTypeFilter<'AssetTransaction'> | $Enums.TransactionType;
     dateOperation?: Prisma.DateTimeFilter<'AssetTransaction'> | Date | string;
-    quantity?:
-      | Prisma.DecimalFilter<'AssetTransaction'>
-      | runtime.Decimal
-      | runtime.DecimalJsLike
-      | number
-      | string;
+    quantity?: Prisma.IntFilter<'AssetTransaction'> | number;
     price?:
       | Prisma.DecimalFilter<'AssetTransaction'>
       | runtime.Decimal
@@ -292,6 +292,7 @@ export type AssetTransactionWhereUniqueInput = Prisma.AtLeast<
 export type AssetTransactionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder;
   assetId?: Prisma.SortOrder;
+  type?: Prisma.SortOrder;
   dateOperation?: Prisma.SortOrder;
   quantity?: Prisma.SortOrder;
   price?: Prisma.SortOrder;
@@ -314,13 +315,10 @@ export type AssetTransactionScalarWhereWithAggregatesInput = {
     | Prisma.AssetTransactionScalarWhereWithAggregatesInput[];
   id?: Prisma.StringWithAggregatesFilter<'AssetTransaction'> | string;
   assetId?: Prisma.StringWithAggregatesFilter<'AssetTransaction'> | string;
+  type?:
+    Prisma.EnumTransactionTypeWithAggregatesFilter<'AssetTransaction'> | $Enums.TransactionType;
   dateOperation?: Prisma.DateTimeWithAggregatesFilter<'AssetTransaction'> | Date | string;
-  quantity?:
-    | Prisma.DecimalWithAggregatesFilter<'AssetTransaction'>
-    | runtime.Decimal
-    | runtime.DecimalJsLike
-    | number
-    | string;
+  quantity?: Prisma.IntWithAggregatesFilter<'AssetTransaction'> | number;
   price?:
     | Prisma.DecimalWithAggregatesFilter<'AssetTransaction'>
     | runtime.Decimal
@@ -333,8 +331,9 @@ export type AssetTransactionScalarWhereWithAggregatesInput = {
 
 export type AssetTransactionCreateInput = {
   id?: string;
+  type: $Enums.TransactionType;
   dateOperation: Date | string;
-  quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string;
+  quantity: number;
   price?: runtime.Decimal | runtime.DecimalJsLike | number | string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -344,8 +343,9 @@ export type AssetTransactionCreateInput = {
 export type AssetTransactionUncheckedCreateInput = {
   id?: string;
   assetId: string;
+  type: $Enums.TransactionType;
   dateOperation: Date | string;
-  quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string;
+  quantity: number;
   price?: runtime.Decimal | runtime.DecimalJsLike | number | string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -353,13 +353,9 @@ export type AssetTransactionUncheckedCreateInput = {
 
 export type AssetTransactionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType;
   dateOperation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-  quantity?:
-    | Prisma.DecimalFieldUpdateOperationsInput
-    | runtime.Decimal
-    | runtime.DecimalJsLike
-    | number
-    | string;
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number;
   price?:
     | Prisma.DecimalFieldUpdateOperationsInput
     | runtime.Decimal
@@ -374,13 +370,9 @@ export type AssetTransactionUpdateInput = {
 export type AssetTransactionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   assetId?: Prisma.StringFieldUpdateOperationsInput | string;
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType;
   dateOperation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-  quantity?:
-    | Prisma.DecimalFieldUpdateOperationsInput
-    | runtime.Decimal
-    | runtime.DecimalJsLike
-    | number
-    | string;
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number;
   price?:
     | Prisma.DecimalFieldUpdateOperationsInput
     | runtime.Decimal
@@ -394,8 +386,9 @@ export type AssetTransactionUncheckedUpdateInput = {
 export type AssetTransactionCreateManyInput = {
   id?: string;
   assetId: string;
+  type: $Enums.TransactionType;
   dateOperation: Date | string;
-  quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string;
+  quantity: number;
   price?: runtime.Decimal | runtime.DecimalJsLike | number | string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -403,13 +396,9 @@ export type AssetTransactionCreateManyInput = {
 
 export type AssetTransactionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType;
   dateOperation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-  quantity?:
-    | Prisma.DecimalFieldUpdateOperationsInput
-    | runtime.Decimal
-    | runtime.DecimalJsLike
-    | number
-    | string;
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number;
   price?:
     | Prisma.DecimalFieldUpdateOperationsInput
     | runtime.Decimal
@@ -423,13 +412,9 @@ export type AssetTransactionUpdateManyMutationInput = {
 export type AssetTransactionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   assetId?: Prisma.StringFieldUpdateOperationsInput | string;
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType;
   dateOperation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-  quantity?:
-    | Prisma.DecimalFieldUpdateOperationsInput
-    | runtime.Decimal
-    | runtime.DecimalJsLike
-    | number
-    | string;
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number;
   price?:
     | Prisma.DecimalFieldUpdateOperationsInput
     | runtime.Decimal
@@ -453,6 +438,7 @@ export type AssetTransactionOrderByRelationAggregateInput = {
 export type AssetTransactionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder;
   assetId?: Prisma.SortOrder;
+  type?: Prisma.SortOrder;
   dateOperation?: Prisma.SortOrder;
   quantity?: Prisma.SortOrder;
   price?: Prisma.SortOrder;
@@ -468,6 +454,7 @@ export type AssetTransactionAvgOrderByAggregateInput = {
 export type AssetTransactionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder;
   assetId?: Prisma.SortOrder;
+  type?: Prisma.SortOrder;
   dateOperation?: Prisma.SortOrder;
   quantity?: Prisma.SortOrder;
   price?: Prisma.SortOrder;
@@ -478,6 +465,7 @@ export type AssetTransactionMaxOrderByAggregateInput = {
 export type AssetTransactionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder;
   assetId?: Prisma.SortOrder;
+  type?: Prisma.SortOrder;
   dateOperation?: Prisma.SortOrder;
   quantity?: Prisma.SortOrder;
   price?: Prisma.SortOrder;
@@ -576,10 +564,23 @@ export type AssetTransactionUncheckedUpdateManyWithoutAssetNestedInput = {
   deleteMany?: Prisma.AssetTransactionScalarWhereInput | Prisma.AssetTransactionScalarWhereInput[];
 };
 
+export type EnumTransactionTypeFieldUpdateOperationsInput = {
+  set?: $Enums.TransactionType;
+};
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number;
+  increment?: number;
+  decrement?: number;
+  multiply?: number;
+  divide?: number;
+};
+
 export type AssetTransactionCreateWithoutAssetInput = {
   id?: string;
+  type: $Enums.TransactionType;
   dateOperation: Date | string;
-  quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string;
+  quantity: number;
   price?: runtime.Decimal | runtime.DecimalJsLike | number | string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -587,8 +588,9 @@ export type AssetTransactionCreateWithoutAssetInput = {
 
 export type AssetTransactionUncheckedCreateWithoutAssetInput = {
   id?: string;
+  type: $Enums.TransactionType;
   dateOperation: Date | string;
-  quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string;
+  quantity: number;
   price?: runtime.Decimal | runtime.DecimalJsLike | number | string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -641,13 +643,9 @@ export type AssetTransactionScalarWhereInput = {
   NOT?: Prisma.AssetTransactionScalarWhereInput | Prisma.AssetTransactionScalarWhereInput[];
   id?: Prisma.StringFilter<'AssetTransaction'> | string;
   assetId?: Prisma.StringFilter<'AssetTransaction'> | string;
+  type?: Prisma.EnumTransactionTypeFilter<'AssetTransaction'> | $Enums.TransactionType;
   dateOperation?: Prisma.DateTimeFilter<'AssetTransaction'> | Date | string;
-  quantity?:
-    | Prisma.DecimalFilter<'AssetTransaction'>
-    | runtime.Decimal
-    | runtime.DecimalJsLike
-    | number
-    | string;
+  quantity?: Prisma.IntFilter<'AssetTransaction'> | number;
   price?:
     | Prisma.DecimalFilter<'AssetTransaction'>
     | runtime.Decimal
@@ -660,8 +658,9 @@ export type AssetTransactionScalarWhereInput = {
 
 export type AssetTransactionCreateManyAssetInput = {
   id?: string;
+  type: $Enums.TransactionType;
   dateOperation: Date | string;
-  quantity?: runtime.Decimal | runtime.DecimalJsLike | number | string;
+  quantity: number;
   price?: runtime.Decimal | runtime.DecimalJsLike | number | string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -669,13 +668,9 @@ export type AssetTransactionCreateManyAssetInput = {
 
 export type AssetTransactionUpdateWithoutAssetInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType;
   dateOperation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-  quantity?:
-    | Prisma.DecimalFieldUpdateOperationsInput
-    | runtime.Decimal
-    | runtime.DecimalJsLike
-    | number
-    | string;
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number;
   price?:
     | Prisma.DecimalFieldUpdateOperationsInput
     | runtime.Decimal
@@ -688,13 +683,9 @@ export type AssetTransactionUpdateWithoutAssetInput = {
 
 export type AssetTransactionUncheckedUpdateWithoutAssetInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType;
   dateOperation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-  quantity?:
-    | Prisma.DecimalFieldUpdateOperationsInput
-    | runtime.Decimal
-    | runtime.DecimalJsLike
-    | number
-    | string;
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number;
   price?:
     | Prisma.DecimalFieldUpdateOperationsInput
     | runtime.Decimal
@@ -707,13 +698,9 @@ export type AssetTransactionUncheckedUpdateWithoutAssetInput = {
 
 export type AssetTransactionUncheckedUpdateManyWithoutAssetInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  type?: Prisma.EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType;
   dateOperation?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-  quantity?:
-    | Prisma.DecimalFieldUpdateOperationsInput
-    | runtime.Decimal
-    | runtime.DecimalJsLike
-    | number
-    | string;
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number;
   price?:
     | Prisma.DecimalFieldUpdateOperationsInput
     | runtime.Decimal
@@ -730,6 +717,7 @@ export type AssetTransactionSelect<
   {
     id?: boolean;
     assetId?: boolean;
+    type?: boolean;
     dateOperation?: boolean;
     quantity?: boolean;
     price?: boolean;
@@ -746,6 +734,7 @@ export type AssetTransactionSelectCreateManyAndReturn<
   {
     id?: boolean;
     assetId?: boolean;
+    type?: boolean;
     dateOperation?: boolean;
     quantity?: boolean;
     price?: boolean;
@@ -762,6 +751,7 @@ export type AssetTransactionSelectUpdateManyAndReturn<
   {
     id?: boolean;
     assetId?: boolean;
+    type?: boolean;
     dateOperation?: boolean;
     quantity?: boolean;
     price?: boolean;
@@ -775,6 +765,7 @@ export type AssetTransactionSelectUpdateManyAndReturn<
 export type AssetTransactionSelectScalar = {
   id?: boolean;
   assetId?: boolean;
+  type?: boolean;
   dateOperation?: boolean;
   quantity?: boolean;
   price?: boolean;
@@ -785,7 +776,7 @@ export type AssetTransactionSelectScalar = {
 export type AssetTransactionOmit<
   ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetOmit<
-  'id' | 'assetId' | 'dateOperation' | 'quantity' | 'price' | 'createdAt' | 'updatedAt',
+  'id' | 'assetId' | 'type' | 'dateOperation' | 'quantity' | 'price' | 'createdAt' | 'updatedAt',
   ExtArgs['result']['assetTransaction']
 >;
 export type AssetTransactionInclude<
@@ -815,8 +806,9 @@ export type $AssetTransactionPayload<
     {
       id: string;
       assetId: string;
+      type: $Enums.TransactionType;
       dateOperation: Date;
-      quantity: runtime.Decimal;
+      quantity: number;
       price: runtime.Decimal;
       createdAt: Date;
       updatedAt: Date;
@@ -1408,8 +1400,9 @@ export interface Prisma__AssetTransactionClient<
 export interface AssetTransactionFieldRefs {
   readonly id: Prisma.FieldRef<'AssetTransaction', 'String'>;
   readonly assetId: Prisma.FieldRef<'AssetTransaction', 'String'>;
+  readonly type: Prisma.FieldRef<'AssetTransaction', 'TransactionType'>;
   readonly dateOperation: Prisma.FieldRef<'AssetTransaction', 'DateTime'>;
-  readonly quantity: Prisma.FieldRef<'AssetTransaction', 'Decimal'>;
+  readonly quantity: Prisma.FieldRef<'AssetTransaction', 'Int'>;
   readonly price: Prisma.FieldRef<'AssetTransaction', 'Decimal'>;
   readonly createdAt: Prisma.FieldRef<'AssetTransaction', 'DateTime'>;
   readonly updatedAt: Prisma.FieldRef<'AssetTransaction', 'DateTime'>;

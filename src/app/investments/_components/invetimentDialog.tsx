@@ -245,6 +245,7 @@ export const InvestimentDialog = () => {
               <Input name="date" type="date" disabled={pending} />
             </Field>
             {!state.success && state.errors?.date && <FieldError>{state.errors.date}</FieldError>}
+            {!state.success && state.message && <FieldError>{state.message}</FieldError>}
             {!searchResponse.success && <FieldError>{searchResponse.message}</FieldError>}
           </div>
 

@@ -502,10 +502,6 @@ export type TransactionSumOrderByAggregateInput = {
   amount?: Prisma.SortOrder;
 };
 
-export type EnumTransactionTypeFieldUpdateOperationsInput = {
-  set?: $Enums.TransactionType;
-};
-
 export type EnumTransactionCategoryFieldUpdateOperationsInput = {
   set?: $Enums.TransactionCategory;
 };
