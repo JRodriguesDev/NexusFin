@@ -5,6 +5,7 @@ import { searchQuotes } from '@/services/brapi/search';
 import { ResponseAction } from '@/types/response';
 import { BrapiStockListResponse } from '@/types/brapi';
 import { SearchInvestimentCategory } from '@/types/investiments';
+import { InvestimentType } from '@/types/form';
 
 export const searchStockAction = async (
   query: string,
@@ -16,7 +17,7 @@ export const searchStockAction = async (
     const data = await searchQuotes(query, category);
     return {
       success: true,
-      data: data,
+      data: data ?? [],
     };
   } catch (error) {
     return {
@@ -25,3 +26,8 @@ export const searchStockAction = async (
     };
   }
 };
+
+export const addInvestimentAction = async (
+  _prevState: InvestimentType,
+  form: FormData
+): Promise<InvestimentType> => {};

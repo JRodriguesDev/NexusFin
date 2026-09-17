@@ -20,6 +20,7 @@ model AssetTransaction {
   assetId String @map("asset_id")
   asset Asset @relation(fields: [assetId], references: [id], onDelete: Cascade)
 
+  type TransactionType
   dateOperation DateTime
   quantity Decimal @default(0) @db.Decimal(18, 8)
   price Decimal @default(0) @db.Decimal(12, 2)
@@ -28,6 +29,11 @@ model AssetTransaction {
   updatedAt   DateTime  @updatedAt @map("updated_at")
 
   @@map("asset_transactions")
+}
+
+enum TransactionType {
+  BUY
+  SELL
 }
 
 enum AssetCategory {
