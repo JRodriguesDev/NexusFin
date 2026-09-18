@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { Prisma, AssetCategory } from '@/generated/prisma/client';
+import { Prisma, InvestimentCategory } from '@/generated/prisma/client';
 
 export const createInvestimentSchema = z.object({
-  category: z.nativeEnum(AssetCategory),
+  category: z.nativeEnum(InvestimentCategory),
   ticker: z
     .string()
     .trim()
@@ -17,12 +17,15 @@ export const createInvestimentSchema = z.object({
     .trim()
     .min(3, 'Nome do ativo deve ter no mínimo 3 caracteres')
     .max(255, 'Nome do ativo muito longa'),
-  quantity: z.coerce.number().positive('O valor deve ser maior que zero'),
+  quantity: z.coerce
+    .number()
+    .positive('O valor deve ser maior que zero')
+    .transform((value) => new Prisma.Decimal(value)),
   price: z.coerce
     .number()
     .positive('O valor deve ser maior que zero')
     .transform((value) => new Prisma.Decimal(value)),
-  date: z
+  dateOperation: z
     .string()
     .min(1, 'Requer Data')
     .transform((date) => new Date(date)),

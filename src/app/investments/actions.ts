@@ -7,6 +7,8 @@ import { BrapiStockListResponse } from '@/types/brapi';
 import { SearchInvestimentCategory } from '@/types/investiments';
 import { InvestimentType } from '@/types/form';
 import { createInvestimentSchema } from '@/lib/validations/investiment';
+import { prismaErrors } from '@/lib/prisma/error';
+import { createInvestiment } from '@/services/DAL/investiment';
 
 export const searchStockAction = async (
   query: string,
@@ -39,7 +41,7 @@ export const addInvestimentAction = async (
     name: form.get('name'),
     quantity: form.get('quantity'),
     price: form.get('price'),
-    date: form.get('date'),
+    dateOperation: form.get('date'),
   });
 
   if (!validationFields.success) {
@@ -51,10 +53,19 @@ export const addInvestimentAction = async (
         name: errors.name?.[0],
         quantity: errors.quantity?.[0],
         price: errors.price?.[0],
-        date: errors.date?.[0],
+        date: errors.dateOperation?.[0],
       },
     };
   }
-  console.log(validationFields.data);
-  return { success: false };
+  try {
+    await createInvestiment(validationFields.data);
+    return {
+      success: true,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: prismaErrors(error) ?? 'Error Interno',
+    };
+  }
 };

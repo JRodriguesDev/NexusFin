@@ -49,8 +49,8 @@ export const InvestimentDialog = () => {
   useEffect(() => {
     if (state.success) {
       toast.success(`${tickerQuery} Adicionado`);
-      setOpen(false);
       router.refresh();
+      setOpen(false);
     }
   }, [state]);
 
@@ -92,7 +92,7 @@ export const InvestimentDialog = () => {
 
   const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen);
-    if (!newOpen) {
+    if (newOpen) {
       setTickerQuery('');
       setSelectedStock(undefined);
       setShowDropdown(false);
@@ -242,7 +242,12 @@ export const InvestimentDialog = () => {
             {/* 4. Data do Aporte */}
             <Field className="grid gap-2">
               <FieldLabel htmlFor="date">Data da Operação</FieldLabel>
-              <Input name="date" type="date" disabled={pending} />
+              <Input
+                name="date"
+                type="date"
+                defaultValue={new Date().toISOString().split('T')[0]}
+                disabled={pending}
+              />
             </Field>
             {!state.success && state.errors?.date && <FieldError>{state.errors.date}</FieldError>}
             {!state.success && state.message && <FieldError>{state.message}</FieldError>}
