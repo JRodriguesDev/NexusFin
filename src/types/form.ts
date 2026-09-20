@@ -3,7 +3,7 @@ export type FormType = {
   message?: string;
 };
 
-export type InvestimentType = FormType & {
+export type InvestimentConst = FormType & {
   errors?: {
     ticker?: string;
     name?: string;
@@ -13,7 +13,7 @@ export type InvestimentType = FormType & {
   };
 };
 
-export type TransactionType = FormType & {
+export type TransactionConst = FormType & {
   errors?: {
     description?: string;
     amount?: string;

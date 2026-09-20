@@ -24,8 +24,7 @@ import { useState, useEffect, useTransition, useRef, useActionState } from 'reac
 import { searchStockAction } from '../actions';
 import { ResponseAction } from '@/types/response';
 import { BrapiStockListResponse } from '@/types/brapi';
-import { InvestimentCategoryType } from '@/types/investiments';
-import { SelectedStockType } from '@/types/investiments';
+import { InvestimentCategoryType, SelectedStockType } from '@/types/investiments';
 import { addInvestimentAction } from '../actions';
 import { InvestimentResponse } from '@/constants/form';
 import { toast } from 'sonner';

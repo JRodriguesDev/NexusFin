@@ -4,11 +4,12 @@ import { brapiErrors } from '@/lib/brapi/error';
 import { searchQuotes } from '@/services/brapi/search';
 import { ResponseAction } from '@/types/response';
 import { BrapiStockListResponse } from '@/types/brapi';
-import { SearchInvestimentCategory } from '@/types/investiments';
-import { InvestimentType } from '@/types/form';
+import { SearchInvestimentCategory, InvestimentType } from '@/types/investiments';
+import { InvestimentConst } from '@/types/form';
 import { createInvestimentSchema } from '@/lib/validations/investiment';
 import { prismaErrors } from '@/lib/prisma/error';
 import { createInvestiment } from '@/services/DAL/investiment';
+import { getInvestiments } from '@/services/DAL/investiment';
 
 export const searchStockAction = async (
   query: string,
@@ -31,9 +32,9 @@ export const searchStockAction = async (
 };
 
 export const addInvestimentAction = async (
-  _prevState: InvestimentType,
+  _prevState: InvestimentConst,
   form: FormData
-): Promise<InvestimentType> => {
+): Promise<InvestimentConst> => {
   const validationFields = createInvestimentSchema.safeParse({
     category: form.get('category'),
     ticker: form.get('ticker'),
@@ -61,6 +62,21 @@ export const addInvestimentAction = async (
     await createInvestiment(validationFields.data);
     return {
       success: true,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: prismaErrors(error) ?? 'Error Interno',
+    };
+  }
+};
+
+export const getInvestimentAction = async (): Promise<ResponseAction<InvestimentType[]>> => {
+  try {
+    const response = await getInvestiments();
+    return {
+      success: true,
+      data: response,
     };
   } catch (error) {
     return {

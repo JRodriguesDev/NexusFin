@@ -1,8 +1,13 @@
-import { Asset, AssetTransaction, AssetCategory } from '@/generated/prisma/client';
+import { Investiment, InvestimentCategory } from '@/generated/prisma/client';
 
-export type InvestimentType = Omit<Asset, 'createdAt' | 'updatedAt'>;
-export type InvestimentTransactionType = Omit<AssetTransaction, 'createdAt' | 'updatedAt'>;
-export type InvestimentCategoryType = AssetCategory;
+export type InvestimentType = Omit<
+  Investiment,
+  'createdAt' | 'updatedAt' | 'price' | 'quantity'
+> & {
+  price: number;
+  quantity: number;
+};
+export type InvestimentCategoryType = InvestimentCategory;
 export type SearchInvestimentCategory = Exclude<InvestimentCategoryType, 'fixed_income'>;
 export type SelectedStockType = {
   ticker?: string;

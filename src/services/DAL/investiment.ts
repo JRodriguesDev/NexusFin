@@ -9,3 +9,17 @@ export const createInvestiment = async (data: CreateInvestimentSchema) => {
     select: { name: true },
   });
 };
+
+export const getInvestiments = async () => {
+  const investiments = await prisma.investiment.findMany({
+    omit: {
+      updatedAt: true,
+      createdAt: true,
+    },
+  });
+  return investiments.map((el) => ({
+    ...el,
+    price: Number(el.price),
+    quantity: Number(el.quantity),
+  }));
+};

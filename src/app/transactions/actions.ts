@@ -1,6 +1,6 @@
 'use server';
 
-import { TransactionType } from '@/types/form';
+import { TransactionConst } from '@/types/form';
 import { createTransactionSchema, updateTransactionSchema } from '@/lib/validations/transaction';
 import {
   createTransaction,
@@ -15,9 +15,9 @@ import { updateTag } from 'next/cache';
 import { TransactionSearchParams } from '@/types/transactions';
 
 export const createTransactionAction = async (
-  _prevState: TransactionType,
+  _prevState: TransactionConst,
   form: FormData
-): Promise<TransactionType> => {
+): Promise<TransactionConst> => {
   const validationFields = createTransactionSchema.safeParse({
     type: form.get('type'),
     description: form.get('description'),
@@ -82,9 +82,9 @@ export const deleteTransactionAction = async (id: string): Promise<ResponseActio
 };
 
 export const updateTransactionAction = async (
-  _prevState: TransactionType,
+  _prevState: TransactionConst,
   form: FormData
-): Promise<TransactionType> => {
+): Promise<TransactionConst> => {
   const validationFields = updateTransactionSchema.safeParse({
     id: form.get('id'),
     description: form.get('description'),

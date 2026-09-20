@@ -13,7 +13,7 @@ export const InvestimentCategory = {
   stock: 'stock',
   fund: 'fund',
   bdr: 'bdr',
-  fixed_income: 'fixed_income'
+  fixedIncome: 'fixedIncome'
 } as const
 
 export type InvestimentCategory = (typeof InvestimentCategory)[keyof typeof InvestimentCategory]

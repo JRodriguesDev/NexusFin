@@ -6,13 +6,7 @@ import type {
 
 export type TransactionType = PrismaTransactionType;
 export type TransactionCategory = PrismaTransactionCategory;
-export type Transaction = Omit<
-  Pick<
-    PrismaTransaction,
-    'id' | 'type' | 'date' | 'description' | 'category' | 'isRecurrence' | 'recurringDay'
-  >,
-  'amount'
-> & {
+export type Transaction = Omit<PrismaTransaction, 'amount' | 'createdAt' | 'updatedAt'> & {
   amount: number;
 };
 

@@ -19,6 +19,6 @@ enum InvestimentCategory {
   stock
   fund
   bdr
-  fixed_income
+  fixedIncome
 }
 
