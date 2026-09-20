@@ -1,92 +1,115 @@
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { TbPlus, TbDotsVertical, TbEdit, TbHistory } from 'react-icons/tb';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { formatCurrency } from '@/lib/utils';
+import { TableActions } from './tableActions';
 
 const mockInvestments = [
   {
     id: '1',
     name: 'CDB Banco Inter 110% CDI',
-    category: 'Renda Fixa',
+    ticker: null,
+    logo: null,
+    category: 'fixedIncome',
     quantity: 1,
-    averagePrice: 5000.0,
+    price: 5000.0,
+    dateOperation: '2026-03-15',
   },
   {
     id: '2',
-    name: 'ITUB4 (Itaú Unibanco)',
-    category: 'Ações',
+    name: 'Itaú Unibanco',
+    ticker: 'ITUB4',
+    logo: 'https://github.com/itau.png',
+    category: 'stock',
     quantity: 150,
-    averagePrice: 32.5,
+    price: 32.5,
+    dateOperation: '2026-02-10',
   },
   {
     id: '3',
-    name: 'Bitcoin (BTC)',
-    category: 'Criptomoedas',
-    quantity: 0.05,
-    averagePrice: 350000.0,
+    name: 'Maxi Renda FII',
+    ticker: 'MXRF11',
+    logo: null,
+    category: 'fund',
+    quantity: 300,
+    price: 10.45,
+    dateOperation: '2026-01-20',
   },
   {
     id: '4',
-    name: 'FII MXRF11',
-    category: 'Fundos Imobiliários',
-    quantity: 300,
-    averagePrice: 10.45,
+    name: 'Apple Inc.',
+    ticker: 'AAPL34',
+    logo: null,
+    category: 'bdr',
+    quantity: 20,
+    price: 48.9,
+    dateOperation: '2026-03-01',
   },
 ];
+
+const CATEGORY_LABELS: Record<string, string> = {
+  stock: 'Ações',
+  fund: 'FIIs',
+  bdr: 'BDRs',
+  fixedIncome: 'Renda Fixa',
+};
 
 export const Table = () => {
   return (
     <>
       {mockInvestments.map((asset) => {
-        const totalPosition = asset.quantity * asset.averagePrice;
+        const totalValue = asset.quantity * asset.price;
 
         return (
           <tr key={asset.id} className="transition-colors hover:bg-muted/50">
-            <td className="p-4 font-medium">{asset.name}</td>
+            {/* Nome do Ativo, Logo e Ticker */}
+            <td className="p-4 font-medium">
+              <div className="flex items-center gap-3">
+                {asset.logo ? (
+                  <img
+                    src={asset.logo}
+                    alt={asset.name}
+                    className="h-8 w-8 rounded-full object-cover border"
+                  />
+                ) : (
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-xs font-bold uppercase text-muted-foreground">
+                    {asset.ticker ? asset.ticker.slice(0, 2) : asset.name.slice(0, 2)}
+                  </div>
+                )}
+                <div>
+                  <div className="font-semibold leading-none">{asset.name}</div>
+                  {asset.ticker && (
+                    <span className="text-xs text-muted-foreground mt-1 inline-block">
+                      {asset.ticker}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </td>
+
+            {/* Categoria */}
             <td className="p-4">
               <Badge variant="outline" className="font-normal text-xs">
-                {asset.category}
+                {CATEGORY_LABELS[asset.category] || asset.category}
               </Badge>
             </td>
+
+            {/* Quantidade */}
             <td className="p-4 text-right font-medium">{asset.quantity}</td>
-            <td className="p-4 text-right text-muted-foreground">
-              {formatCurrency(asset.averagePrice)}
+
+            {/* Preço Unitário */}
+            <td className="p-4 text-right text-muted-foreground">{formatCurrency(asset.price)}</td>
+
+            {/* Valor Total */}
+            <td className="p-4 text-right font-semibold">{formatCurrency(totalValue)}</td>
+
+            {/* Data da Operação */}
+            <td className="p-4 text-right text-sm text-muted-foreground">
+              {new Date(asset.dateOperation).toLocaleDateString('pt-BR', {
+                timeZone: 'UTC',
+              })}
             </td>
-            <td className="p-4 text-right font-semibold">{formatCurrency(totalPosition)}</td>
-            <td className="p-4 text-center">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="h-8 w-8 p-0">
-                    <span className="sr-only">Abrir menu</span>
-                    <TbDotsVertical className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Ações do Ativo</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem className="gap-2 cursor-pointer">
-                    <TbPlus className="h-4 w-4" />
-                    Adicionar Aporte
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="gap-2 cursor-pointer">
-                    <TbHistory className="h-4 w-4" />
-                    Ver Histórico
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="gap-2 cursor-pointer">
-                    <TbEdit className="h-4 w-4" />
-                    Editar Ativo
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </td>
+
+            {/* Menu de Ações */}
+            <TableActions />
           </tr>
         );
       })}
