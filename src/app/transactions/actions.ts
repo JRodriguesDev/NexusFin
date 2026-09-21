@@ -1,6 +1,6 @@
 'use server';
 
-import { TransactionConst } from '@/types/form';
+import { TransactionFormType } from '@/types/transactions';
 import { createTransactionSchema, updateTransactionSchema } from '@/lib/validations/transaction';
 import {
   createTransaction,
@@ -9,15 +9,14 @@ import {
   updateTransaction,
 } from '@/services/DAL/transaction';
 import { prismaErrors } from '@/lib/prisma/error';
-import { ResponseAction } from '@/types/response';
-import { Transaction } from '@/types/transactions';
+import { ResponseActionType } from '@/types/response';
+import { Transaction, TransactionSearchParamsType } from '@/types/transactions';
 import { updateTag } from 'next/cache';
-import { TransactionSearchParams } from '@/types/transactions';
 
 export const createTransactionAction = async (
-  _prevState: TransactionConst,
+  _prevState: TransactionFormType,
   form: FormData
-): Promise<TransactionConst> => {
+): Promise<TransactionFormType> => {
   const validationFields = createTransactionSchema.safeParse({
     type: form.get('type'),
     description: form.get('description'),
@@ -54,10 +53,10 @@ export const createTransactionAction = async (
 };
 
 export const getTransactionsAction = async (
-  params: TransactionSearchParams
-): Promise<ResponseAction<Transaction[]>> => {
-  const safeParams = params ?? ({} as TransactionSearchParams);
-  const filters: TransactionSearchParams = {
+  params: TransactionSearchParamsType
+): Promise<ResponseActionType<Transaction[]>> => {
+  const safeParams = params ?? ({} as TransactionSearchParamsType);
+  const filters: TransactionSearchParamsType = {
     ...safeParams,
     search: safeParams.search?.trim() || undefined,
     category: safeParams.category || undefined,
@@ -71,7 +70,7 @@ export const getTransactionsAction = async (
   }
 };
 
-export const deleteTransactionAction = async (id: string): Promise<ResponseAction> => {
+export const deleteTransactionAction = async (id: string): Promise<ResponseActionType> => {
   try {
     await deleteTransaction(id);
   } catch (error) {
@@ -82,9 +81,9 @@ export const deleteTransactionAction = async (id: string): Promise<ResponseActio
 };
 
 export const updateTransactionAction = async (
-  _prevState: TransactionConst,
+  _prevState: TransactionFormType,
   form: FormData
-): Promise<TransactionConst> => {
+): Promise<TransactionFormType> => {
   const validationFields = updateTransactionSchema.safeParse({
     id: form.get('id'),
     description: form.get('description'),

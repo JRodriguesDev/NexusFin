@@ -25,9 +25,8 @@ import { Spinner } from '@/components/ui/spinner';
 import { Field, FieldGroup, FieldLabel, FieldError } from '@/components/ui/field';
 import { cn } from '@/lib/utils';
 import { createTransactionAction } from '../actions';
-import { TransactionResponse } from '@/constants/form';
+import { TransactionResponse, transactionDialogConfig } from '@/constants/transaction';
 import { TransactionType } from '@/types/transactions';
-import { transactionDialogConfig } from '@/constants/transaction';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 

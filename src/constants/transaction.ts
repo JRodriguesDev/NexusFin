@@ -1,4 +1,16 @@
 import { TbArrowDownLeft, TbArrowUpRight } from 'react-icons/tb';
+import { TransactionFormType } from '@/types/transactions';
+
+export const TransactionResponse: TransactionFormType = {
+  success: false,
+  errors: {
+    description: undefined,
+    amount: undefined,
+    recurringDay: undefined,
+    isRecurrence: undefined,
+    category: undefined,
+  },
+};
 
 export const transactionConfig = {
   INCOME: {

@@ -22,11 +22,11 @@ import { TbPlus, TbLoader2 } from 'react-icons/tb';
 import { Field, FieldLabel, FieldError } from '@/components/ui/field';
 import { useState, useEffect, useTransition, useRef, useActionState } from 'react';
 import { searchStockAction } from '../actions';
-import { ResponseAction } from '@/types/response';
-import { BrapiStockListResponse } from '@/types/brapi';
+import { ResponseActionType } from '@/types/response';
+import { BrapiStockListResponseType } from '@/types/brapi';
 import { InvestimentCategoryType, SelectedStockType } from '@/types/investiments';
 import { addInvestimentAction } from '../actions';
-import { InvestimentResponse } from '@/constants/form';
+import { InvestimentResponse } from '@/constants/investiment';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
@@ -40,7 +40,9 @@ export const InvestimentDialog = () => {
   const isSelectRef = useRef(false);
   const [selectedStock, setSelectedStock] = useState<SelectedStockType>();
   const [isPending, startTransition] = useTransition();
-  const [searchResponse, setSearchResponse] = useState<ResponseAction<BrapiStockListResponse>>({
+  const [searchResponse, setSearchResponse] = useState<
+    ResponseActionType<BrapiStockListResponseType>
+  >({
     success: false,
     data: [],
   });
@@ -60,7 +62,7 @@ export const InvestimentDialog = () => {
       return;
     }
 
-    if (!tickerQuery.trim() || category === 'fixed_income') {
+    if (!tickerQuery.trim() || category === 'fixedIncome') {
       setSearchResponse({ success: true, data: [] });
       return;
     }
@@ -131,13 +133,13 @@ export const InvestimentDialog = () => {
                   <SelectItem value="stock">Ações (B3)</SelectItem>
                   <SelectItem value="fund">Fundos Imobiliários (FIIs)</SelectItem>
                   <SelectItem value="bdr">BDRs (Ações Internacionais)</SelectItem>
-                  <SelectItem value="fixed_income">Renda Fixa / Caixinhas</SelectItem>
+                  <SelectItem value="fixedIncome">Renda Fixa / Caixinhas</SelectItem>
                 </SelectContent>
               </Select>
               <input type="hidden" name="category" value={category} />
             </Field>
             {/* 2. Campo de Busca com Dropdown */}
-            {category !== 'fixed_income' && (
+            {category !== 'fixedIncome' && (
               <Field className="grid gap-2 relative">
                 <FieldLabel htmlFor="ticker">Buscar Ativo</FieldLabel>
                 <div className="relative">
@@ -147,7 +149,7 @@ export const InvestimentDialog = () => {
                     key={selectedStock?.ticker || 'ticker'}
                     value={tickerQuery}
                     placeholder="Digite o código (Ex: ITUB4, PETR4, BTC)..."
-                    disabled={isPending || pending}
+                    disabled={pending}
                     onChange={(e) => setTickerQuery(e.target.value)}
                     onFocus={() => tickerQuery && setShowDropdown(true)}
                   />

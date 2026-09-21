@@ -2,9 +2,9 @@ import { MonthSelector } from './_components/monthSelector';
 import { ManageMoney } from './_components/manageMoney';
 import { SearchFilters } from './_components/searchFilters';
 import { ReleaseTables } from './_components/releaseTables';
-import { TransactionSearchParams } from '@/types/transactions';
+import { TransactionSearchParamsType } from '@/types/transactions';
 
-const Page = async ({ searchParams }: { searchParams: Promise<TransactionSearchParams> }) => {
+const Page = async ({ searchParams }: { searchParams: Promise<TransactionSearchParamsType> }) => {
   const params = await searchParams;
 
   return (

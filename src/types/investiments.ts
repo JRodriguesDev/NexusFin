@@ -1,4 +1,5 @@
 import { Investiment, InvestimentCategory } from '@/generated/prisma/client';
+import { FormType } from './form';
 
 export type InvestimentType = Omit<
   Investiment,
@@ -7,11 +8,24 @@ export type InvestimentType = Omit<
   price: number;
   quantity: number;
 };
+
 export type InvestimentCategoryType = InvestimentCategory;
-export type SearchInvestimentCategory = Exclude<InvestimentCategoryType, 'fixed_income'>;
+
+export type SearchInvestimentCategoryType = Exclude<InvestimentCategoryType, 'fixed_income'>;
+
 export type SelectedStockType = {
   ticker?: string;
   name?: string;
   price?: string | number;
   logo?: string;
+};
+
+export type InvestimentFormType = FormType & {
+  errors?: {
+    ticker?: string;
+    name?: string;
+    quantity?: string;
+    price?: string;
+    date?: string;
+  };
 };

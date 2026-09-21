@@ -3,7 +3,7 @@ import 'server-only';
 import { prisma } from '@/lib/prisma/prisma';
 import { cacheTag } from 'next/cache';
 import { CreateTransactionSchema, UpdateTransactionSchema } from '@/lib/validations/transaction';
-import { TransactionSearchParams } from '@/types/transactions';
+import { TransactionSearchParamsType } from '@/types/transactions';
 
 export const createTransaction = async (data: CreateTransactionSchema) => {
   await prisma.transaction.create({
@@ -14,13 +14,19 @@ export const createTransaction = async (data: CreateTransactionSchema) => {
   });
 };
 
-export const getTransactions = async (params: TransactionSearchParams) => {
+export const getTransactions = async (params: TransactionSearchParamsType) => {
   'use cache';
   cacheTag('transactions');
 
   const { search, category, month, year } = params;
-  const startDate = new Date(year, month - 1, 1, 0, 0, 0, 0);
-  const endDate = new Date(year, month, 0, 23, 59, 59, 999);
+  const now = new Date();
+
+  const parsedYear = year && !isNaN(Number(year)) ? Number(year) : now.getFullYear();
+  const parsedMonth = month && !isNaN(Number(month)) ? Number(month) : now.getMonth() + 1;
+
+  const startDate = new Date(parsedYear, parsedMonth - 1, 1, 0, 0, 0, 0);
+  const endDate = new Date(parsedYear, parsedMonth, 0, 23, 59, 59, 999);
+
   const transactions = await prisma.transaction.findMany({
     orderBy: { date: 'desc' },
     where: {

@@ -22,9 +22,8 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import { Field, FieldGroup, FieldLabel, FieldError } from '@/components/ui/field';
 import { cn } from '@/lib/utils';
-import { transactionDialogConfig } from '@/constants/transaction';
+import { transactionDialogConfig, TransactionResponse } from '@/constants/transaction';
 import { Transaction } from '@/types/transactions';
-import { TransactionResponse } from '@/constants/form';
 import { updateTransactionAction } from '../actions';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';

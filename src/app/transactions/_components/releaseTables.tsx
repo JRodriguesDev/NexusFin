@@ -1,9 +1,9 @@
 import { Tables } from './tables';
 import { TableSkeleton } from './tableSkeleton';
 import { Suspense } from 'react';
-import { TransactionSearchParams } from '@/types/transactions';
+import { TransactionSearchParamsType } from '@/types/transactions';
 
-export const ReleaseTables = ({ params }: { params: TransactionSearchParams }) => {
+export const ReleaseTables = ({ params }: { params: TransactionSearchParamsType }) => {
   return (
     // Definimos max-h-[400px] (ou a altura limite que preferir) e overflow-y-auto
     <div className="max-h-[400px] w-full overflow-y-auto overflow-x-auto rounded-md border border-border">
