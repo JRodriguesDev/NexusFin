@@ -106,15 +106,13 @@ export const TransationDialog = ({
               <Field className="space-y-2">
                 <FieldLabel>{currentDialogType.dayLabel}</FieldLabel>
                 <Input
-                  name="recurringDay"
-                  type="number"
-                  min={1}
-                  max={31}
-                  placeholder="Ex: 5"
+                  name="date"
+                  type="date"
+                  defaultValue={new Date().toISOString().split('T')[0]}
                   disabled={pending}
                 />
-                {!state.success && state.errors?.recurringDay && (
-                  <FieldError>{state.errors!.recurringDay}</FieldError>
+                {!state.success && state.errors?.date && (
+                  <FieldError>{state.errors!.date}</FieldError>
                 )}
               </Field>
             </div>

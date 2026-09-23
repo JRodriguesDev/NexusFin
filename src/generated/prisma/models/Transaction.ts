@@ -27,12 +27,10 @@ export type AggregateTransaction = {
 }
 
 export type TransactionAvgAggregateOutputType = {
-  recurringDay: number | null
   amount: runtime.Decimal | null
 }
 
 export type TransactionSumAggregateOutputType = {
-  recurringDay: number | null
   amount: runtime.Decimal | null
 }
 
@@ -43,7 +41,6 @@ export type TransactionMinAggregateOutputType = {
   description: string | null
   category: $Enums.TransactionCategory | null
   isRecurrence: boolean | null
-  recurringDay: number | null
   amount: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -56,7 +53,6 @@ export type TransactionMaxAggregateOutputType = {
   description: string | null
   category: $Enums.TransactionCategory | null
   isRecurrence: boolean | null
-  recurringDay: number | null
   amount: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -69,7 +65,6 @@ export type TransactionCountAggregateOutputType = {
   description: number
   category: number
   isRecurrence: number
-  recurringDay: number
   amount: number
   createdAt: number
   updatedAt: number
@@ -78,12 +73,10 @@ export type TransactionCountAggregateOutputType = {
 
 
 export type TransactionAvgAggregateInputType = {
-  recurringDay?: true
   amount?: true
 }
 
 export type TransactionSumAggregateInputType = {
-  recurringDay?: true
   amount?: true
 }
 
@@ -94,7 +87,6 @@ export type TransactionMinAggregateInputType = {
   description?: true
   category?: true
   isRecurrence?: true
-  recurringDay?: true
   amount?: true
   createdAt?: true
   updatedAt?: true
@@ -107,7 +99,6 @@ export type TransactionMaxAggregateInputType = {
   description?: true
   category?: true
   isRecurrence?: true
-  recurringDay?: true
   amount?: true
   createdAt?: true
   updatedAt?: true
@@ -120,7 +111,6 @@ export type TransactionCountAggregateInputType = {
   description?: true
   category?: true
   isRecurrence?: true
-  recurringDay?: true
   amount?: true
   createdAt?: true
   updatedAt?: true
@@ -220,7 +210,6 @@ export type TransactionGroupByOutputType = {
   description: string
   category: $Enums.TransactionCategory
   isRecurrence: boolean
-  recurringDay: number | null
   amount: runtime.Decimal
   createdAt: Date
   updatedAt: Date
@@ -256,7 +245,6 @@ export type TransactionWhereInput = {
   description?: Prisma.StringFilter<"Transaction"> | string
   category?: Prisma.EnumTransactionCategoryFilter<"Transaction"> | $Enums.TransactionCategory
   isRecurrence?: Prisma.BoolFilter<"Transaction"> | boolean
-  recurringDay?: Prisma.IntNullableFilter<"Transaction"> | number | null
   amount?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string
@@ -269,7 +257,6 @@ export type TransactionOrderByWithRelationInput = {
   description?: Prisma.SortOrder
   category?: Prisma.SortOrder
   isRecurrence?: Prisma.SortOrder
-  recurringDay?: Prisma.SortOrderInput | Prisma.SortOrder
   amount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -285,7 +272,6 @@ export type TransactionWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringFilter<"Transaction"> | string
   category?: Prisma.EnumTransactionCategoryFilter<"Transaction"> | $Enums.TransactionCategory
   isRecurrence?: Prisma.BoolFilter<"Transaction"> | boolean
-  recurringDay?: Prisma.IntNullableFilter<"Transaction"> | number | null
   amount?: Prisma.DecimalFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Transaction"> | Date | string
@@ -298,7 +284,6 @@ export type TransactionOrderByWithAggregationInput = {
   description?: Prisma.SortOrder
   category?: Prisma.SortOrder
   isRecurrence?: Prisma.SortOrder
-  recurringDay?: Prisma.SortOrderInput | Prisma.SortOrder
   amount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -319,7 +304,6 @@ export type TransactionScalarWhereWithAggregatesInput = {
   description?: Prisma.StringWithAggregatesFilter<"Transaction"> | string
   category?: Prisma.EnumTransactionCategoryWithAggregatesFilter<"Transaction"> | $Enums.TransactionCategory
   isRecurrence?: Prisma.BoolWithAggregatesFilter<"Transaction"> | boolean
-  recurringDay?: Prisma.IntNullableWithAggregatesFilter<"Transaction"> | number | null
   amount?: Prisma.DecimalWithAggregatesFilter<"Transaction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Transaction"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Transaction"> | Date | string
@@ -328,11 +312,10 @@ export type TransactionScalarWhereWithAggregatesInput = {
 export type TransactionCreateInput = {
   id?: string
   type: $Enums.TransactionType
-  date?: Date | string
+  date: Date | string
   description: string
   category: $Enums.TransactionCategory
   isRecurrence?: boolean
-  recurringDay?: number | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -341,11 +324,10 @@ export type TransactionCreateInput = {
 export type TransactionUncheckedCreateInput = {
   id?: string
   type: $Enums.TransactionType
-  date?: Date | string
+  date: Date | string
   description: string
   category: $Enums.TransactionCategory
   isRecurrence?: boolean
-  recurringDay?: number | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -358,7 +340,6 @@ export type TransactionUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory
   isRecurrence?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  recurringDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -371,7 +352,6 @@ export type TransactionUncheckedUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory
   isRecurrence?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  recurringDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -380,11 +360,10 @@ export type TransactionUncheckedUpdateInput = {
 export type TransactionCreateManyInput = {
   id?: string
   type: $Enums.TransactionType
-  date?: Date | string
+  date: Date | string
   description: string
   category: $Enums.TransactionCategory
   isRecurrence?: boolean
-  recurringDay?: number | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -397,7 +376,6 @@ export type TransactionUpdateManyMutationInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory
   isRecurrence?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  recurringDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -410,7 +388,6 @@ export type TransactionUncheckedUpdateManyInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory
   isRecurrence?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  recurringDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -423,14 +400,12 @@ export type TransactionCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   category?: Prisma.SortOrder
   isRecurrence?: Prisma.SortOrder
-  recurringDay?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type TransactionAvgOrderByAggregateInput = {
-  recurringDay?: Prisma.SortOrder
   amount?: Prisma.SortOrder
 }
 
@@ -441,7 +416,6 @@ export type TransactionMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   category?: Prisma.SortOrder
   isRecurrence?: Prisma.SortOrder
-  recurringDay?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -454,14 +428,12 @@ export type TransactionMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   category?: Prisma.SortOrder
   isRecurrence?: Prisma.SortOrder
-  recurringDay?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type TransactionSumOrderByAggregateInput = {
-  recurringDay?: Prisma.SortOrder
   amount?: Prisma.SortOrder
 }
 
@@ -477,14 +449,6 @@ export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 
 
 export type TransactionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -494,7 +458,6 @@ export type TransactionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   description?: boolean
   category?: boolean
   isRecurrence?: boolean
-  recurringDay?: boolean
   amount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -507,7 +470,6 @@ export type TransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   description?: boolean
   category?: boolean
   isRecurrence?: boolean
-  recurringDay?: boolean
   amount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -520,7 +482,6 @@ export type TransactionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   description?: boolean
   category?: boolean
   isRecurrence?: boolean
-  recurringDay?: boolean
   amount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -533,13 +494,12 @@ export type TransactionSelectScalar = {
   description?: boolean
   category?: boolean
   isRecurrence?: boolean
-  recurringDay?: boolean
   amount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "date" | "description" | "category" | "isRecurrence" | "recurringDay" | "amount" | "createdAt" | "updatedAt", ExtArgs["result"]["transaction"]>
+export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "date" | "description" | "category" | "isRecurrence" | "amount" | "createdAt" | "updatedAt", ExtArgs["result"]["transaction"]>
 
 export type $TransactionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Transaction"
@@ -551,7 +511,6 @@ export type $TransactionPayload<ExtArgs extends runtime.Types.Extensions.Interna
     description: string
     category: $Enums.TransactionCategory
     isRecurrence: boolean
-    recurringDay: number | null
     amount: runtime.Decimal
     createdAt: Date
     updatedAt: Date
@@ -984,7 +943,6 @@ export interface TransactionFieldRefs {
   readonly description: Prisma.FieldRef<"Transaction", 'String'>
   readonly category: Prisma.FieldRef<"Transaction", 'TransactionCategory'>
   readonly isRecurrence: Prisma.FieldRef<"Transaction", 'Boolean'>
-  readonly recurringDay: Prisma.FieldRef<"Transaction", 'Int'>
   readonly amount: Prisma.FieldRef<"Transaction", 'Decimal'>
   readonly createdAt: Prisma.FieldRef<"Transaction", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Transaction", 'DateTime'>

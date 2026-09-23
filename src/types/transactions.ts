@@ -22,7 +22,7 @@ export type TransactionFormType = FormType & {
   errors?: {
     description?: string;
     amount?: string;
-    recurringDay?: string;
+    date?: string;
     isRecurrence?: string;
     category?: string;
   };

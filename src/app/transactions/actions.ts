@@ -21,10 +21,11 @@ export const createTransactionAction = async (
     type: form.get('type'),
     description: form.get('description'),
     amount: form.get('amount'),
-    recurringDay: form.get('recurringDay'),
+    date: form.get('date'),
     category: form.get('category'),
     isRecurrence: form.get('isRecurrence'),
   });
+  console.log(validationFields);
 
   if (!validationFields.success) {
     const errors = validationFields.error.flatten().fieldErrors;
@@ -33,7 +34,7 @@ export const createTransactionAction = async (
       errors: {
         description: errors.description?.[0],
         amount: errors.amount?.[0],
-        recurringDay: errors.recurringDay?.[0],
+        date: errors.date?.[0],
         category: errors.category?.[0],
         isRecurrence: errors.isRecurrence?.[0],
       },
@@ -86,7 +87,7 @@ export const updateTransactionAction = async (
     id: form.get('id'),
     description: form.get('description'),
     amount: form.get('amount'),
-    recurringDay: form.get('recurringDay'),
+    date: form.get('date'),
     category: form.get('category'),
     isRecurrence: form.get('isRecurrence'),
   });
@@ -98,7 +99,7 @@ export const updateTransactionAction = async (
       errors: {
         description: errors.description?.[0],
         amount: errors.amount?.[0],
-        recurringDay: errors.recurringDay?.[0],
+        date: errors.date?.[0],
         category: errors.category?.[0],
         isRecurrence: errors.isRecurrence?.[0],
       },

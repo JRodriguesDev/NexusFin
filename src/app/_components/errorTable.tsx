@@ -10,8 +10,8 @@ export const ErrorTable = ({ error }: { error?: string }) => {
 
   return (
     <tr className="h-full">
-      <td colSpan={6} className="h-full px-4 py-20 text-center align-middle">
-        <div className="flex h-full w-full min-h-full flex-col items-center justify-center gap-3">
+      <td colSpan={6} className="px-4 py-12 text-center align-middle">
+        <div className="flex flex-col items-center justify-center gap-3">
           {/* Ícone com destaque visual em vermelho */}
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-rose-500/10 text-rose-500">
             <TbAlertTriangle className="h-6 w-6" />

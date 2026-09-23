@@ -13,7 +13,10 @@ export const createTransactionSchema = z.object({
     .number()
     .positive('O valor deve ser maior que zero')
     .transform((value) => new Prisma.Decimal(value)),
-  recurringDay: z.coerce.number().int().min(1, 'Dia inválido').max(31, 'Dia inválido'),
+  date: z
+    .string()
+    .min(1, 'Requer Data')
+    .transform((date) => new Date(date)),
   category: z.nativeEnum(TransactionCategory, { message: 'Categoria Invalida' }),
   isRecurrence: z
     .enum(['true', 'false'], { message: 'Valor de recorrência inválido' })
@@ -31,7 +34,10 @@ export const updateTransactionSchema = z.object({
     .number()
     .positive('O valor deve ser maior que zero')
     .transform((value) => new Prisma.Decimal(value)),
-  recurringDay: z.coerce.number().int().min(1, 'Dia inválido').max(31, 'Dia inválido'),
+  date: z
+    .string()
+    .min(1, 'Requer Data')
+    .transform((date) => new Date(date)),
   category: z.nativeEnum(TransactionCategory, { message: 'Categoria Invalida' }),
   isRecurrence: z
     .enum(['true', 'false'], { message: 'Valor de recorrência inválido' })

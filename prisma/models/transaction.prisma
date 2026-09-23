@@ -2,11 +2,10 @@ model Transaction {
   id String @id @default(cuid())
 
   type TransactionType
-  date DateTime @default(now())
+  date DateTime
   description String
   category TransactionCategory
   isRecurrence Boolean @default(false) @map("is_recurrence")
-  recurringDay Int? @map("recurring_day")
   amount Decimal @db.Decimal(10,2)
 
   createdAt   DateTime @default(now()) @map("created_at")
