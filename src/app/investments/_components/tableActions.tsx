@@ -9,8 +9,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { InvestimentType } from '@/types/investiments';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { deleteInvestimentAction } from '../actions';
+import { EditInvestimentDialog } from './editInvestimentDialog';
 
-export const TableActions = () => {
+export const TableActions = ({ investiment }: { investiment: InvestimentType }) => {
+  const router = useRouter();
+
+  const handleDelete = async () => {
+    const response = await deleteInvestimentAction(investiment.id);
+    if (!response.success) return toast.error('Erro ao excluir Investimento');
+    toast.success('Investimento excluído com sucesso');
+    router.refresh();
+  };
+
   return (
     <>
       <DropdownMenu>
@@ -25,12 +39,23 @@ export const TableActions = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-40">
-          <DropdownMenuItem className="gap-2 cursor-pointer">
-            <TbEdit className="h-4 w-4 text-muted-foreground" />
-            Editar
-          </DropdownMenuItem>
+          <EditInvestimentDialog
+            investiment={investiment}
+            trigger={
+              <DropdownMenuItem
+                className="gap-2 cursor-pointer"
+                onSelect={(e) => e.preventDefault()}
+              >
+                <TbEdit className="h-4 w-4 text-muted-foreground" />
+                Editar
+              </DropdownMenuItem>
+            }
+          />
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="gap-2 text-rose-500 focus:text-rose-500 cursor-pointer">
+          <DropdownMenuItem
+            className="gap-2 text-rose-500 focus:text-rose-500 cursor-pointer"
+            onClick={() => handleDelete()}
+          >
             <TbTrash className="h-4 w-4" />
             Excluir
           </DropdownMenuItem>

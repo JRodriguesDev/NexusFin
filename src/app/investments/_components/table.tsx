@@ -81,7 +81,7 @@ export const Table = async ({ params }: { params: InvestimentSearchParamsType })
 
             {/* Menu de Ações (agora com a tag TD encapsulando o componente) */}
             <td className="px-4 py-3.5 text-right">
-              <TableActions />
+              <TableActions investiment={investiment} />
             </td>
           </tr>
         );

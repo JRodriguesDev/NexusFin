@@ -31,4 +31,26 @@ export const createInvestimentSchema = z.object({
     .transform((date) => new Date(date)),
 });
 
+export const upadteInvestimentSchema = z.object({
+  id: z.string(),
+  name: z
+    .string()
+    .trim()
+    .min(3, 'Nome do ativo deve ter no mínimo 3 caracteres')
+    .max(255, 'Nome do ativo muito longa'),
+  quantity: z.coerce
+    .number()
+    .positive('O valor deve ser maior que zero')
+    .transform((value) => new Prisma.Decimal(value)),
+  price: z.coerce
+    .number()
+    .positive('O valor deve ser maior que zero')
+    .transform((value) => new Prisma.Decimal(value)),
+  dateOperation: z
+    .string()
+    .min(1, 'Requer Data')
+    .transform((date) => new Date(date)),
+});
+
 export type CreateInvestimentSchema = z.infer<typeof createInvestimentSchema>;
+export type UpdateInvestimentSchema = z.infer<typeof upadteInvestimentSchema>;

@@ -9,11 +9,16 @@ import {
   InvestimentType,
   InvestimentFormType,
 } from '@/types/investiments';
-import { createInvestimentSchema } from '@/lib/validations/investiment';
+import { createInvestimentSchema, upadteInvestimentSchema } from '@/lib/validations/investiment';
 import { prismaErrors } from '@/lib/prisma/error';
-import { createInvestiment } from '@/services/DAL/investiment';
-import { getInvestiments } from '@/services/DAL/investiment';
+import {
+  createInvestiment,
+  deleteInvestiment,
+  getInvestiments,
+  updateInvestiment,
+} from '@/services/DAL/investiment';
 import { InvestimentSearchParamsType } from '@/types/investiments';
+import { updateTag } from 'next/cache';
 
 export const searchStockAction = async (
   query: string,
@@ -64,6 +69,7 @@ export const addInvestimentAction = async (
   }
   try {
     await createInvestiment(validationFields.data);
+    updateTag('investiments');
     return {
       success: true,
     };
@@ -89,6 +95,58 @@ export const getInvestimentAction = async (
       success: true,
       data: response,
     };
+  } catch (error) {
+    return {
+      success: false,
+      message: prismaErrors(error) ?? 'Error Interno',
+    };
+  }
+};
+
+export const updateInvestimentAction = async (
+  _prevState: InvestimentFormType,
+  form: FormData
+): Promise<InvestimentFormType> => {
+  const validationFields = upadteInvestimentSchema.safeParse({
+    id: form.get('id'),
+    name: form.get('name'),
+    quantity: form.get('quantity'),
+    price: form.get('price'),
+    dateOperation: form.get('date'),
+  });
+
+  if (!validationFields.success) {
+    const errors = validationFields.error.flatten().fieldErrors;
+    return {
+      success: false,
+      errors: {
+        name: errors.name?.[0],
+        quantity: errors.quantity?.[0],
+        price: errors.price?.[0],
+        date: errors.dateOperation?.[0],
+      },
+    };
+  }
+
+  try {
+    await updateInvestiment(validationFields.data);
+    updateTag('investiments');
+    return {
+      success: true,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: prismaErrors(error) ?? 'Error Interno',
+    };
+  }
+};
+
+export const deleteInvestimentAction = async (id: string): Promise<ResponseActionType> => {
+  try {
+    await deleteInvestiment(id);
+    updateTag('investiments');
+    return { success: true };
   } catch (error) {
     return {
       success: false,
