@@ -13,6 +13,7 @@ import { createInvestimentSchema } from '@/lib/validations/investiment';
 import { prismaErrors } from '@/lib/prisma/error';
 import { createInvestiment } from '@/services/DAL/investiment';
 import { getInvestiments } from '@/services/DAL/investiment';
+import { InvestimentSearchParamsType } from '@/types/investiments';
 
 export const searchStockAction = async (
   query: string,
@@ -48,8 +49,6 @@ export const addInvestimentAction = async (
     dateOperation: form.get('date'),
   });
 
-  console.log(validationFields);
-
   if (!validationFields.success) {
     const errors = validationFields.error.flatten().fieldErrors;
     return {
@@ -76,9 +75,16 @@ export const addInvestimentAction = async (
   }
 };
 
-export const getInvestimentAction = async (): Promise<ResponseActionType<InvestimentType[]>> => {
+export const getInvestimentAction = async (
+  filters: InvestimentSearchParamsType
+): Promise<ResponseActionType<InvestimentType[]>> => {
+  const params: InvestimentSearchParamsType = {
+    search: filters.search?.trim() || undefined,
+    category: filters.category || undefined,
+  };
+
   try {
-    const response = await getInvestiments();
+    const response = await getInvestiments(params);
     return {
       success: true,
       data: response,

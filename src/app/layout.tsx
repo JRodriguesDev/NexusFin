@@ -15,8 +15,8 @@ export const metadata: Metadata = {
 
 export const RootLayout = ({ children }: LayoutProps<'/'>) => {
   return (
-    <html lang="pt-br" className={cn('h-full antialiased', 'font-sans', 'dark', geist.variable)}>
-      <body className="min-h-full flex flex-col">
+    <html lang="pt-br" className={cn('font-sans', 'dark', geist.variable)}>
+      <body className="min-h-full flex flex-col overflow-hidden">
         <Header />
         {children}
         <MobileNavLink />

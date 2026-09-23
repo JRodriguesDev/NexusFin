@@ -29,3 +29,8 @@ export type InvestimentFormType = FormType & {
     date?: string;
   };
 };
+
+export type InvestimentSearchParamsType = {
+  search?: string;
+  category: SearchInvestimentCategoryType;
+};

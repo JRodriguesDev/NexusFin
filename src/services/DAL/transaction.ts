@@ -14,11 +14,11 @@ export const createTransaction = async (data: CreateTransactionSchema) => {
   });
 };
 
-export const getTransactions = async (params: TransactionSearchParamsType) => {
+export const getTransactions = async (filters: TransactionSearchParamsType) => {
   'use cache';
   cacheTag('transactions');
 
-  const { search, category, month, year } = params;
+  const { search, category, month, year } = filters;
   const now = new Date();
 
   const parsedYear = year && !isNaN(Number(year)) ? Number(year) : now.getFullYear();

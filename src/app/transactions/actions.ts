@@ -55,17 +55,15 @@ export const createTransactionAction = async (
 export const getTransactionsAction = async (
   params: TransactionSearchParamsType
 ): Promise<ResponseActionType<Transaction[]>> => {
-  const safeParams = params ?? ({} as TransactionSearchParamsType);
   const filters: TransactionSearchParamsType = {
-    ...safeParams,
-    search: safeParams.search?.trim() || undefined,
-    category: safeParams.category || undefined,
+    ...params,
+    search: params.search?.trim() || undefined,
+    category: params.category || undefined,
   };
   try {
     const transactions = await getTransactions(filters);
     return { success: true, data: transactions };
   } catch (error) {
-    console.log(error);
     return { success: false, message: prismaErrors(error) ?? 'Error Interno' };
   }
 };

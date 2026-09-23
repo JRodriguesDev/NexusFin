@@ -6,34 +6,36 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
 export const TableActions = () => {
   return (
-    <td className="p-4 text-center">
+    <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-muted-foreground hover:text-foreground cursor-pointer"
+          >
             <span className="sr-only">Abrir menu</span>
             <TbDotsVertical className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Ações</DropdownMenuLabel>
-          <DropdownMenuSeparator />
+        <DropdownMenuContent align="end" className="w-40">
           <DropdownMenuItem className="gap-2 cursor-pointer">
-            <TbEdit className="h-4 w-4" />
+            <TbEdit className="h-4 w-4 text-muted-foreground" />
             Editar
           </DropdownMenuItem>
-          <DropdownMenuItem className="gap-2 cursor-pointer text-destructive focus:text-destructive">
+          <DropdownMenuSeparator />
+          <DropdownMenuItem className="gap-2 text-rose-500 focus:text-rose-500 cursor-pointer">
             <TbTrash className="h-4 w-4" />
             Excluir
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    </td>
+    </>
   );
 };

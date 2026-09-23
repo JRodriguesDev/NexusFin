@@ -1,8 +1,8 @@
 import { TbRepeat } from 'react-icons/tb';
 import { Badge } from '@/components/ui/badge';
 import { TableActions } from './tableActions';
-import { EmptyTable } from './emptyTable';
-import { ErrorTable } from './errorTable';
+import { EmptyTable } from '@/app/_components/emptyTable';
+import { ErrorTable } from '@/app/_components/errorTable';
 import { cn, dateFormat, formatCurrency } from '@/lib/utils';
 import { transactionConfig, transactionCategoryConfig } from '@/constants/transaction';
 import { getTransactionsAction } from '../actions';

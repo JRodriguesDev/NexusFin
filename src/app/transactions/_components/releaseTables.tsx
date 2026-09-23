@@ -5,10 +5,8 @@ import { TransactionSearchParamsType } from '@/types/transactions';
 
 export const ReleaseTables = ({ params }: { params: TransactionSearchParamsType }) => {
   return (
-    // Definimos max-h-[400px] (ou a altura limite que preferir) e overflow-y-auto
-    <div className="max-h-[400px] w-full overflow-y-auto overflow-x-auto rounded-md border border-border">
+    <div className="w-full rounded-md border border-border h-78 overflow-y-auto">
       <table className="w-full text-left text-sm table-fixed">
-        {/* sticky top-0 faz o cabeçalho ficar fixo enquanto o tbody rola */}
         <thead className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm text-xs uppercase text-muted-foreground border-b border-border">
           <tr>
             <th className="w-[18%] px-4 py-3">Tipo / Data</th>
@@ -16,7 +14,7 @@ export const ReleaseTables = ({ params }: { params: TransactionSearchParamsType 
             <th className="w-[18%] px-4 py-3">Categoria</th>
             <th className="w-[14%] px-4 py-3">Recorrência</th>
             <th className="w-[12%] px-4 py-3 text-right">Valor</th>
-            <th className="w-[8%] px-4 py-3 text-right">Ações</th>
+            <th className="w-[12%] px-4 py-3 text-right">Ações</th>
           </tr>
         </thead>
 
