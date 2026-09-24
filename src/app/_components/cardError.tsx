@@ -1,7 +1,9 @@
 import { TbAlertTriangle } from 'react-icons/tb';
 import { Card } from '@/components/ui/card';
 
-export const CardErrorState = ({ message }: { message: string }) => {
+export const CardErrorState = ({ message }: { message?: string }) => {
+  const error = message ?? 'Não foi possível buscar as informações no momento.';
+
   return (
     <Card className="p-4 flex items-center gap-3 border-destructive/20 bg-destructive/5 text-destructive">
       <div className="p-2 rounded-lg bg-destructive/10 text-destructive shrink-0">
@@ -9,7 +11,7 @@ export const CardErrorState = ({ message }: { message: string }) => {
       </div>
       <div>
         <h4 className="text-sm font-semibold">Erro ao carregar dados</h4>
-        <p className="text-xs opacity-90">{message}</p>
+        <p className="text-xs opacity-90">{error}</p>
       </div>
     </Card>
   );
