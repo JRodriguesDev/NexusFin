@@ -1,4 +1,3 @@
-import { CalendarPeriod } from './_components/calendaPeriod';
 import { MoneyKpips, MoneyKpisSkeleton } from './_components/moneyKpips';
 import { Graphics } from './_components/graphics';
 import { SummaryTables } from './_components/summaryTables';
@@ -18,8 +17,6 @@ export default function OverviewPage() {
               Acompanhe o balanço das suas finanças e o crescimento dos seus investimentos.
             </p>
           </div>
-
-          <CalendarPeriod />
         </div>
 
         {/* 2. KPIS COM BORDAS COLORIDAS */}
