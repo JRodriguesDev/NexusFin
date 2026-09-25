@@ -53,3 +53,50 @@ export const getMoneyKpip = async () => {
     totalInvested,
   };
 };
+
+export const getGraphicData = async () => {
+  const sixMonthsAgo = new Date();
+  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 5);
+  sixMonthsAgo.setDate(1);
+  sixMonthsAgo.setHours(0, 0, 0, 0);
+
+  const [transactions, investiments] = await prisma.$transaction([
+    prisma.transaction.findMany({
+      where: { date: { gte: sixMonthsAgo } },
+      select: {
+        amount: true,
+        type: true,
+        date: true,
+      },
+      orderBy: { date: 'asc' },
+    }),
+    prisma.investiment.findMany({
+      select: {
+        category: true,
+        price: true,
+        quantity: true,
+      },
+    }),
+  ]);
+
+  const formattedTransactions = transactions.map((tx) => ({
+    amount: Number(tx.amount),
+    type: tx.type,
+    date: tx.date,
+  }));
+
+  const formattedInvestiments = investiments.reduce(
+    (acc, inv) => {
+      const totalValue = Number(inv.price) * Number(inv.quantity);
+      const category = inv.category;
+      acc[category] = (acc[category] ?? 0) + totalValue;
+      return acc;
+    },
+    {} as Record<string, number>
+  );
+
+  return {
+    formattedTransactions,
+    formattedInvestiments,
+  };
+};

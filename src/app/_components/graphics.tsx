@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TbFilter } from 'react-icons/tb';
 import { Bar, BarChart, CartesianGrid, XAxis, Pie, PieChart, Cell } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -17,14 +17,11 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-
-const COLORS = {
-  income: '#10b981', // Emerald 500
-  expense: '#f43f5e', // Rose 500
-  blue: '#3b82f6', // Blue 500
-  amber: '#f59e0b', // Amber 500
-  violet: '#8b5cf6', // Violet 500
-};
+import { graphicsDataAction } from '../actions';
+import { graphicColors, categoryLabels } from '@/constants/overview';
+import { GraphicsData } from '@/types/overview';
+import { ResponseActionType } from '@/types/response';
+import { CardErrorState } from './cardError';
 
 const investmentChartConfig = {
   amount: { label: 'Valor (R$)' },
@@ -33,40 +30,78 @@ const investmentChartConfig = {
 const cashFlowChartConfig = {
   income: {
     label: 'Entradas',
-    color: COLORS.income,
+    color: graphicColors.income,
   },
   expense: {
     label: 'Saídas',
-    color: COLORS.expense,
+    color: graphicColors.expense,
   },
 } satisfies ChartConfig;
 
-const cashFlowData = [
-  { month: 'Mai', income: 8200, expense: 4100 },
-  { month: 'Jun', income: 9500, expense: 5200 },
-  { month: 'Jul', income: 8800, expense: 3900 },
-  { month: 'Ago', income: 11000, expense: 6100 },
-  { month: 'Set', income: 12450, expense: 4820 },
+// Mapeamento de cores para a rosca de investimentos (para quando não vier 'fill' do backend)
+const categoryColors = [
+  graphicColors.blue,
+  graphicColors.income,
+  graphicColors.amber,
+  graphicColors.violet,
 ];
 
-const investmentByCategoryData = [
-  { name: 'Ações (B3)', amount: 12400, fill: COLORS.blue, percent: '32%' },
-  { name: 'Renda Fixa', amount: 10300, fill: COLORS.income, percent: '27%' },
-  { name: 'Fundos Imob.', amount: 9800, fill: COLORS.amber, percent: '25%' },
-  { name: 'BDRs / Int.', amount: 6000, fill: COLORS.violet, percent: '16%' },
-];
-
-const investmentByRiskData = [
-  { name: 'Baixo Risco', amount: 10300, fill: COLORS.income, percent: '27%' },
-  { name: 'Médio Risco', amount: 9800, fill: COLORS.amber, percent: '25%' },
-  { name: 'Alto Risco', amount: 18400, fill: COLORS.expense, percent: '48%' },
-];
+const riskColorsMap: Record<string, string> = {
+  'Baixo Risco': graphicColors.income,
+  'Médio Risco': graphicColors.amber,
+  'Alto Risco': graphicColors.expense,
+};
 
 export const Graphics = () => {
   const [cashFlowFilter, setCashFlowFilter] = useState<'all' | 'income' | 'expense'>('all');
   const [investmentView, setInvestmentView] = useState<'category' | 'risk'>('category');
-  const currentInvestmentData =
-    investmentView === 'category' ? investmentByCategoryData : investmentByRiskData;
+  const [graphicsData, setGraphicsData] = useState<GraphicsData | null>(null);
+  const [responseActionStatus, setResponseActionStatus] = useState<ResponseActionType>({
+    success: false,
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getData = async () => {
+      setLoading(true);
+      const response = await graphicsDataAction();
+      setResponseActionStatus({ success: response.success, message: response.message });
+      if (response.success && response.data) {
+        setGraphicsData(response.data);
+      }
+      setLoading(false);
+    };
+
+    getData();
+  }, []);
+
+  // Extrai dados reais com fallback para array vazio
+  const cashFlowData = graphicsData?.cashFlow ?? [];
+  const rawInvestmentData =
+    investmentView === 'category'
+      ? (graphicsData?.investimentByCategory ?? [])
+      : (graphicsData?.investimentByRisk ?? []);
+
+  // Injeta a cor de preenchimento (fill) dinamicamente em cada item do gráfico de pizza
+  const currentInvestmentData = rawInvestmentData.map((item, index) => {
+    const displayName =
+      investmentView === 'category'
+        ? (categoryLabels[item.name as keyof typeof categoryLabels] ?? item.name)
+        : item.name;
+
+    return {
+      ...item,
+      name: displayName, // O Recharts vai usar esse nome traduzido no Tooltip e na Legenda!
+      fill:
+        investmentView === 'risk'
+          ? riskColorsMap[item.name] || categoryColors[index % categoryColors.length]
+          : categoryColors[index % categoryColors.length],
+    };
+  });
+
+  if (loading) return <GraphicLoading />;
+  if (!responseActionStatus.success)
+    return <CardErrorState message={responseActionStatus.message} />;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -122,17 +157,27 @@ export const Graphics = () => {
               <ChartTooltip content={<ChartTooltipContent indicator="dashed" />} />
 
               {(cashFlowFilter === 'all' || cashFlowFilter === 'income') && (
-                <Bar dataKey="income" name="Entradas" fill={COLORS.income} radius={[4, 4, 0, 0]} />
+                <Bar
+                  dataKey="income"
+                  name="Entradas"
+                  fill={graphicColors.income}
+                  radius={[4, 4, 0, 0]}
+                />
               )}
               {(cashFlowFilter === 'all' || cashFlowFilter === 'expense') && (
-                <Bar dataKey="expense" name="Saídas" fill={COLORS.expense} radius={[4, 4, 0, 0]} />
+                <Bar
+                  dataKey="expense"
+                  name="Saídas"
+                  fill={graphicColors.expense}
+                  radius={[4, 4, 0, 0]}
+                />
               )}
             </BarChart>
           </ChartContainer>
         </CardContent>
       </Card>
 
-      {/* Gráfico 2: Alocação de Ativos (PieChart Corrigido) */}
+      {/* Gráfico 2: Alocação de Ativos */}
       <Card className="flex flex-col">
         <CardHeader className="p-4 pb-0 flex flex-row items-center justify-between gap-2">
           <div>
@@ -144,7 +189,7 @@ export const Graphics = () => {
             value={investmentView}
             onValueChange={(val) => setInvestmentView(val as 'category' | 'risk')}
           >
-            <SelectTrigger className="w-[120px] h-7 text-[11px] px-2">
+            <SelectTrigger className="w-[135px] h-7 text-[11px] px-2">
               <TbFilter className="h-3 w-3 mr-1 text-muted-foreground" />
               <SelectValue />
             </SelectTrigger>
@@ -156,7 +201,6 @@ export const Graphics = () => {
         </CardHeader>
 
         <CardContent className="flex-1 p-4 pt-2 flex flex-col justify-between">
-          {/* h-[190px] fixo evita que a div do gráfico colapse */}
           <ChartContainer
             config={investmentChartConfig}
             className="mx-auto aspect-square h-[190px] w-full"
@@ -193,6 +237,19 @@ export const Graphics = () => {
             ))}
           </div>
         </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+const GraphicLoading = () => {
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <Card className="lg:col-span-2 h-[300px] flex items-center justify-center text-sm text-muted-foreground">
+        Carregando fluxo de caixa...
+      </Card>
+      <Card className="h-[300px] flex items-center justify-center text-sm text-muted-foreground">
+        Carregando alocação...
       </Card>
     </div>
   );
