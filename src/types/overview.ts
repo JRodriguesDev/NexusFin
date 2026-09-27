@@ -8,7 +8,7 @@ export type MoneyKpisData = {
   totalInvested: number;
 };
 
-type CashFlowDataItem = {
+export type CashFlowDataItem = {
   month: string;
   income: number;
   expense: number;

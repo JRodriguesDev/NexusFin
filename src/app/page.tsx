@@ -2,6 +2,7 @@ import { MoneyKpips, MoneyKpisSkeleton } from './_components/moneyKpips';
 import { Graphics } from './_components/graphics';
 import { SummaryTables } from './_components/summaryTables';
 import { Suspense } from 'react';
+import { GraphicLoading } from './_components/graphicLoading';
 
 export default function OverviewPage() {
   return (
@@ -25,7 +26,9 @@ export default function OverviewPage() {
         </Suspense>
 
         {/* 3. GRÁFICOS */}
-        <Graphics />
+        <Suspense fallback={<GraphicLoading />}>
+          <Graphics />
+        </Suspense>
 
         {/* 4. TABELAS RESUMIDAS */}
         <SummaryTables />
