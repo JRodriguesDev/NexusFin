@@ -100,3 +100,58 @@ export const getGraphicData = async () => {
     formattedInvestiments,
   };
 };
+
+export const getSummaryTablesData = async () => {
+  const [recentTransactions, investiments] = await prisma.$transaction([
+    prisma.transaction.findMany({
+      orderBy: { date: 'desc' },
+      take: 5,
+      select: {
+        description: true,
+        type: true,
+        category: true,
+        amount: true,
+        date: true,
+      },
+    }),
+    prisma.investiment.findMany({
+      select: {
+        name: true,
+        ticker: true,
+        category: true,
+        quantity: true,
+        price: true,
+      },
+    }),
+  ]);
+
+  let totalInvested = 0;
+
+  const formattedInvestments = investiments.map((inv) => {
+    const qty = Number(inv.quantity);
+    const price = Number(inv.price);
+    const totalValue = qty * price;
+    totalInvested += totalValue;
+
+    return {
+      name: inv.name,
+      ticker: inv.ticker,
+      category: inv.category,
+      totalValue,
+    };
+  });
+
+  const topInvestments = formattedInvestments
+    .sort((a, b) => b.totalValue - a.totalValue)
+    .slice(0, 4);
+
+  return {
+    recentTransactions: recentTransactions.map((tx) => ({
+      ...tx,
+      amount: Number(tx.amount),
+      date: new Date(tx.date).toLocaleDateString('pt-BR'),
+    })),
+    topInvestments,
+    totalInvested,
+  };
+};

@@ -1,10 +1,10 @@
 'use server';
 
-import { getMoneyKpip, getGraphicData } from '@/services/DAL/overview';
+import { getMoneyKpip, getGraphicData, getSummaryTablesData } from '@/services/DAL/overview';
 import { calculateChange } from '@/lib/utils';
 import { prismaErrors } from '@/lib/prisma/error';
 import { ResponseActionType } from '@/types/response';
-import { MoneyKpisData, GraphicsData } from '@/types/overview';
+import { MoneyKpisData, GraphicsData, SummaryTablesData } from '@/types/overview';
 import { monthNames } from '@/constants/overview';
 
 export const moneyKpipsAction = async (): Promise<ResponseActionType<MoneyKpisData>> => {
@@ -122,6 +122,18 @@ export const graphicsDataAction = async (): Promise<ResponseActionType<GraphicsD
         investimentByCategory,
         investimentByRisk,
       },
+    };
+  } catch (error) {
+    return { success: false, message: prismaErrors(error) ?? 'Erro Interno' };
+  }
+};
+
+export const summaryTableDataAction = async (): Promise<ResponseActionType<SummaryTablesData>> => {
+  try {
+    const data = await getSummaryTablesData();
+    return {
+      success: true,
+      data: data,
     };
   } catch (error) {
     return { success: false, message: prismaErrors(error) ?? 'Erro Interno' };

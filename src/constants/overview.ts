@@ -52,3 +52,20 @@ export const cashFlowChartConfig = {
     color: graphicColors.expense,
   },
 } satisfies ChartConfig;
+
+export const TRANSACTION_CATEGORY_LABELS: Record<string, string> = {
+  SALARY: 'Salário',
+  FOOD: 'Alimentação',
+  UTILITIES: 'Contas & Serviços',
+  ENTERTAINMENT: 'Lazer',
+  OTHER_INCOME: 'Outras Entradas',
+  INVESTMENT: 'Investimentos',
+};
+
+export const INVESTMENT_CATEGORY_LABELS: Record<string, string> = {
+  stock: 'Ações',
+  fund: 'FIIs',
+  bdr: 'BDRs',
+  fixedIncome: 'Renda Fixa',
+  FIXEDINCOME: 'Renda Fixa', // Para cobrir caso venha em UPPERCASE do banco
+};

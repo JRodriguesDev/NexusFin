@@ -31,3 +31,24 @@ export type GraphicsData = {
   investimentByCategory: InvestmentCategoryItem[];
   investimentByRisk: InvestmentRiskItem[];
 };
+
+export type RecentTransactionItem = {
+  description: string;
+  type: string;
+  category: string;
+  amount: number;
+  date: Date;
+};
+
+export type TopInvestmentItem = {
+  name: string;
+  ticker: string | null;
+  category: string;
+  totalValue: number;
+};
+
+export type SummaryTablesData = {
+  recentTransactions: RecentTransactionItem[];
+  topInvestments: TopInvestmentItem[];
+  totalInvested: number;
+};

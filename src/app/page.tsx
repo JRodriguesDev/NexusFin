@@ -3,6 +3,7 @@ import { Graphics } from './_components/graphics';
 import { SummaryTables } from './_components/summaryTables';
 import { Suspense } from 'react';
 import { GraphicLoading } from './_components/graphicLoading';
+import { SummaryTablesLoading } from './_components/summaryTableSkeleton';
 
 export default function OverviewPage() {
   return (
@@ -31,7 +32,9 @@ export default function OverviewPage() {
         </Suspense>
 
         {/* 4. TABELAS RESUMIDAS */}
-        <SummaryTables />
+        <Suspense fallback={<SummaryTablesLoading />}>
+          <SummaryTables />
+        </Suspense>
       </div>
     </div>
   );
