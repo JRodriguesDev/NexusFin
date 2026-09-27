@@ -1,5 +1,5 @@
 import { Tables } from './tables';
-import { TableSkeleton } from './tableSkeleton';
+import { TableSkeleton } from '@/app/_components/tableSkeleton';
 import { Suspense } from 'react';
 import { TransactionSearchParamsType } from '@/types/transactions';
 

@@ -1,5 +1,7 @@
 import { Table } from './table';
 import { InvestimentSearchParamsType } from '@/types/investiments';
+import {Suspense} from 'react'
+import { TableSkeleton } from '@/app/_components/tableSkeleton'
 
 export const InvestimentTable = ({ params }: { params: InvestimentSearchParamsType }) => {
   return (
@@ -18,7 +20,9 @@ export const InvestimentTable = ({ params }: { params: InvestimentSearchParamsTy
         </thead>
 
         <tbody className="divide-y divide-border">
+          <Suspense fallback={<TableSkeleton/>}>
           <Table params={params} />
+          </Suspense>
         </tbody>
       </table>
     </div>
