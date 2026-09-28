@@ -9,6 +9,15 @@
 * 🟢 You can import this file directly.
 */
 
+export const MessageRole = {
+  USER: 'USER',
+  ASSISTANT: 'ASSISTANT',
+  SYSTEM: 'SYSTEM'
+} as const
+
+export type MessageRole = (typeof MessageRole)[keyof typeof MessageRole]
+
+
 export const InvestimentCategory = {
   stock: 'stock',
   fund: 'fund',

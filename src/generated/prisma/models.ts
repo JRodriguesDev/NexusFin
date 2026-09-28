@@ -8,6 +8,8 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/ChatSession'
+export type * from './models/ChatMessage'
 export type * from './models/Investiment'
 export type * from './models/Transaction'
 export type * from './commonInputTypes'
