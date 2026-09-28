@@ -108,6 +108,7 @@ export const EditTransactionDialog = ({
               <Field className="space-y-2">
                 <FieldLabel>{currentDialogType.dayLabel}</FieldLabel>
                 <Input
+                  className="cursor-text"
                   disabled={pending}
                   name="date"
                   type="date"

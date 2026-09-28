@@ -5,6 +5,7 @@ import { summaryTableDataAction } from '../actions';
 import { Badge } from './badge';
 import { CardErrorState } from './cardError';
 import { INVESTMENT_CATEGORY_LABELS, TRANSACTION_CATEGORY_LABELS } from '@/constants/overview';
+import Link from 'next/link';
 
 export const SummaryTables = async () => {
   const response = await summaryTableDataAction();
@@ -22,9 +23,11 @@ export const SummaryTables = async () => {
             <h3 className="font-semibold text-base text-foreground">Últimos Lançamentos</h3>
             <p className="text-xs text-muted-foreground">Transações recentes cadastradas</p>
           </div>
-          <Button variant="ghost" size="sm" className="gap-1 text-xs h-8 px-2">
-            Ver todas <TbArrowRight className="h-3.5 w-3.5" />
-          </Button>
+          <Link href="/transactions">
+            <Button variant="ghost" size="sm" className="gap-1 text-xs h-8 px-2 cursor-pointer">
+              Ver todas <TbArrowRight className="h-3.5 w-3.5" />
+            </Button>
+          </Link>
         </div>
 
         <div className="space-y-2">
@@ -68,9 +71,11 @@ export const SummaryTables = async () => {
             <h3 className="font-semibold text-base text-foreground">Maiores Ativos</h3>
             <p className="text-xs text-muted-foreground">Principais posições da carteira</p>
           </div>
-          <Button variant="ghost" size="sm" className="gap-1 text-xs h-8 px-2">
-            Ir para Investimentos <TbArrowRight className="h-3.5 w-3.5" />
-          </Button>
+          <Link href="/investments">
+            <Button variant="ghost" size="sm" className="gap-1 text-xs h-8 px-2 cursor-pointer">
+              Ir para Investimentos <TbArrowRight className="h-3.5 w-3.5" />
+            </Button>
+          </Link>
         </div>
 
         <div className="space-y-2">

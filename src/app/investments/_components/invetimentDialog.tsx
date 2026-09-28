@@ -105,7 +105,7 @@ export const InvestimentDialog = () => {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button className="gap-2">
+        <Button className="gap-2 cursor-pointer">
           <TbPlus className="h-4 w-4" />
           Novo Aporte
         </Button>
@@ -244,6 +244,7 @@ export const InvestimentDialog = () => {
             <Field className="grid gap-2">
               <FieldLabel htmlFor="date">Data da Operação</FieldLabel>
               <Input
+                className="cursor-text"
                 name="date"
                 type="date"
                 defaultValue={new Date().toISOString().split('T')[0]}
@@ -257,6 +258,7 @@ export const InvestimentDialog = () => {
 
           <DialogFooter>
             <Button
+              className="cursor-pointer"
               type="button"
               variant="outline"
               onClick={() => setOpen(false)}
@@ -264,7 +266,7 @@ export const InvestimentDialog = () => {
             >
               Cancelar
             </Button>
-            <Button type="submit" className="gap-2" disabled={pending}>
+            <Button type="submit" className="gap-2 cursor-pointer" disabled={pending}>
               {pending && <TbLoader2 className="h-4 w-4 animate-spin" />}
               Salvar Aporte
             </Button>

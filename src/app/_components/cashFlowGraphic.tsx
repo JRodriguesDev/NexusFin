@@ -21,7 +21,7 @@ export const CashFlowGraphic = ({ cashFlowData }: { cashFlowData: CashFlowDataIt
         <div className="flex items-center bg-muted/60 p-0.5 rounded-lg border text-xs">
           <button
             onClick={() => setCashFlowFilter('all')}
-            className={`px-2.5 py-1 rounded-md transition-all font-medium ${
+            className={`px-2.5 py-1 rounded-md transition-all font-medium cursor-pointer ${
               cashFlowFilter === 'all'
                 ? 'bg-background text-foreground shadow-sm'
                 : 'text-muted-foreground hover:text-foreground'
@@ -31,7 +31,7 @@ export const CashFlowGraphic = ({ cashFlowData }: { cashFlowData: CashFlowDataIt
           </button>
           <button
             onClick={() => setCashFlowFilter('income')}
-            className={`px-2.5 py-1 rounded-md transition-all font-medium ${
+            className={`px-2.5 py-1 rounded-md transition-all font-medium cursor-pointer ${
               cashFlowFilter === 'income'
                 ? 'bg-emerald-500 text-white shadow-sm'
                 : 'text-muted-foreground hover:text-foreground'
@@ -41,7 +41,7 @@ export const CashFlowGraphic = ({ cashFlowData }: { cashFlowData: CashFlowDataIt
           </button>
           <button
             onClick={() => setCashFlowFilter('expense')}
-            className={`px-2.5 py-1 rounded-md transition-all font-medium ${
+            className={`px-2.5 py-1 rounded-md transition-all font-medium cursor-pointer ${
               cashFlowFilter === 'expense'
                 ? 'bg-rose-500 text-white shadow-sm'
                 : 'text-muted-foreground hover:text-foreground'

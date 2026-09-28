@@ -54,13 +54,17 @@ export const AssetAllocationsGraphic = ({
           value={investmentView}
           onValueChange={(val) => setInvestmentView(val as 'category' | 'risk')}
         >
-          <SelectTrigger className="w-[135px] h-7 text-[11px] px-2">
+          <SelectTrigger className="w-[135px] h-7 text-[11px] px-2  cursor-pointer">
             <TbFilter className="h-3 w-3 mr-1 text-muted-foreground" />
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="category">Por Categoria</SelectItem>
-            <SelectItem value="risk">Por Risco</SelectItem>
+            <SelectItem className="cursor-pointer" value="category">
+              Por Categoria
+            </SelectItem>
+            <SelectItem className="cursor-pointer" value="risk">
+              Por Risco
+            </SelectItem>
           </SelectContent>
         </Select>
       </CardHeader>

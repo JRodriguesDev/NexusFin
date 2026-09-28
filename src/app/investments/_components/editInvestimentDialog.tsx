@@ -133,6 +133,7 @@ export const EditInvestimentDialog = ({
             <Field className="grid gap-2">
               <FieldLabel htmlFor="edit-date">Data da Operação</FieldLabel>
               <Input
+                className="cursor-text"
                 id="edit-date"
                 name="date"
                 type="date"
@@ -146,6 +147,7 @@ export const EditInvestimentDialog = ({
 
           <DialogFooter>
             <Button
+              className="cursor-pointer"
               type="button"
               variant="outline"
               onClick={() => setOpen(false)}
@@ -153,7 +155,7 @@ export const EditInvestimentDialog = ({
             >
               Cancelar
             </Button>
-            <Button type="submit" className="gap-2" disabled={pending}>
+            <Button type="submit" className="gap-2 cursor-pointer" disabled={pending}>
               {pending && <TbLoader2 className="h-4 w-4 animate-spin" />}
               Salvar Alterações
             </Button>
