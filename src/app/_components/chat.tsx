@@ -1,46 +1,167 @@
+'use client';
+
+import { useState } from 'react';
 import { TbSend } from 'react-icons/tb';
 import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+  MessageScroller,
+  MessageScrollerButton,
+  MessageScrollerContent,
+  MessageScrollerItem,
+  MessageScrollerProvider,
+  MessageScrollerViewport,
+} from '@/components/ui/message-scroller';
+import { Message } from '@/types/chat';
+import { ModelSelect } from './modelSelect';
+import { StatusIndicator } from './statusIndicator';
+import { sendMessageAction } from '../actions';
+import { Spinner } from '@/components/ui/spinner';
 
 export const Chat = () => {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [inputValue, setInputValue] = useState('');
+  const [isStreaming, setIsStreaming] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const simulateStreamingResponse = async (userText: string) => {
+    setIsStreaming(true);
+    const userId = crypto.randomUUID();
+    const assistantId = crypto.randomUUID();
+
+    // 1. Adiciona a mensagem do usuário na tela
+    setMessages((prev) => [...prev, { id: userId, role: 'user', content: userText }]);
+
+    // 2. Inicia a Server Action Geradora
+    setLoading(true);
+    const stream = await sendMessageAction(userText);
+
+    for await (const chunk of stream) {
+      // Quando a Action envia status, atualiza a mensagem do spinner
+      if (chunk.type === 'status') {
+        setStatusMessage(chunk.message);
+      }
+
+      // Quando a Action envia a resposta final
+      if (chunk.type === 'response') {
+        // Remove o indicador de status
+        setStatusMessage(null);
+        setLoading(false);
+
+        // Cria o balão da IA
+        setMessages((prev) => [...prev, { id: assistantId, role: 'assistant', content: '' }]);
+
+        const words = chunk.message.split(' ');
+        let currentText = '';
+
+        // Executa a animação de digitação
+        for (let i = 0; i < words.length; i++) {
+          await new Promise((resolve) => setTimeout(resolve, 40));
+          currentText += (i === 0 ? '' : ' ') + words[i];
+
+          setMessages((prev) =>
+            prev.map((msg) => (msg.id === assistantId ? { ...msg, content: currentText } : msg))
+          );
+        }
+      }
+    }
+    setStatusMessage(null);
+    setIsStreaming(false);
+  };
+
+  const handleSend = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!inputValue.trim() || isStreaming) return;
+
+    const textToSend = inputValue.trim();
+    setInputValue('');
+
+    simulateStreamingResponse(textToSend);
+  };
+
   return (
-    <>
-      <ScrollArea className="flex-1 p-4 bg-muted/20">
-        <div className="flex flex-col gap-6">
-          <div className="flex justify-end">
-            <div className="bg-violet-600 text-white p-3.5 rounded-2xl rounded-tr-sm max-w-[85%] text-sm shadow-sm">
-              Quais foram meus maiores gastos este mês?
-            </div>
-          </div>
+    <div className="flex flex-col h-[600px] w-full max-w-2xl mx-auto border rounded-xl overflow-hidden bg-background">
+      {/* Cabeçalho de Seleção de Modelo e Provedor */}
+      <ModelSelect isStreaming={isStreaming} />
 
-          <div className="flex justify-start">
-            <div className="bg-card p-3.5 rounded-2xl rounded-tl-sm max-w-[85%] text-sm border shadow-sm flex flex-col gap-2">
-              <p>
-                Baseado nos seus lançamentos, seu maior gasto foi com <strong>Alimentação</strong>,
-                totalizando R$ 1.250,40.
-              </p>
-            </div>
-          </div>
-        </div>
-      </ScrollArea>
+      {/* Área das Mensagens com Scroll */}
+      <MessageScrollerProvider>
+        <MessageScroller className="flex-1 bg-muted/20">
+          <MessageScrollerViewport className="scroll-smooth">
+            <MessageScrollerContent aria-busy={isStreaming} className="p-4 flex flex-col gap-6">
+              {messages.map((msg) => (
+                <MessageScrollerItem
+                  key={msg.id}
+                  messageId={msg.id}
+                  scrollAnchor={msg.role === 'user'}
+                >
+                  <div
+                    className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} ${
+                      msg.role === 'assistant'
+                        ? 'animate-in fade-in slide-in-from-bottom-2 duration-300 ease-out'
+                        : ''
+                    }`}
+                  >
+                    <div
+                      className={
+                        msg.role === 'user'
+                          ? 'bg-violet-600 text-white p-3.5 rounded-2xl rounded-tr-sm max-w-[85%] text-sm shadow-sm'
+                          : 'bg-card text-foreground p-3.5 rounded-2xl rounded-tl-sm max-w-[85%] text-sm border shadow-sm flex flex-col gap-2'
+                      }
+                    >
+                      <p className="whitespace-pre-wrap">{msg.content}</p>
+                    </div>
+                  </div>
+                </MessageScrollerItem>
+              ))}
 
+              {/* Indicador de Status dinâmico durante o carregamento das ferramentas */}
+              {statusMessage && (
+                <MessageScrollerItem messageId="status-loading">
+                  <div className="flex justify-start">
+                    <StatusIndicator message={statusMessage} />
+                  </div>
+                </MessageScrollerItem>
+              )}
+            </MessageScrollerContent>
+          </MessageScrollerViewport>
+
+          <MessageScrollerButton />
+        </MessageScroller>
+      </MessageScrollerProvider>
+
+      {/* Input de Mensagem */}
       <div className="p-4 border-t bg-card">
-        <div className="relative flex items-end bg-background border rounded-xl overflow-hidden shadow-sm focus-within:ring-1 focus-within:ring-violet-500">
+        <form
+          onSubmit={handleSend}
+          className="relative flex items-end bg-background border rounded-xl overflow-hidden shadow-sm focus-within:ring-1 focus-within:ring-violet-500"
+        >
           <textarea
-            placeholder="Pergunte sobre suas finanças..."
-            className="w-full min-h-[52px] max-h-[120px] resize-none bg-transparent px-4 py-3.5 text-sm placeholder:text-muted-foreground focus:outline-none"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
+            placeholder="Digite sua mensagem..."
+            disabled={isStreaming}
+            className="w-full min-h-[52px] max-h-[120px] resize-none bg-transparent px-4 py-3.5 text-sm placeholder:text-muted-foreground focus:outline-none disabled:opacity-50"
             rows={1}
           />
-          <div className="p-2">
+          <div className="p-2 flex-shrink-0 cursor-pointer">
             <Button
+              type="submit"
               size="icon"
-              className="h-9 w-9 bg-violet-600 hover:bg-violet-700 shrink-0 rounded-lg"
+              disabled={!inputValue.trim() || isStreaming || loading}
+              className="h-9 w-9 bg-violet-600 hover:bg-violet-700 disabled:opacity-50 shrink-0 rounded-lg transition-all"
             >
-              <TbSend className="h-4 w-4" />
+              {loading ? <Spinner /> : <TbSend className="h-4 w-4" />}
             </Button>
           </div>
-        </div>
+        </form>
       </div>
-    </>
+    </div>
   );
 };

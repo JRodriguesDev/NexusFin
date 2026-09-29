@@ -139,3 +139,20 @@ export const summaryTableDataAction = async (): Promise<ResponseActionType<Summa
     return { success: false, message: prismaErrors(error) ?? 'Erro Interno' };
   }
 };
+
+// eslint-disable-next-line func-style
+export async function* sendMessageAction(userMessage: string) {
+  // 1. Emite o status e PAUSA
+  yield { type: 'status', message: 'Analisando pergunta...' };
+  await new Promise((r) => setTimeout(r, 1000));
+
+  // 2. Emite outro status e PAUSA
+  yield { type: 'status', message: 'Consultando ferramentas...' };
+  await new Promise((r) => setTimeout(r, 1000));
+
+  // 3. Emite a resposta final
+  yield {
+    type: 'response',
+    message: `testando gerador de conversas mensagem do usuario: "${userMessage}"`,
+  };
+}
