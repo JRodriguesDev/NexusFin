@@ -6,6 +6,7 @@ import { prismaErrors } from '@/lib/prisma/error';
 import { ResponseActionType } from '@/types/response';
 import { MoneyKpisData, GraphicsData, SummaryTablesData } from '@/types/overview';
 import { monthNames } from '@/constants/overview';
+import { runChat } from '@/services/langchain/agent';
 
 export const moneyKpipsAction = async (): Promise<ResponseActionType<MoneyKpisData>> => {
   try {
@@ -142,17 +143,6 @@ export const summaryTableDataAction = async (): Promise<ResponseActionType<Summa
 
 // eslint-disable-next-line func-style
 export async function* sendMessageAction(userMessage: string) {
-  // 1. Emite o status e PAUSA
-  yield { type: 'status', message: 'Analisando pergunta...' };
-  await new Promise((r) => setTimeout(r, 1000));
-
-  // 2. Emite outro status e PAUSA
-  yield { type: 'status', message: 'Consultando ferramentas...' };
-  await new Promise((r) => setTimeout(r, 1000));
-
-  // 3. Emite a resposta final
-  yield {
-    type: 'response',
-    message: `testando gerador de conversas mensagem do usuario: "${userMessage}"`,
-  };
+  if (!userMessage.trim()) return;
+  yield* runChat(userMessage);
 }
