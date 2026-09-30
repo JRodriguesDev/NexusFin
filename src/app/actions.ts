@@ -6,7 +6,7 @@ import { prismaErrors } from '@/lib/prisma/error';
 import { ResponseActionType } from '@/types/response';
 import { MoneyKpisData, GraphicsData, SummaryTablesData } from '@/types/overview';
 import { monthNames } from '@/constants/overview';
-import { runChat } from '@/services/langchain/agent';
+import { runChat } from '@/services/langchain/chat';
 
 export const moneyKpipsAction = async (): Promise<ResponseActionType<MoneyKpisData>> => {
   try {

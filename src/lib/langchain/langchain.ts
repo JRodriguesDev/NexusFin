@@ -1,13 +1,14 @@
 import { ChatGoogle } from '@langchain/google';
-import { webSearchTool } from './tools';
 import 'dotenv/config';
+import { createAgent } from 'langchain';
+import { webSearchTool } from './tools/webSearch';
 
-export const getChatModel = () => {
-  return new ChatGoogle({
-    model: 'gemini-3.5-flash-lite',
-    apiKey: process.env.GOOGLE_API_KEY,
-    temperature: 0.7,
-    streamUsage: true,
-    tools: [webSearchTool],
-  });
-};
+const model = new ChatGoogle({
+  model: 'gemini-3.5-flash-lite',
+});
+
+// 4. Criando o agente com o modelo e as ferramentas
+export const agent = createAgent({
+  model: model,
+  tools: [webSearchTool],
+});
