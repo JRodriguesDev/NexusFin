@@ -1,3 +1,6 @@
+import { Message } from '@/types/chat';
+import { BaseMessage, HumanMessage, AIMessage, SystemMessage } from '@langchain/core/messages';
+
 export const stripMarkdown = (text: string): string => {
   return (
     text
@@ -40,4 +43,29 @@ export const extractChunkText = (content: unknown): string => {
   }
 
   return '';
+};
+
+export const prepareMessagesWindow = (
+  history: Message[],
+  maxMessages = 10,
+  summary = ''
+): BaseMessage[] => {
+  // 1. Recorta apenas as últimas N mensagens do histórico
+  const recentHistory = history.slice(-maxMessages);
+
+  // 2. Mapeia para as instâncias do LangChain
+  const formattedMessages: BaseMessage[] = recentHistory.map((msg) => {
+    if (msg.role === 'human') {
+      return new HumanMessage(msg.content);
+    }
+    return new AIMessage(msg.content);
+  });
+
+  if (summary.trim()) {
+    formattedMessages.unshift(
+      new SystemMessage(`[Contexto de mensagens anteriores da conversa: "${summary}"]`)
+    );
+  }
+
+  return formattedMessages;
 };

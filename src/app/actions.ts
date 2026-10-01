@@ -7,6 +7,7 @@ import { ResponseActionType } from '@/types/response';
 import { MoneyKpisData, GraphicsData, SummaryTablesData } from '@/types/overview';
 import { monthNames } from '@/constants/overview';
 import { runChat } from '@/services/langchain/chat';
+import { Message } from '@/types/chat';
 
 export const moneyKpipsAction = async (): Promise<ResponseActionType<MoneyKpisData>> => {
   try {
@@ -142,7 +143,8 @@ export const summaryTableDataAction = async (): Promise<ResponseActionType<Summa
 };
 
 // eslint-disable-next-line func-style
-export async function* sendMessageAction(userMessage: string) {
-  if (!userMessage.trim()) return;
-  yield* runChat(userMessage);
+export async function* sendMessageAction(messages: Message[]) {
+  if (messages.length <= 0) return;
+  const cleanMessages = messages.filter((msg) => msg.role !== 'error');
+  yield* runChat(cleanMessages);
 }

@@ -30,12 +30,15 @@ export const Chat = () => {
     const userId = crypto.randomUUID();
     const assistantId = crypto.randomUUID();
 
+    const newUserMessage: Message = { id: userId, role: 'human', content: userText };
+    const updateHistoric = [...messages, newUserMessage];
+
     // 1. Adiciona a mensagem do usuário na tela
-    setMessages((prev) => [...prev, { id: userId, role: 'user', content: userText }]);
+    setMessages(updateHistoric);
 
     // 2. Inicia a Server Action Geradora
     setLoading(true);
-    const stream = await sendMessageAction(userText);
+    const stream = await sendMessageAction(updateHistoric);
 
     for await (const chunk of stream) {
       // Quando a Action envia status, atualiza a mensagem do spinner
@@ -104,7 +107,7 @@ export const Chat = () => {
                 <MessageScrollerItem
                   key={msg.id}
                   messageId={msg.id}
-                  scrollAnchor={msg.role === 'user'}
+                  scrollAnchor={msg.role === 'human'}
                 >
                   <ChatMessageBubble message={msg} />
                 </MessageScrollerItem>

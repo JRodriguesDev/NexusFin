@@ -4,7 +4,7 @@ import { TbAlertTriangle } from 'react-icons/tb';
 import { Message } from '@/types/chat';
 
 export const ChatMessageBubble = ({ message }: { message: Message }) => {
-  const isUser = message.role === 'user';
+  const isUser = message.role === 'human';
   const isError = message.role === 'error';
 
   if (isError) {

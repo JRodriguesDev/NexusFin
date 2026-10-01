@@ -4,8 +4,9 @@ import { createAgent } from 'langchain';
 import { webSearchTool } from './tools/webSearch';
 import { getTransactionsTool } from './tools/transactionsData';
 import { getInvestmentsTool } from './tools/investimentsData';
+import { SYSTEM_PROMPT } from '@/constants/chat';
 
-const model = new ChatGoogle({
+export const model = new ChatGoogle({
   model: 'gemini-3.5-flash-lite',
 });
 
@@ -13,4 +14,5 @@ const model = new ChatGoogle({
 export const agent = createAgent({
   model: model,
   tools: [webSearchTool, getTransactionsTool, getInvestmentsTool],
+  systemPrompt: SYSTEM_PROMPT,
 });
