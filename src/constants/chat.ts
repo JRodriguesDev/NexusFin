@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 export const aiModels = {
   gemini: {
     name: 'Google Gemini',
@@ -15,4 +16,10 @@ export const aiModels = {
       { id: 'o3-mini', name: 'o3-mini' },
     ],
   },
+};
+
+export const TOOL_STATUS_MAP = {
+  get_transactions: 'Buscando seu histórico de transações...',
+  get_investments: 'Consultando sua carteira de investimentos...',
+  web_search: 'Pesquisando informações atualizadas na internet...',
 };

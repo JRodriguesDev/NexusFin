@@ -798,7 +798,6 @@ export const TransactionScalarFieldEnum = {
   date: 'date',
   description: 'description',
   category: 'category',
-  isRecurrence: 'isRecurrence',
   amount: 'amount',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -932,13 +931,6 @@ export type EnumTransactionCategoryFieldRefInput<$PrismaModel> = FieldRefInputTy
  * Reference to a field of type 'TransactionCategory[]'
  */
 export type ListEnumTransactionCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionCategory[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 

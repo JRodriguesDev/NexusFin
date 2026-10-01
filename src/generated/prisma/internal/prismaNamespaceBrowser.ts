@@ -116,7 +116,6 @@ export const TransactionScalarFieldEnum = {
   date: 'date',
   description: 'description',
   category: 'category',
-  isRecurrence: 'isRecurrence',
   amount: 'amount',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

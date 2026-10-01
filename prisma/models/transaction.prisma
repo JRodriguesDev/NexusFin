@@ -5,7 +5,6 @@ model Transaction {
   date DateTime
   description String
   category TransactionCategory
-  isRecurrence Boolean @default(false) @map("is_recurrence")
   amount Decimal @db.Decimal(10,2)
 
   createdAt   DateTime @default(now()) @map("created_at")

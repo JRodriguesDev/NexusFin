@@ -19,7 +19,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Field, FieldGroup, FieldLabel, FieldError } from '@/components/ui/field';
 import { cn } from '@/lib/utils';
 import { transactionDialogConfig, TransactionResponse } from '@/constants/transaction';
@@ -37,7 +36,6 @@ export const EditTransactionDialog = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState(transaction.category);
-  const [isRecurrence, setIsRecurrence] = useState(transaction.isRecurrence);
   const currentDialogType = transactionDialogConfig[transaction.type];
   const [state, formAction, pending] = useActionState(updateTransactionAction, TransactionResponse);
   const router = useRouter();
@@ -46,7 +44,6 @@ export const EditTransactionDialog = ({
     if (state) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setCategory(transaction.category);
-      setIsRecurrence(transaction.isRecurrence);
     }
 
     if (state.success) {
@@ -161,24 +158,6 @@ export const EditTransactionDialog = ({
               <input type="hidden" name="category" value={category} />
               {!state.success && state.errors?.category && (
                 <FieldError>{state.errors!.category}</FieldError>
-              )}
-            </Field>
-
-            {/* Campo: Transação Recorrente */}
-            <Field>
-              <div className="flex items-center space-x-2 pt-1">
-                <Checkbox
-                  checked={isRecurrence}
-                  onCheckedChange={(checked) => setIsRecurrence(!!checked)}
-                  disabled={pending}
-                />
-                <FieldLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer">
-                  Repetir todo mês (Transação Recorrente)
-                </FieldLabel>
-                <input type="hidden" name="isRecurrence" value={isRecurrence ? 'true' : 'false'} />
-              </div>
-              {!state.success && state.errors?.isRecurrence && (
-                <FieldError>{state.errors!.isRecurrence}</FieldError>
               )}
             </Field>
 

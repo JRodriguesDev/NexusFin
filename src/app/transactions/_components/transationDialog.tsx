@@ -20,7 +20,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Spinner } from '@/components/ui/spinner';
 import { Field, FieldGroup, FieldLabel, FieldError } from '@/components/ui/field';
 import { cn } from '@/lib/utils';
@@ -39,7 +38,6 @@ export const TransationDialog = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState('SALARY');
-  const [isRecurrence, setIsRecurrence] = useState(false);
   const [state, formAction, pending] = useActionState(createTransactionAction, TransactionResponse);
   const currentDialogType = transactionDialogConfig[type];
   const router = useRouter();
@@ -158,24 +156,6 @@ export const TransationDialog = ({
               <input type="hidden" name="category" value={category} />
               {!state.success && state.errors?.category && (
                 <FieldError>{state.errors!.category}</FieldError>
-              )}
-            </Field>
-
-            {/* Campo: Transação Recorrente */}
-            <Field>
-              <div className="flex items-center space-x-2 pt-1">
-                <Checkbox
-                  checked={isRecurrence}
-                  onCheckedChange={(checked) => setIsRecurrence(!!checked)}
-                  disabled={pending}
-                />
-                <FieldLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer">
-                  Repetir todo mês (Transação Recorrente)
-                </FieldLabel>
-                <input type="hidden" name="isRecurrence" value={isRecurrence ? 'true' : 'false'} />
-              </div>
-              {!state.success && state.errors?.isRecurrence && (
-                <FieldError>{state.errors!.isRecurrence}</FieldError>
               )}
             </Field>
 

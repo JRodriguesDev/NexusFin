@@ -7,8 +7,15 @@ const tvly = tavily({ apiKey: process.env.TAVILY_API_KEY });
 
 export const webSearchTool = tool(
   async ({ query }) => {
-    const response = await tvly.search(query, { searchDepth: 'basic', maxResults: 3 });
-    return JSON.stringify(response.results);
+    try {
+      const response = await tvly.search(query, { searchDepth: 'basic', maxResults: 3 });
+      return JSON.stringify(response.results);
+    } catch (error) {
+      return JSON.stringify({
+        error: true,
+        message: 'Erro interno ao consultar banco de dados de transações.',
+      });
+    }
   },
   {
     name: 'web_search',

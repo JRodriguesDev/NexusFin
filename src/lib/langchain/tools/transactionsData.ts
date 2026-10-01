@@ -4,51 +4,57 @@ import { prisma } from '@/lib/prisma/prisma';
 
 export const getTransactionsTool = tool(
   async ({ type, category, limit }) => {
-    // 1. Montagem do filtro do Prisma baseado nos argumentos recebidos
-    const whereClause: Record<string, unknown> = {};
+    try {
+      // 1. Montagem do filtro do Prisma baseado nos argumentos recebidos
+      const whereClause: Record<string, unknown> = {};
 
-    if (type) {
-      whereClause.type = type;
-    }
+      if (type) {
+        whereClause.type = type;
+      }
 
-    if (category) {
-      whereClause.category = category;
-    }
+      if (category) {
+        whereClause.category = category;
+      }
 
-    // 2. Consulta ao banco de dados
-    const transactions = await prisma.transaction.findMany({
-      where: whereClause,
-      take: Math.min(limit || 10, 50),
-      orderBy: { date: 'desc' },
-      select: {
-        id: true,
-        type: true,
-        amount: true,
-        category: true,
-        description: true,
-        date: true,
-        isRecurrence: true,
-      },
-    });
+      // 2. Consulta ao banco de dados
+      const transactions = await prisma.transaction.findMany({
+        where: whereClause,
+        take: Math.min(limit || 10, 50),
+        orderBy: { date: 'desc' },
+        select: {
+          id: true,
+          type: true,
+          amount: true,
+          category: true,
+          description: true,
+          date: true,
+        },
+      });
 
-    if (transactions.length === 0) {
+      if (transactions.length === 0) {
+        return JSON.stringify({
+          message: 'Nenhuma transação foi encontrada no banco de dados.',
+          data: [],
+        });
+      }
+
+      // 3. Formatação dos tipos que o JSON.stringify não trata nativamente (Decimal e Date)
+      const formattedTransactions = transactions.map((t) => ({
+        ...t,
+        amount: Number(t.amount), // Converte Decimal do Prisma para Number
+        date: t.date.toISOString().split('T')[0], // Converte Date para string "YYYY-MM-DD"
+      }));
+
       return JSON.stringify({
-        message: 'Nenhuma transação foi encontrada no banco de dados.',
-        data: [],
+        total: formattedTransactions.length,
+        data: formattedTransactions,
+      });
+    } catch (error) {
+      return JSON.stringify({
+        error: true,
+        message: 'Erro interno ao consultar banco de dados de transações.',
       });
     }
-
-    // 3. Formatação dos tipos que o JSON.stringify não trata nativamente (Decimal e Date)
-    const formattedTransactions = transactions.map((t) => ({
-      ...t,
-      amount: Number(t.amount), // Converte Decimal do Prisma para Number
-      date: t.date.toISOString().split('T')[0], // Converte Date para string "YYYY-MM-DD"
-    }));
-
-    return JSON.stringify({
-      total: formattedTransactions.length,
-      data: formattedTransactions,
-    });
   },
   {
     name: 'get_transactions',

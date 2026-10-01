@@ -23,7 +23,6 @@ export type TransactionFormType = FormType & {
     description?: string;
     amount?: string;
     date?: string;
-    isRecurrence?: string;
     category?: string;
   };
 };

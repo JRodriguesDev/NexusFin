@@ -18,9 +18,6 @@ export const createTransactionSchema = z.object({
     .min(1, 'Requer Data')
     .transform((date) => new Date(date)),
   category: z.nativeEnum(TransactionCategory, { message: 'Categoria Invalida' }),
-  isRecurrence: z
-    .enum(['true', 'false'], { message: 'Valor de recorrência inválido' })
-    .transform((val) => val === 'true'),
 });
 
 export const updateTransactionSchema = z.object({
@@ -39,9 +36,6 @@ export const updateTransactionSchema = z.object({
     .min(1, 'Requer Data')
     .transform((date) => new Date(date)),
   category: z.nativeEnum(TransactionCategory, { message: 'Categoria Invalida' }),
-  isRecurrence: z
-    .enum(['true', 'false'], { message: 'Valor de recorrência inválido' })
-    .transform((val) => val === 'true'),
 });
 
 export type CreateTransactionSchema = z.infer<typeof createTransactionSchema>;

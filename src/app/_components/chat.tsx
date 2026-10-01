@@ -16,6 +16,7 @@ import { ModelSelect } from './modelSelect';
 import { StatusIndicator } from './statusIndicator';
 import { sendMessageAction } from '../actions';
 import { Spinner } from '@/components/ui/spinner';
+import { ChatMessageBubble } from './chatMessageBubble';
 
 export const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -40,6 +41,16 @@ export const Chat = () => {
       // Quando a Action envia status, atualiza a mensagem do spinner
       if (chunk.type === 'status') {
         setStatusMessage(chunk.message);
+      }
+
+      if (chunk.type === 'error') {
+        setStatusMessage(null);
+        setLoading(false);
+        setMessages((prev) => [
+          ...prev,
+          { id: crypto.randomUUID(), role: 'error', content: chunk.message },
+        ]);
+        break;
       }
 
       // Quando a Action envia a resposta final
@@ -95,23 +106,7 @@ export const Chat = () => {
                   messageId={msg.id}
                   scrollAnchor={msg.role === 'user'}
                 >
-                  <div
-                    className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} ${
-                      msg.role === 'assistant'
-                        ? 'animate-in fade-in slide-in-from-bottom-2 duration-300 ease-out'
-                        : ''
-                    }`}
-                  >
-                    <div
-                      className={
-                        msg.role === 'user'
-                          ? 'bg-violet-600 text-white p-3.5 rounded-2xl rounded-tr-sm max-w-[85%] text-sm shadow-sm'
-                          : 'bg-card text-foreground p-3.5 rounded-2xl rounded-tl-sm max-w-[85%] text-sm border shadow-sm flex flex-col gap-2'
-                      }
-                    >
-                      <p className="whitespace-pre-wrap">{msg.content}</p>
-                    </div>
-                  </div>
+                  <ChatMessageBubble message={msg} />
                 </MessageScrollerItem>
               ))}
 
