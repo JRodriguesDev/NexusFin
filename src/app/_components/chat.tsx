@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TbSend } from 'react-icons/tb';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,13 +17,36 @@ import { StatusIndicator } from './statusIndicator';
 import { sendMessageAction } from '../actions';
 import { Spinner } from '@/components/ui/spinner';
 import { ChatMessageBubble } from './chatMessageBubble';
+import { sessionMessagesAction } from '../actions';
 
-export const Chat = () => {
+export const Chat = ({
+  sessionId,
+  onSessionCreated,
+}: {
+  sessionId: string | null;
+  onSessionCreated: (sessionId: string) => void;
+}) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [session, setSession] = useState({});
+
+  useEffect(() => {
+    if (sessionId) {
+      const getSession = async () => {
+        const data = await sessionMessagesAction(sessionId);
+        const { messages, session } = data;
+        setSession({ sessionId: session?.id, summary: session?.summary });
+        setMessages(messages);
+      };
+      getSession();
+    } else {
+      setMessages([]);
+      setSession({});
+    }
+  }, [sessionId]);
 
   const simulateStreamingResponse = async (userText: string) => {
     setIsStreaming(true);
@@ -38,9 +61,14 @@ export const Chat = () => {
 
     // 2. Inicia a Server Action Geradora
     setLoading(true);
-    const stream = await sendMessageAction(updateHistoric);
+    const stream = await sendMessageAction(updateHistoric, session);
 
     for await (const chunk of stream) {
+      if (chunk.type === 'sessionCreated') {
+        setSession({ sessionId: chunk.sessionId, summary: chunk.summary });
+        onSessionCreated(chunk.sessionId);
+      }
+
       // Quando a Action envia status, atualiza a mensagem do spinner
       if (chunk.type === 'status') {
         setStatusMessage(chunk.message);

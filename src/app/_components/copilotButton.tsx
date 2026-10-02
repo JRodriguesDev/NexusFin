@@ -9,6 +9,17 @@ import { ChatHistoric } from './chatHistoric';
 
 export const CopilotButton = () => {
   const [view, setView] = useState<'chat' | 'history'>('chat');
+  const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
+
+  const handleNewChat = () => {
+    setCurrentSessionId(null);
+    setView('chat');
+  };
+
+  const handleSelectedChat = (sessiondId: string) => {
+    setCurrentSessionId(sessiondId);
+    setView('chat');
+  };
 
   return (
     <Sheet>
@@ -41,7 +52,7 @@ export const CopilotButton = () => {
             <Button
               variant={view === 'chat' ? 'secondary' : 'ghost'}
               size="icon"
-              onClick={() => setView('chat')}
+              onClick={() => handleNewChat()}
               title="Novo Chat"
               className="h-8 w-8"
             >
@@ -51,7 +62,14 @@ export const CopilotButton = () => {
         </SheetHeader>
 
         {/* CORPO DO PAINEL */}
-        {view === 'chat' ? <Chat /> : <ChatHistoric />}
+        {view === 'chat' ? (
+          <Chat
+            sessionId={currentSessionId}
+            onSessionCreated={(newId) => setCurrentSessionId(newId)}
+          />
+        ) : (
+          <ChatHistoric onSelectChat={handleSelectedChat} />
+        )}
       </SheetContent>
     </Sheet>
   );

@@ -7,7 +7,8 @@ import { ResponseActionType } from '@/types/response';
 import { MoneyKpisData, GraphicsData, SummaryTablesData } from '@/types/overview';
 import { monthNames } from '@/constants/overview';
 import { runChat } from '@/services/langchain/chat';
-import { Message } from '@/types/chat';
+import { ChatStreamEvent, Message, Session } from '@/types/chat';
+import { createMessage, getSessions, getSessionMessages } from '@/services/DAL/chat';
 
 export const moneyKpipsAction = async (): Promise<ResponseActionType<MoneyKpisData>> => {
   try {
@@ -143,8 +144,54 @@ export const summaryTableDataAction = async (): Promise<ResponseActionType<Summa
 };
 
 // eslint-disable-next-line func-style
-export async function* sendMessageAction(messages: Message[]) {
+export async function* sendMessageAction(
+  messages: Message[],
+  session: Session
+): AsyncGenerator<ChatStreamEvent> {
   if (messages.length <= 0) return;
   const cleanMessages = messages.filter((msg) => msg.role !== 'error');
-  yield* runChat(cleanMessages);
+  let IaResponseText = '';
+  let updatedSummary = session.summary;
+  for await (const event of runChat(cleanMessages, session.summary)) {
+    if (event.type === 'response') {
+      IaResponseText = event.message;
+      if (event.summary !== undefined) {
+        updatedSummary = event.summary;
+      }
+    }
+    yield event;
+  }
+  if (IaResponseText) {
+    const userMessage = cleanMessages[cleanMessages.length - 1];
+    try {
+      const response = await createMessage(
+        session.sessiondId!,
+        userMessage,
+        IaResponseText,
+        updatedSummary
+      );
+      yield {
+        type: 'sessionCreated',
+        sessionId: response,
+        summary: updatedSummary,
+      };
+    } catch (error) {
+      console.error(error);
+      yield {
+        type: 'error',
+        success: false,
+        message: 'Ocorreu uma falha temporária ao salvar mesagens no banco.',
+      };
+    }
+  }
 }
+
+export const historicMessagesAction = async () => {
+  const response = await getSessions();
+  return response;
+};
+
+export const sessionMessagesAction = async (sessionId: string) => {
+  const response = await getSessionMessages(sessionId);
+  return response;
+};
