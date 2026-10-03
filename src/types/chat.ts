@@ -15,8 +15,3 @@ export type ChatStreamEvent =
   | { type: 'response'; success: true; message: string; summary?: string }
   | { type: 'error'; success: false; message: string }
   | { type: 'sessionCreated'; sessionId: string; summary?: string };
-
-export type Session = {
-  sessiondId?: string;
-  summary?: string;
-};

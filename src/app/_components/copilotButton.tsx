@@ -9,18 +9,6 @@ import { ChatHistoric } from './chatHistoric';
 
 export const CopilotButton = () => {
   const [view, setView] = useState<'chat' | 'history'>('chat');
-  const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
-
-  const handleNewChat = () => {
-    setCurrentSessionId(null);
-    setView('chat');
-  };
-
-  const handleSelectedChat = (sessiondId: string) => {
-    setCurrentSessionId(sessiondId);
-    setView('chat');
-  };
-
   return (
     <Sheet>
       {/* O seu botão original exato como Trigger */}
@@ -62,14 +50,7 @@ export const CopilotButton = () => {
         </SheetHeader>
 
         {/* CORPO DO PAINEL */}
-        {view === 'chat' ? (
-          <Chat
-            sessionId={currentSessionId}
-            onSessionCreated={(newId) => setCurrentSessionId(newId)}
-          />
-        ) : (
-          <ChatHistoric onSelectChat={handleSelectedChat} />
-        )}
+        {view === 'chat' ? <Chat /> : <ChatHistoric />}
       </SheetContent>
     </Sheet>
   );

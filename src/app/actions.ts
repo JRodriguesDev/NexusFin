@@ -146,13 +146,13 @@ export const summaryTableDataAction = async (): Promise<ResponseActionType<Summa
 // eslint-disable-next-line func-style
 export async function* sendMessageAction(
   messages: Message[],
-  session: Session
+  session = ''
 ): AsyncGenerator<ChatStreamEvent> {
   if (messages.length <= 0) return;
   const cleanMessages = messages.filter((msg) => msg.role !== 'error');
   let IaResponseText = '';
-  let updatedSummary = session.summary;
-  for await (const event of runChat(cleanMessages, session.summary)) {
+  let updatedSummary = session;
+  for await (const event of runChat(cleanMessages, session)) {
     if (event.type === 'response') {
       IaResponseText = event.message;
       if (event.summary !== undefined) {
@@ -164,16 +164,10 @@ export async function* sendMessageAction(
   if (IaResponseText) {
     const userMessage = cleanMessages[cleanMessages.length - 1];
     try {
-      const response = await createMessage(
-        session.sessiondId!,
-        userMessage,
-        IaResponseText,
-        updatedSummary
-      );
+      const response = await createMessage(session, userMessage, IaResponseText, updatedSummary);
       yield {
         type: 'sessionCreated',
         sessionId: response,
-        summary: updatedSummary,
       };
     } catch (error) {
       console.error(error);
