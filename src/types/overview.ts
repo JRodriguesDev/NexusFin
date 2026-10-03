@@ -37,7 +37,7 @@ export type RecentTransactionItem = {
   type: string;
   category: string;
   amount: number;
-  date: Date;
+  date: string;
 };
 
 export type TopInvestmentItem = {
