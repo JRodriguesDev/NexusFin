@@ -1,14 +1,15 @@
 'use client';
 
-import { useState } from 'react';
 import { TbSparkles, TbHistory, TbPlus } from 'react-icons/tb';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Chat } from './chat';
 import { ChatHistoric } from './chatHistoric';
+import { useCopilotStore } from '@/lib/zustand/copilotButton';
 
 export const CopilotButton = () => {
-  const [view, setView] = useState<'chat' | 'history'>('chat');
+  const { view, setView, handleNewChat } = useCopilotStore();
+
   return (
     <Sheet>
       {/* O seu botão original exato como Trigger */}

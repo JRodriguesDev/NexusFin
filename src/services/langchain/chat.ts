@@ -8,7 +8,7 @@ import { generateConversationSummary } from '@/lib/langchain/utils/summary';
 
 export async function* runChat(
   history: Message[],
-  currentSummary = ''
+  currentSummary: string
 ): AsyncGenerator<ChatStreamEvent> {
   const agentInstance = agent;
   // 1. Notifica o início do raciocínio

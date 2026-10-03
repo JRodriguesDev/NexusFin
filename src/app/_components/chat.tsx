@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TbSend } from 'react-icons/tb';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,9 +14,10 @@ import {
 import { Message } from '@/types/chat';
 import { ModelSelect } from './modelSelect';
 import { StatusIndicator } from './statusIndicator';
-import { sendMessageAction } from '../actions';
+import { sendMessageAction, sessionMessagesAction } from '../actions';
 import { Spinner } from '@/components/ui/spinner';
 import { ChatMessageBubble } from './chatMessageBubble';
+import { useCopilotStore } from '@/lib/zustand/copilotButton';
 
 export const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -24,6 +25,23 @@ export const Chat = () => {
   const [isStreaming, setIsStreaming] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [summary, setSummary] = useState('');
+
+  const currentSessionId = useCopilotStore((state) => state.currentSessionId);
+  const setCurrentSessionId = useCopilotStore((state) => state.setCurrentSessionId);
+
+  useEffect(() => {
+    (async () => {
+      if (currentSessionId) {
+        const data = await sessionMessagesAction(currentSessionId);
+        setSummary(data.session?.summary || '');
+        setMessages(data.messages);
+      } else {
+        setMessages([]);
+        setSummary('');
+      }
+    })();
+  }, [currentSessionId]);
 
   const simulateStreamingResponse = async (userText: string) => {
     setIsStreaming(true);
@@ -38,9 +56,13 @@ export const Chat = () => {
 
     // 2. Inicia a Server Action Geradora
     setLoading(true);
-    const stream = await sendMessageAction(updateHistoric);
+    const stream = await sendMessageAction(currentSessionId, updateHistoric, summary);
 
     for await (const chunk of stream) {
+      if (chunk.type === 'sessionCreated') {
+        setCurrentSessionId(chunk.sessionId);
+      }
+
       // Quando a Action envia status, atualiza a mensagem do spinner
       if (chunk.type === 'status') {
         setStatusMessage(chunk.message);
@@ -59,6 +81,7 @@ export const Chat = () => {
       // Quando a Action envia a resposta final
       if (chunk.type === 'response') {
         // Remove o indicador de status
+        setSummary(chunk.summary || '');
         setStatusMessage(null);
         setLoading(false);
 

@@ -7,7 +7,7 @@ import { ResponseActionType } from '@/types/response';
 import { MoneyKpisData, GraphicsData, SummaryTablesData } from '@/types/overview';
 import { monthNames } from '@/constants/overview';
 import { runChat } from '@/services/langchain/chat';
-import { ChatStreamEvent, Message, Session } from '@/types/chat';
+import { ChatStreamEvent, Message } from '@/types/chat';
 import { createMessage, getSessions, getSessionMessages } from '@/services/DAL/chat';
 
 export const moneyKpipsAction = async (): Promise<ResponseActionType<MoneyKpisData>> => {
@@ -145,14 +145,15 @@ export const summaryTableDataAction = async (): Promise<ResponseActionType<Summa
 
 // eslint-disable-next-line func-style
 export async function* sendMessageAction(
+  sessionId: string | null,
   messages: Message[],
-  session = ''
+  summary: string
 ): AsyncGenerator<ChatStreamEvent> {
   if (messages.length <= 0) return;
   const cleanMessages = messages.filter((msg) => msg.role !== 'error');
   let IaResponseText = '';
-  let updatedSummary = session;
-  for await (const event of runChat(cleanMessages, session)) {
+  let updatedSummary = summary;
+  for await (const event of runChat(cleanMessages, summary)) {
     if (event.type === 'response') {
       IaResponseText = event.message;
       if (event.summary !== undefined) {
@@ -164,7 +165,7 @@ export async function* sendMessageAction(
   if (IaResponseText) {
     const userMessage = cleanMessages[cleanMessages.length - 1];
     try {
-      const response = await createMessage(session, userMessage, IaResponseText, updatedSummary);
+      const response = await createMessage(sessionId, userMessage, IaResponseText, updatedSummary);
       yield {
         type: 'sessionCreated',
         sessionId: response,

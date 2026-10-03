@@ -3,13 +3,13 @@ import 'server-only';
 import { Message } from '@/types/chat';
 
 export const createMessage = async (
-  sessionId: string,
+  sessionId: string | null,
   userMessage: Message,
   IaMessage: string,
   updateSummary?: string
 ) => {
   let activateSessionId = sessionId;
-  if (!sessionId) {
+  if (!activateSessionId) {
     const newSesion = await prisma.chatSession.create({
       data: {
         title: userMessage.content.slice(0, 30) || 'Nova conversa',

@@ -10,10 +10,18 @@ import {
 import { useState, useEffect } from 'react';
 import { ChatSessionType } from '@/types/chat';
 import { historicMessagesAction } from '../actions';
+import { useCopilotStore } from '@/lib/zustand/copilotButton';
 
-export const ChatHistoric = ({ onSelectChat }: { onSelectChat: (id: string) => void }) => {
+export const ChatHistoric = () => {
   const [chats, setChats] = useState<ChatSessionType[]>([]);
   const [isLoading, setisLoading] = useState(false);
+  const setCurrentSessionId = useCopilotStore((state) => state.setCurrentSessionId);
+  const setView = useCopilotStore((state) => state.setView);
+
+  const handleSelectChat = (chatId: string) => {
+    setCurrentSessionId(chatId);
+    setView('chat');
+  };
 
   useEffect(() => {
     const loadSessions = async () => {
@@ -41,7 +49,7 @@ export const ChatHistoric = ({ onSelectChat }: { onSelectChat: (id: string) => v
           {chats.map((chat) => (
             <div
               key={chat.id}
-              onClick={() => onSelectChat?.(chat.id)}
+              onClick={() => handleSelectChat(chat.id)}
               className="group relative flex items-center justify-between w-full p-3 rounded-lg border border-border/60 hover:bg-muted/40 transition-colors cursor-pointer"
             >
               {/* ÍCONE E TEXTO DA CONVERSA */}
