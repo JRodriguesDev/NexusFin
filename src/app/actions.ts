@@ -7,7 +7,7 @@ import { ResponseActionType } from '@/types/response';
 import { MoneyKpisData, GraphicsData, SummaryTablesData } from '@/types/overview';
 import { monthNames } from '@/constants/overview';
 import { runChat } from '@/services/langchain/chat';
-import { ChatStreamEvent, Message } from '@/types/chat';
+import { ChatStreamEvent, Message, ChatSessionType, ResponseMessagesHistoric } from '@/types/chat';
 import { createMessage, getSessions, getSessionMessages } from '@/services/DAL/chat';
 
 export const moneyKpipsAction = async (): Promise<ResponseActionType<MoneyKpisData>> => {
@@ -181,12 +181,28 @@ export async function* sendMessageAction(
   }
 }
 
-export const historicMessagesAction = async () => {
-  const response = await getSessions();
-  return response;
+export const historicMessagesAction = async (): Promise<ResponseActionType<ChatSessionType[]>> => {
+  try {
+    const response = await getSessions();
+    return {
+      success: true,
+      data: response,
+    };
+  } catch (error) {
+    return { success: false, message: prismaErrors(error) ?? 'Erro Interno' };
+  }
 };
 
-export const sessionMessagesAction = async (sessionId: string) => {
-  const response = await getSessionMessages(sessionId);
-  return response;
+export const sessionMessagesAction = async (
+  sessionId: string
+): Promise<ResponseActionType<ResponseMessagesHistoric>> => {
+  try {
+    const response = await getSessionMessages(sessionId);
+    return {
+      success: true,
+      data: response,
+    };
+  } catch (error) {
+    return { success: false, message: prismaErrors(error) ?? 'Erro Interno' };
+  }
 };

@@ -18,6 +18,7 @@ import { sendMessageAction, sessionMessagesAction } from '../actions';
 import { Spinner } from '@/components/ui/spinner';
 import { ChatMessageBubble } from './chatMessageBubble';
 import { useCopilotStore } from '@/lib/zustand/copilotButton';
+import { ChatError } from './chatError';
 
 export const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -26,6 +27,7 @@ export const Chat = () => {
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [summary, setSummary] = useState('');
+  const [error, setError] = useState({ error: false, message: '' });
 
   const currentSessionId = useCopilotStore((state) => state.currentSessionId);
   const setCurrentSessionId = useCopilotStore((state) => state.setCurrentSessionId);
@@ -34,8 +36,11 @@ export const Chat = () => {
     (async () => {
       if (currentSessionId) {
         const data = await sessionMessagesAction(currentSessionId);
-        setSummary(data.session?.summary || '');
-        setMessages(data.messages);
+        if (!data.success || !data.data)
+          return setError({ error: true, message: data.message || '' });
+        const { messages, session } = data.data;
+        setSummary(session?.summary || '');
+        setMessages(messages);
       } else {
         setMessages([]);
         setSummary('');
@@ -144,6 +149,12 @@ export const Chat = () => {
                   </div>
                 </MessageScrollerItem>
               )}
+
+              {error.error && (
+                <MessageScrollerItem messageId="chat-error">
+                  <ChatError error={error.message} />
+                </MessageScrollerItem>
+              )}
             </MessageScrollerContent>
           </MessageScrollerViewport>
 
@@ -167,7 +178,7 @@ export const Chat = () => {
               }
             }}
             placeholder="Digite sua mensagem..."
-            disabled={isStreaming}
+            disabled={isStreaming || error.error}
             className="w-full min-h-[52px] max-h-[120px] resize-none bg-transparent px-4 py-3.5 text-sm placeholder:text-muted-foreground focus:outline-none disabled:opacity-50"
             rows={1}
           />
@@ -175,7 +186,7 @@ export const Chat = () => {
             <Button
               type="submit"
               size="icon"
-              disabled={!inputValue.trim() || isStreaming || loading}
+              disabled={!inputValue.trim() || isStreaming || loading || error.error}
               className="h-9 w-9 bg-violet-600 hover:bg-violet-700 disabled:opacity-50 shrink-0 rounded-lg transition-all"
             >
               {loading ? <Spinner /> : <TbSend className="h-4 w-4" />}

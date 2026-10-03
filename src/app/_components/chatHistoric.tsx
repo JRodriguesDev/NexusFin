@@ -11,10 +11,12 @@ import { useState, useEffect } from 'react';
 import { ChatSessionType } from '@/types/chat';
 import { historicMessagesAction } from '../actions';
 import { useCopilotStore } from '@/lib/zustand/copilotButton';
+import { ChatHistoricError } from './chatHistoricError';
 
 export const ChatHistoric = () => {
   const [chats, setChats] = useState<ChatSessionType[]>([]);
   const [isLoading, setisLoading] = useState(false);
+  const [error, setError] = useState({ message: '', error: false });
   const setCurrentSessionId = useCopilotStore((state) => state.setCurrentSessionId);
   const setView = useCopilotStore((state) => state.setView);
 
@@ -27,8 +29,10 @@ export const ChatHistoric = () => {
     const loadSessions = async () => {
       setisLoading(true);
       const sessions = await historicMessagesAction();
-      setChats(sessions);
       setisLoading(false);
+      if (!sessions.success || !sessions.data)
+        return setError({ error: true, message: sessions.message || '' });
+      setChats(sessions.data);
     };
 
     loadSessions();
@@ -42,6 +46,8 @@ export const ChatHistoric = () => {
 
       {isLoading ? (
         <div className="text-xs text-muted-foreground p-2">Carregando histórico...</div>
+      ) : error.error ? (
+        <ChatHistoricError error={error.message} />
       ) : chats.length === 0 ? (
         <div className="text-xs text-muted-foreground p-2">Nenhuma conversa encontrada.</div>
       ) : (

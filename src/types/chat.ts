@@ -15,3 +15,15 @@ export type ChatStreamEvent =
   | { type: 'response'; success: true; message: string; summary?: string }
   | { type: 'error'; success: false; message: string }
   | { type: 'sessionCreated'; sessionId: string; summary?: string };
+
+export type ResponseMessagesHistoric = {
+  session: {
+    id: string;
+    summary: string | null;
+  } | null;
+  messages: {
+    id: string;
+    role: Message['role'];
+    content: string;
+  }[];
+};
