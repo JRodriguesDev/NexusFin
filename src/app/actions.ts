@@ -7,8 +7,21 @@ import { ResponseActionType } from '@/types/response';
 import { MoneyKpisData, GraphicsData, SummaryTablesData } from '@/types/overview';
 import { monthNames } from '@/constants/overview';
 import { runChat } from '@/services/langchain/chat';
-import { ChatStreamEvent, Message, ChatSessionType, ResponseMessagesHistoric } from '@/types/chat';
-import { createMessage, getSessions, getSessionMessages } from '@/services/DAL/chat';
+import { renameSessionSchema } from '@/lib/validations/chat';
+import {
+  ChatStreamEvent,
+  Message,
+  ChatSessionType,
+  ResponseMessagesHistoric,
+  RenameSessionType,
+} from '@/types/chat';
+import {
+  createMessage,
+  getSessions,
+  getSessionMessages,
+  deleteSession,
+  renameSession,
+} from '@/services/DAL/chat';
 
 export const moneyKpipsAction = async (): Promise<ResponseActionType<MoneyKpisData>> => {
   try {
@@ -202,6 +215,41 @@ export const sessionMessagesAction = async (
       success: true,
       data: response,
     };
+  } catch (error) {
+    return { success: false, message: prismaErrors(error) ?? 'Erro Interno' };
+  }
+};
+
+export const deleteSessionAction = async (id: string): Promise<ResponseActionType> => {
+  try {
+    await deleteSession(id);
+    return { success: true };
+  } catch (error) {
+    return { success: false, message: prismaErrors(error) ?? 'Erro Interno' };
+  }
+};
+
+export const renameSessionAction = async (
+  _prevState: RenameSessionType,
+  form: FormData
+): Promise<RenameSessionType> => {
+  const validationField = renameSessionSchema.safeParse({
+    id: form.get('id'),
+    title: form.get('title'),
+  });
+  if (!validationField.success) {
+    const error = validationField.error.flatten().fieldErrors;
+    return {
+      success: false,
+      errors: {
+        title: error.title?.[0],
+      },
+    };
+  }
+
+  try {
+    await renameSession(validationField.data);
+    return { success: true };
   } catch (error) {
     return { success: false, message: prismaErrors(error) ?? 'Erro Interno' };
   }

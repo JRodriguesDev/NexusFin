@@ -1,3 +1,5 @@
+import { RenameSessionType } from '@/types/chat';
+
 /* eslint-disable camelcase */
 export const aiModels = {
   gemini: {
@@ -34,3 +36,10 @@ Diretrizes de Comportamento:
 4. NUNCA invente ou especule sobre dados financeiros do usuário que não tenham sido retornados pelas ferramentas.
 5. Seja direto, prático e focado em organização financeira.
 `;
+
+export const renameSessionResponse: RenameSessionType = {
+  success: false,
+  errors: {
+    title: undefined,
+  },
+};

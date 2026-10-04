@@ -9,9 +9,11 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useState, useEffect } from 'react';
 import { ChatSessionType } from '@/types/chat';
-import { historicMessagesAction } from '../actions';
+import { historicMessagesAction, deleteSessionAction } from '../actions';
 import { useCopilotStore } from '@/lib/zustand/copilotButton';
 import { ChatHistoricError } from './chatHistoricError';
+import { toast } from 'sonner';
+import { RenameSessionDialog } from './renameSessionDialog';
 
 export const ChatHistoric = () => {
   const [chats, setChats] = useState<ChatSessionType[]>([]);
@@ -23,6 +25,20 @@ export const ChatHistoric = () => {
   const handleSelectChat = (chatId: string) => {
     setCurrentSessionId(chatId);
     setView('chat');
+  };
+
+  const handleRenameSession = (id: string, newTitle: string) => {
+    setChats((prevChats) =>
+      prevChats.map((chat) => (chat.id === id ? { ...chat, title: newTitle } : chat))
+    );
+  };
+
+  const handleDeleteSession = async (id: string) => {
+    const response = await deleteSessionAction(id);
+    if (!response?.success)
+      return toast.error(`Não foi possivel apagar a sessao: ${response?.message}`);
+    toast.success('Sessão Apagada com Sucesso');
+    setChats((prevChats) => prevChats.filter((chat) => chat.id !== id));
   };
 
   useEffect(() => {
@@ -56,11 +72,13 @@ export const ChatHistoric = () => {
             {chats.map((chat) => (
               <div
                 key={chat.id}
-                onClick={() => handleSelectChat(chat.id)}
                 className="group relative flex items-center justify-between w-full p-3 rounded-lg border border-border/60 hover:bg-muted/40 transition-colors cursor-pointer"
               >
                 {/* ÍCONE E TEXTO DA CONVERSA */}
-                <div className="flex items-center gap-3 overflow-hidden pr-2">
+                <div
+                  className="flex items-center gap-3 overflow-hidden pr-2"
+                  onClick={() => handleSelectChat(chat.id)}
+                >
                   <TbMessage className="h-4 w-4 text-muted-foreground shrink-0" />
                   <div className="flex flex-col gap-0.5 overflow-hidden">
                     <span className="text-sm font-medium truncate">{chat.title}</span>
@@ -74,17 +92,28 @@ export const ChatHistoric = () => {
                       variant="ghost"
                       size="icon"
                       className="h-7 w-7 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity shrink-0"
-                      onClick={(e) => e.stopPropagation()}
                     >
                       <TbDotsVertical className="h-4 w-4 text-muted-foreground" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-40">
-                    <DropdownMenuItem className="cursor-pointer gap-2">
-                      <TbPencil className="h-4 w-4" />
-                      Renomear
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer gap-2 text-destructive focus:text-destructive">
+                    <RenameSessionDialog
+                      id={chat.id}
+                      onSuccess={(newTitle) => handleRenameSession(chat.id, newTitle)}
+                    >
+                      <DropdownMenuItem
+                        className="cursor-pointer gap-2"
+                        onSelect={(e) => e.preventDefault()}
+                      >
+                        <TbPencil className="h-4 w-4" />
+                        Renomear
+                      </DropdownMenuItem>
+                    </RenameSessionDialog>
+
+                    <DropdownMenuItem
+                      className="cursor-pointer gap-2 text-destructive focus:text-destructive"
+                      onClick={() => handleDeleteSession(chat.id)}
+                    >
                       <TbTrash className="h-4 w-4" />
                       Deletar
                     </DropdownMenuItem>

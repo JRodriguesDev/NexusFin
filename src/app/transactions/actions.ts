@@ -25,7 +25,6 @@ export const createTransactionAction = async (
     category: form.get('category'),
     isRecurrence: form.get('isRecurrence'),
   });
-  console.log(validationFields);
 
   if (!validationFields.success) {
     const errors = validationFields.error.flatten().fieldErrors;
@@ -36,7 +35,6 @@ export const createTransactionAction = async (
         amount: errors.amount?.[0],
         date: errors.date?.[0],
         category: errors.category?.[0],
-        isRecurrence: errors.isRecurrence?.[0],
       },
     };
   }
@@ -100,7 +98,6 @@ export const updateTransactionAction = async (
         amount: errors.amount?.[0],
         date: errors.date?.[0],
         category: errors.category?.[0],
-        isRecurrence: errors.isRecurrence?.[0],
       },
     };
   }

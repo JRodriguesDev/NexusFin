@@ -1,4 +1,5 @@
 import { ChatSession } from '@/generated/prisma/client';
+import { FormType } from './form';
 
 export type ChatSessionType = Pick<ChatSession, 'id' | 'title'>;
 
@@ -26,4 +27,10 @@ export type ResponseMessagesHistoric = {
     role: Message['role'];
     content: string;
   }[];
+};
+
+export type RenameSessionType = FormType & {
+  errors?: {
+    title: string | undefined;
+  };
 };

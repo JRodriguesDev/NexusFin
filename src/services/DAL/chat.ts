@@ -1,6 +1,7 @@
-import { prisma } from '@/lib/prisma/prisma';
 import 'server-only';
+import { prisma } from '@/lib/prisma/prisma';
 import { Message } from '@/types/chat';
+import { RenameSessionSchema } from '@/lib/validations/chat';
 
 export const createMessage = async (
   sessionId: string | null,
@@ -73,4 +74,19 @@ export const getSessionMessages = async (sessionId: string) => {
   ]);
 
   return { session, messages };
+};
+
+export const deleteSession = async (id: string) => {
+  await prisma.chatSession.delete({
+    where: { id: id },
+  });
+};
+
+export const renameSession = async (data: RenameSessionSchema) => {
+  await prisma.chatSession.update({
+    where: { id: data.id },
+    data: {
+      title: data.title || undefined,
+    },
+  });
 };
