@@ -27,6 +27,7 @@ export const createMessage = async (
   await prisma.chatMessage.createMany({
     data: [
       {
+        id: userMessage.id,
         sessionId: activateSessionId,
         role: 'human',
         content: userMessage.content,
