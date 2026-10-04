@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useId } from 'react';
+import { useState, useEffect } from 'react';
 import { TbSend } from 'react-icons/tb';
 import { Button } from '@/components/ui/button';
 import {
@@ -50,8 +50,8 @@ export const Chat = () => {
 
   const simulateStreamingResponse = async (userText: string) => {
     setIsStreaming(true);
-    const userId = useId();
-    const assistantId = useId();
+    const userId = crypto.randomUUID();
+    const assistantId = crypto.randomUUID();
 
     const newUserMessage: Message = { id: userId, role: 'human', content: userText };
     const updateHistoric = [...messages, newUserMessage];
@@ -78,7 +78,7 @@ export const Chat = () => {
         setLoading(false);
         setMessages((prev) => [
           ...prev,
-          { id: `${Date.now()}-${Math.random()}`, role: 'error', content: chunk.message },
+          { id: crypto.randomUUID(), role: 'error', content: chunk.message },
         ]);
         break;
       }
