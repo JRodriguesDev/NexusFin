@@ -12,7 +12,6 @@ import {
   MessageScrollerViewport,
 } from '@/components/ui/message-scroller';
 import { Message } from '@/types/chat';
-import { ModelSelect } from './modelSelect';
 import { StatusIndicator } from './statusIndicator';
 import { sendMessageAction, sessionMessagesAction } from '../actions';
 import { Spinner } from '@/components/ui/spinner';
@@ -123,8 +122,6 @@ export const Chat = () => {
 
   return (
     <div className="flex flex-col h-[600px] w-full max-w-2xl mx-auto border rounded-xl overflow-hidden bg-background">
-      {/* Cabeçalho de Seleção de Modelo e Provedor */}
-      <ModelSelect isStreaming={isStreaming} />
 
       {/* Área das Mensagens com Scroll */}
       <MessageScrollerProvider>
