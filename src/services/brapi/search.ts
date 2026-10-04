@@ -1,7 +1,7 @@
 import { brapi } from '@/lib/brapi/brapi';
-import { SearchInvestimentCategory } from '@/types/investiments';
+import { SearchInvestimentCategoryType } from '@/types/investiments';
 
-export const searchQuotes = async (query: string, type: SearchInvestimentCategory) => {
+export const searchQuotes = async (query: string, type: SearchInvestimentCategoryType) => {
   const response = await brapi.quote.list({
     search: query,
     type: type,

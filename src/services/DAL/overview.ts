@@ -1,7 +1,9 @@
 import 'server-only';
 import { prisma } from '@/lib/prisma/prisma';
+import { connection } from 'next/server';
 
 export const getMoneyKpip = async () => {
+  await connection();
   const now = new Date();
   // Datas do Mês Atual (ex: 01/09 até agora)
   const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -14,11 +16,13 @@ export const getMoneyKpip = async () => {
       by: ['type'],
       _sum: { amount: true },
       where: { date: { gte: startOfCurrentMonth } },
+      orderBy: { type: 'asc' },
     }),
     prisma.transaction.groupBy({
       by: ['type'],
       _sum: { amount: true },
       where: { date: { gte: startOfPreviousMonth, lte: endOfPreviousMonth } },
+      orderBy: { type: 'asc' },
     }),
     prisma.investiment.findMany({
       select: { quantity: true, price: true },
@@ -26,17 +30,17 @@ export const getMoneyKpip = async () => {
   ]);
 
   const totalIncome = Number(
-    currentMonthData.find((item) => item.type === 'INCOME')?._sum.amount ?? 0
+    currentMonthData.find((item) => item.type === 'INCOME')?._sum?.amount ?? 0
   );
   const totalExpense = Number(
-    currentMonthData.find((item) => item.type === 'EXPENSE')?._sum.amount ?? 0
+    currentMonthData.find((item) => item.type === 'EXPENSE')?._sum?.amount ?? 0
   );
 
   const prevIncome = Number(
-    previusMonthData.find((item) => item.type === 'INCOME')?._sum.amount ?? 0
+    previusMonthData.find((item) => item.type === 'INCOME')?._sum?.amount ?? 0
   );
   const prevExpense = Number(
-    previusMonthData.find((item) => item.type === 'EXPENSE')?._sum.amount ?? 0
+    previusMonthData.find((item) => item.type === 'EXPENSE')?._sum?.amount ?? 0
   );
 
   const totalInvested = investimentData.reduce((acc, item) => {
@@ -55,6 +59,7 @@ export const getMoneyKpip = async () => {
 };
 
 export const getGraphicData = async () => {
+  await connection();
   const sixMonthsAgo = new Date();
   sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 5);
   sixMonthsAgo.setDate(1);
@@ -102,6 +107,7 @@ export const getGraphicData = async () => {
 };
 
 export const getSummaryTablesData = async () => {
+  await connection();
   const [recentTransactions, investiments] = await prisma.$transaction([
     prisma.transaction.findMany({
       orderBy: { date: 'desc' },

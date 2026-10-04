@@ -10,9 +10,8 @@ export const ReleaseTables = ({ params }: { params: TransactionSearchParamsType 
         <thead className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm text-xs uppercase text-muted-foreground border-b border-border">
           <tr>
             <th className="w-[18%] px-4 py-3">Tipo / Data</th>
-            <th className="w-[30%] px-4 py-3">Descrição</th>
+            <th className="w-[44%] px-4 py-3">Descrição</th>
             <th className="w-[18%] px-4 py-3">Categoria</th>
-            <th className="w-[14%] px-4 py-3">Recorrência</th>
             <th className="w-[12%] px-4 py-3 text-right">Valor</th>
             <th className="w-[12%] px-4 py-3 text-right">Ações</th>
           </tr>

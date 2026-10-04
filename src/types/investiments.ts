@@ -11,7 +11,7 @@ export type InvestimentType = Omit<
 
 export type InvestimentCategoryType = InvestimentCategory;
 
-export type SearchInvestimentCategoryType = Exclude<InvestimentCategoryType, 'fixed_income'>;
+export type SearchInvestimentCategoryType = Exclude<InvestimentCategoryType, 'fixedIncome'>;
 
 export type SelectedStockType = {
   ticker?: string;

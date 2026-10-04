@@ -22,8 +22,11 @@ import {
   deleteSession,
   renameSession,
 } from '@/services/DAL/chat';
+import { connection } from 'next/server';
 
 export const moneyKpipsAction = async (): Promise<ResponseActionType<MoneyKpisData>> => {
+  await connection();
+
   try {
     const response = await getMoneyKpip();
     const { totalIncome, totalExpense, prevIncome, prevExpense, totalInvested } = response;
@@ -51,6 +54,7 @@ export const moneyKpipsAction = async (): Promise<ResponseActionType<MoneyKpisDa
 };
 
 export const graphicsDataAction = async (): Promise<ResponseActionType<GraphicsData>> => {
+  await connection();
   try {
     const { formattedTransactions, formattedInvestiments } = await getGraphicData();
 

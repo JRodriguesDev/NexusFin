@@ -7,7 +7,6 @@ export const TransactionResponse: TransactionFormType = {
     description: undefined,
     amount: undefined,
     date: undefined,
-    isRecurrence: undefined,
     category: undefined,
   },
 };

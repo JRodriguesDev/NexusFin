@@ -5,7 +5,7 @@ import { Suspense } from 'react';
 import { GraphicLoading } from './_components/graphicLoading';
 import { SummaryTablesLoading } from './_components/summaryTableSkeleton';
 
-export default function OverviewPage() {
+const Page = async () => {
   return (
     <div className="w-full h-screen max-h-screen overflow-y-auto p-4 sm:p-6">
       <div className="flex flex-col gap-4 w-full max-w-[1400px] mx-auto pb-12">
@@ -38,4 +38,6 @@ export default function OverviewPage() {
       </div>
     </div>
   );
-}
+};
+
+export default Page;
